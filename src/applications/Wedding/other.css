@@ -1,0 +1,29 @@
+
+J U N K
+
+.Potato {
+	font-family: "Nunito", sans-serif;
+}
+.potatoText {
+	color: gray;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	text-shadow: none;
+
+}
+
+.potatoText:hover {
+	cursor: pointer;
+
+	text-shadow: none;
+	-webkit-background-clip: text;
+	background: linear-gradient(to right, #ff8a00, #da1b60);
+
+	-webkit-text-fill-color: transparent;
+	-ms-text-fill-color: transparent;
+	-moz-text-fill-color: transparent;
+
+	-webkit-background-clip: text;
+}
+

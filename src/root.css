@@ -1,0 +1,24 @@
+/*============================
+==== OUTSIDE IN ================
+============================*/
+html {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	overflow: auto;
+}
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+#root {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+.app {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}

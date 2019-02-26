@@ -1,0 +1,16 @@
+.pageNotFound {
+	padding: 64px;
+}
+
+.exclamation {
+	font-family: "Nunito Sans", serif;
+	font-weight: 700;
+	color: gray;
+	font-size: 84px;	
+}
+
+.subheader {
+	font-family: "Nunito Sans", serif;
+	color: darkslategray;
+	font-size: 28px;
+}

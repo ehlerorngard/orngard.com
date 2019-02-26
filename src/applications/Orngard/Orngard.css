@@ -1,0 +1,49 @@
+.Orngard {
+	padding: 50px;
+}
+
+.orngardHeader {
+	font-family: "Poiret One", sans-serif;
+	color: darkgray;
+	font-size: 84px;
+	display: inline-block;
+}
+.IPA {
+	display: inline-block;
+	font-family: "Poiret One", sans-serif;
+	font-size: 32px;
+	margin-left: 50px;
+}
+.orngardSubheader {
+	font-family: 'Miss Fajardose', cursive;
+	color: #383838;
+	font-size: 64px;
+}
+.rerouteCard {
+	display: inline-flex;
+	padding: 22px;
+	margin: 50px 14px;
+	background-color: #383838;
+	border-radius: 4px;
+	box-shadow: 6px 14px 36px #383838;
+}
+.rerouteText {
+	display: inline-table;
+	font-size: 36px;
+	font-family: "Poiret One", Geneva, sans-serif;
+	color: white;
+}
+.rerouteButton {
+	display: inline-table;
+	bottom: 0;	
+	margin: 12px;
+	padding: 16px;
+	font-family: "Dorsa", Verdana, sans-serif;
+	font-size: 72px;
+	border-radius: 4px;
+	background-color: rgba(107, 209, 194, 1);
+	color: white;
+}
+.rerouteButton:hover {
+	background-color: rgba(41, 133, 119, 1);
+}
