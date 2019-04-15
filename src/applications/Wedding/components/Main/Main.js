@@ -11,6 +11,15 @@ import { IconButton, List, ListItem } from "material-ui";
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 
+import Image1 from '../../assets/adventure.jpg';
+import Image1lite from '../../assets/adventureLite.jpg';
+import Image2 from '../../assets/theMoment.jpg';
+import Image2lite from '../../assets/theMomentLite.jpg';
+import Image3 from '../../assets/background4.jpg';
+import Image4 from '../../assets/background3.jpg';
+import Image5 from '../../assets/background5.jpg';
+import Image6 from '../../assets/background6.jpg';
+
 export class Main extends Component {
 
 	componentDidMount() {
@@ -114,17 +123,92 @@ export class Main extends Component {
   	}
 
   	const imageBox = () => {
-  		if (this.props.screenSize !== "computer") return { backgroundPosition: "center" }
+  		if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image1lite})`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "54% 44%",
+        // backgroundSize: "cover"
+      }
+      else return { 
+        backgroundImage: `url(${Image1lite})`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover" 
+      }
   	}
   	const imageBox2 = () => {
-  		if (this.props.screenSize !== "computer") return { backgroundPosition: "30%" }
+  		if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image2lite})`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "32%",
+        backgroundSize: "auto 100vh"
+      }
+      else return { 
+        backgroundImage: `url(${Image2})`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "30%",
+        backgroundSize: "cover"
+      }
   	}
   	const imageBox3 = () => {
-  		if (this.props.screenSize !== "computer") return { backgroundPosition: "86%" }
+  		if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image3})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "90%",
+        backgroundSize: "auto 100vh" 
+      }
+      else return { 
+        backgroundImage: `url(${Image3})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "50%",
+        backgroundSize: "contain" 
+      }
   	}
   	const imageBox4 = () => {
-  		if (this.props.screenSize !== "computer") return { backgroundPosition: "40%" }
+  		if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image4})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "97%",
+        backgroundSize: "auto 100vh" 
+      }
+      else return { 
+        backgroundImage: `url(${Image4})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "50%",
+        backgroundSize: "contain" 
+      }
   	}
+    const imageBox5 = () => {
+      if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image5})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "86%",
+        backgroundSize: "auto 100vh" 
+      }
+      else return { 
+        backgroundImage: `url(${Image5})`,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover" 
+      }
+    }
+    const imageBox6 = () => {
+      if (this.props.screenSize !== "computer") return { 
+        backgroundImage: `url(${Image6})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "50%",
+        backgroundSize: "auto 100vh" 
+      }
+      else return { 
+        backgroundImage: `url(${Image6})`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "50%",
+        backgroundSize: "contain" 
+      }
+    }
 
     return (
         <div className="main">
@@ -147,7 +231,7 @@ export class Main extends Component {
         			<Grid.Row className='bajoHeader bajoHeaderFont' style={bajoHeader()}>and we would love for you to be there!</Grid.Row>
         			<Grid.Row className='smallText' style={smallText()}>
         				The festivities will take place on the weekend of the 21st of September, 2019 
-        				at the Orngard farm in central Iowa.
+        				at the Orngard farm in central Iowa.  SCREENSIZE {this.props.screenSize}
         			</Grid.Row>
         		</Grid.Column>	
 						<Grid.Column style={three16}/>
@@ -242,7 +326,7 @@ export class Main extends Component {
 						<Grid.Column style={categories()}/>
         	</Grid.Row>
 
-        	<div className="imageBox5" style={imageBox3()}>
+        	<div className="imageBox5" style={imageBox5()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
@@ -259,7 +343,7 @@ export class Main extends Component {
 						<Grid.Column style={categories()}/>
         	</Grid.Row>
 
-        	<div className="imageBox6" style={imageBox()}>
+        	<div className="imageBox6" style={imageBox6()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>

@@ -24,10 +24,10 @@
 .navbar {
 	width: 100%;
 	display: inline-table;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  transition: .5s;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	transition: .9s;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -64,7 +64,7 @@
 	cursor: pointer;
 	color: white;
 	background-color: rgba(22, 70, 63, 1);
-  box-shadow: 10px 10px 18px #888888;
+	box-shadow: 10px 10px 18px #888888;
 
 }
 .navUser {
@@ -135,7 +135,7 @@
 
 .main {
 	width: 100%;
-  margin: 0;
+	margin: 0;
 
 }
 .mainTextLarge {
@@ -158,8 +158,6 @@
 	display: block;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/adventure.jpg');
-	background-size: cover;
 	background-attachment: fixed; 
 }
 .imageBox2 {
@@ -167,8 +165,6 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/theMoment.jpg');
-	background-size: cover;
 	background-attachment: fixed; 
 	display: block;
 }
@@ -177,8 +173,7 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/background4.jpg');
-	background-size: cover;
+	background-repeat: no-repeat;
 	background-attachment: fixed; 
 	display: block;
 }
@@ -187,9 +182,8 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/background3.jpg');
-	background-size: cover;
 	background-attachment: fixed; 
+	background-repeat: no-repeat;
 	display: block;
 }
 .imageBox5 {
@@ -197,8 +191,6 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/background5.jpg');
-	background-size: cover;
 	background-attachment: fixed; 
 	display: block;
 }
@@ -207,8 +199,7 @@
 	height: 100vh;
 	top: 0;
 	left: 0;
-	background-image: url('./assets/background6.jpg');
-	background-size: cover;
+	background-repeat: no-repeat;
 	background-attachment: fixed; 
 	display: block;
 }

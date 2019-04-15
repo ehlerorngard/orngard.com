@@ -64,10 +64,11 @@ export class Navbar extends Component {
 	  		if (this.props.screenSize === "mobile") {
 	  			return { 
 	  				fontSize: "70px", 
-	  				margin: "90px 8px 0 8px", 
+	  				margin: "8px 8px 0 8px", 
 	  				padding: "0px 20px",
 	  				backgroundColor: "rgba(184, 184, 184, 0.7)",
 	  				borderRadius: "40px",
+            float: "left",
 	  			}
 	  		}
 	  		else return { fontSize: "130px", margin: "60px 8px 0 8px", padding: "0px 10px 6px 10px" }
@@ -78,12 +79,16 @@ export class Navbar extends Component {
 
 
   	const triggerStyle = (this.props.scrolledToTop) 
-  		? { fontSize: "32px", transition: ".5s", padding: "4px 7px" }
-  		: { fontSize: "28px", transition: ".5s", padding: "4px 5px" };
+  		? { fontSize: "32px", transition: ".4s", padding: "4px 7px", display: "inline-table" }
+  		: { fontSize: "28px", transition: ".4s", padding: "4px 5px", display: "inline-table" };
+
+    const buttonBoxStyle = (this.props.scrolledToTop) 
+      ? { minWidth: "128px", display: "inline-flex", float: "right" }
+      : { minWidth: "108px", display: "inline-flex", float: "right" };
 
   	const userStyle = (this.props.scrolledToTop) 
-  		? { backgroundColor: "rgba(184, 184, 184, 0.7)" }
-  		: { backgroundColor: "rgba(184, 184, 184, 0.9)" };
+  		? { backgroundColor: "rgba(184, 184, 184, 0.7)", fontSize: "36px", display: "inline-table", transition: ".4s" }
+  		: { backgroundColor: "rgba(184, 184, 184, 0.9)", fontSize: "30px", display: "inline-table", transition: ".4s" };
 
   	const buttonStyle = (this.props.scrolledToTop) 
   		? { fontSize: "36px" }
@@ -114,24 +119,26 @@ export class Navbar extends Component {
     return (
         
         <Grid.Row className="navbar" style={navStyle}>
-        	<div className="leftTextBox" style={textBoxStyle()}>ehler & emily</div>
-        	<div className="sidebarTrigger" onClick={this.showSidebar} style={triggerStyle}>
-        		<div className="navButtonText" 
-        			style={buttonStyle, buttonStyle}
-        		>
-        			{(this.props.screenSize !== "mobile") ? (`menu`) : null}
-        		</div>
-        		<img className="material-icons mIcons" src={menuIcon} style={iconStyle}/>
-        	</div>
 
-        	<div className="navUser" style={userStyle, buttonStyle} onClick={this.showDrop}>
-        		<div className="navButtonText">
-        			{(this.props.screenSize !== "mobile") ? (this.props.user || `stranger`) : null}
-        		</div>
-        		<img className="material-icons mIcons" src={avatar} style={iconStyle}/>
-        	</div>
+          <div style={buttonBoxStyle}>
+          	<div className="navUser" style={userStyle} onClick={this.showDrop}>
+          		<div className="navButtonText">
+          			{(this.props.screenSize !== "mobile") ? (this.props.user || `stranger`) : null}
+          		</div>
+          		<img className="material-icons mIcons" src={avatar} style={iconStyle}/>
+          	</div>
 
-        	 <Popover
+            <div className="sidebarTrigger" onClick={this.showSidebar} style={triggerStyle}>
+              <div className="navButtonText" 
+                style={buttonStyle}
+              >
+                {(this.props.screenSize !== "mobile") ? (`menu`) : null}
+              </div>
+              <img className="material-icons mIcons" src={menuIcon} style={iconStyle}/>
+            </div>
+          </div>
+
+        	<Popover
             open={this.props.dropOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -140,6 +147,8 @@ export class Navbar extends Component {
           >
 	          {dropContents()} 
           </Popover>
+
+          <div className="leftTextBox" style={textBoxStyle()}>ehler & emily</div>
 
         </Grid.Row>
     );
