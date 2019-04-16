@@ -40,7 +40,6 @@
 	font-family: 'Meddon', cursive;
 	font-family: 'Oleo Script Swash Caps', cursive;
 	font-family: 'Megrim', cursive;
-	font-family: 'Reem Kufi', sans-serif;
 	font-family: 'Miss Fajardose', cursive;
 	color: white;
 	transition: .5s;
@@ -88,7 +87,7 @@
 	cursor: pointer;
 }
 .navButtonText {
-	font-family: 'Reem Kufi', Georgia, sans-serif;
+	font-family: 'Oswald', Georgia, sans-serif;
 	display: inline-table;
 }
 
@@ -264,11 +263,11 @@
 	padding: 12px;
 }
 .bajoHeaderFont {
-	font-family: 'Miss Fajardose', cursive;
+	font-family: 'Sacramento', cursive;
 }
 .smallText {
 	font-family: "Oswald", sans-serif;
 	color: rgba(31, 31, 31, 1);
-	margin: 24px 0 0 0;
-	padding: 12px;
+	margin: 6px 0 0 0;
+	padding: 0px;
 }
