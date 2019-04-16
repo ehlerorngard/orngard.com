@@ -75,6 +75,7 @@ export class Main extends Component {
   	const px84 = { fontSize: "84px" };
   	const px72 = { fontSize: "72px" };
   	const px56 = { fontSize: "56px" };
+    const px48 = { fontSize: "48px" };
   	const px32 = { fontSize: "32px" }; 
   	const px24 = { fontSize: "24px" }; 
 
@@ -107,10 +108,16 @@ export class Main extends Component {
   	}
 
   	const bajoHeader = () => {
-  		if (this.props.screenSize === "mobile") return px72
-  		else if (this.props.screenSize === "tablet") return px84
-  		else return px96;
+  		if (this.props.screenSize === "mobile") return px56
+  		else if (this.props.screenSize === "tablet") return px72
+  		else return px84;
   	}
+
+    const firstBajoHeader = () => {
+      if (this.props.screenSize === "mobile") return px48
+      else if (this.props.screenSize === "tablet") return px56
+      else return px72;
+    }
 
   	const smallText = () => {
   		if (this.props.screenSize === "mobile") return px24
@@ -119,7 +126,7 @@ export class Main extends Component {
   	}
 
   	const categories = () => {
-  		return ({ margin: "36px", width: "18.75vw", display: "inline-table" });
+  		return ({ margin: "0px", width: "18.75vw", display: "inline-table" });
   	}
 
   	const imageBox = () => {
@@ -228,10 +235,10 @@ export class Main extends Component {
         				<img className="material-icons mIcons downArrow" src={downArrow} style={downArrowMove()}/>
         			</Grid.Row>
         			<Grid.Row className='header gettingMarriedText' style={header()}>We're getting married!</Grid.Row>
-        			<Grid.Row className='bajoHeader bajoHeaderFont' style={bajoHeader()}>and we would love for you to be there!</Grid.Row>
+        			<Grid.Row className='bajoHeader bajoHeaderFont' style={firstBajoHeader()}>and we would love for you to be there!</Grid.Row>
         			<Grid.Row className='smallText' style={smallText()}>
         				The festivities will take place on the weekend of the 21st of September, 2019 
-        				at the Orngard farm in central Iowa.  SCREENSIZE {this.props.screenSize}
+        				at the Orngard farm in central Iowa.
         			</Grid.Row>
         		</Grid.Column>	
 						<Grid.Column style={three16}/>
@@ -275,17 +282,17 @@ export class Main extends Component {
         		<Grid.Column style={mainBody()}>
         			<Grid.Row className='header' style={header()}>where to stay<img className="material-icons mIcons" src={bed} style={iconStyle}/></Grid.Row>
         			<Grid.Row className='bajoHeader' style={bajoHeader()}>
-        				<Grid.Column className='bajoHeaderFont' style={categories()}>Hotels:</Grid.Column>
+        				<Grid.Column className='bajoHeaderFont' style={categories()}>hotels:</Grid.Column>
         				<Grid.Column className='smallText' style={smallText()}>There are couple hotels in Boone, a 20-minute drive away.  There are many (and nicer) hotels in Ames, 35 minutes away (southeast).</Grid.Column>
         			</Grid.Row>
         				
         			<Grid.Row className='bajoHeader' style={bajoHeader()}>
-        				<Grid.Column className='bajoHeaderFont' style={categories()}>Camping:</Grid.Column>
-        				<Grid.Column className='smallText' style={smallText()}>Everyone is welcome to camp on site for safety, ease, and fun.  
+        				<Grid.Column className='bajoHeaderFont' style={categories()}>camping:</Grid.Column>
+        				<Grid.Column className='smallText' style={smallText()}>Everyone is welcome to camp on site for ease, safety, and fun.  
         					There's loads of space in the field(s) to spread out, and we'll have portable toilets 
-        					and a probably a RAGBRAI-style shower.  If you are coming from a distance and can't bring / 
-        					don't have camping gear but would like to camp, please do let us know and we'll see if we can fix you up 
-        					(we'll likely be renting some tents, pads, etc. for people who need it). </Grid.Column>
+        					and probably a RAGBRAI-style shower.  If you are coming from a distance and can't bring / 
+        					don't have camping gear but would like to camp, please do let us know and we'll give you a link 
+                  a camping gear rental place that will ship whatever you need to rent to the farm. </Grid.Column>
         			</Grid.Row>
 
         		</Grid.Column>	
@@ -309,7 +316,7 @@ export class Main extends Component {
         				overnight low could be 75º, it could be 40º.
         				It could, of course, rain (last September was unseasonably rainy;  
         				the farmer's almanac projects this coming September to be drier than average... here's hoping!)
-        				Bring multiple layers and you should be more than fine.
+        				Bring multiple layers, hats/sunscreen, and eucalyptus oil to repel any bugs and you should be more than fine.
         				Also: just go ahead and bring good weather when you come ;)</Grid.Column>
         			</Grid.Row>
 
