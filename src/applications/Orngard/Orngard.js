@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { Provider } from "redux";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import store from "./store"
 import "./Orngard.css";
 
@@ -100,7 +100,6 @@ class Orngard extends Component {
 
     const rerouteCard = () => {
       let innerWmobile = window.innerWidth - 40;  // minus all padding + margins
-      let innerWwide = window.innerWidth - 128;
       if (this.state.screenSize === "mobile") return {
         padding: "16px",
         margin: "36px 0px 0px",

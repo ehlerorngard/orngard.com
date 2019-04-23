@@ -44,6 +44,12 @@ class Rsvp extends Component {
 
   submit = () => {
     console.log("submitting....");
+
+    requester.createRsvp({
+      attending: this.props.attending,
+      numAdults: this.props.numAdults,
+    })
+
     updateStore({ rsvpOpen: false })(this.props.dispatch);
     if (this.props.attending !== undefined) {
       updateStore({ thanksOpen: true })(this.props.dispatch);
@@ -60,13 +66,13 @@ class Rsvp extends Component {
     const headerStyle = { cursor: 'pointer' };
     const iconStyle = { width: '48px'};
 
-    const home = require('../../assets/icons/^home.svg');
-    const envelope = require('../../assets/icons/^envelope.svg');
-    const calendar = require('../../assets/icons/^calendar.svg');
-    const bed = require('../../assets/icons/^bed.svg');
-    const navArrow = require('../../assets/icons/^navArrow.svg');
-    const suitcase = require('../../assets/icons/^suitcase.svg');
-    const phone = require('../../assets/icons/^phone.svg');
+    // const home = require('../../assets/icons/^home.svg');
+    // const envelope = require('../../assets/icons/^envelope.svg');
+    // const calendar = require('../../assets/icons/^calendar.svg');
+    // const bed = require('../../assets/icons/^bed.svg');
+    // const navArrow = require('../../assets/icons/^navArrow.svg');
+    // const suitcase = require('../../assets/icons/^suitcase.svg');
+    // const phone = require('../../assets/icons/^phone.svg');
 
 
     const bajoHeader = { fontStyle: 'italic', fontSize: "24px", padding: "12px" }
@@ -199,8 +205,6 @@ Rsvp.propTypes = {
   numAdults: PropTypes.number,
   camping: PropTypes.bool,
   arrivalDay: PropTypes.string,
-
-
 }
 
 const mapStateToProps = (state) => {

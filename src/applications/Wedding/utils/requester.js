@@ -1,5 +1,15 @@
 import axios from "axios";
 
+
+// to use this custom base, replace all the axios.whatever calls
+// with pyxios.whatever below;  adjust to remove "/api"(?)
+const pyxios = axios.create({
+  baseURL: 'https://whateveritscalleddd.herokuapp.com/',
+  timeout: 1500,
+})
+
+
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -18,33 +28,39 @@ function parseJSON(response) {
 }
 
 export default {
+  getCsrfToken: () => {
+    return axios.get("/api/csrf/")
+    .then(checkStatus)
+    .then(parseJSON);
+  },
+  // ======================
 
-	getPotato: (id, potatumDatum) => {
-    return axios.get("/api/tasks/" + id, potatumDatum)
+	getRsvp: (id, data) => {
+    return axios.get("/api/task/" + id, data)
     	.then(checkStatus)
     	.then(parseJSON);
   },
-  getPotatoes: (potatumDatum) => {
-    return axios.get("/api/tasks/", potatumDatum)
+  getRsvps: (data) => {
+    return axios.get("/api/task/", data)
     	.then(checkStatus)
     	.then(parseJSON);
   },
-	createPotato: (potatumDatum) => {
-    return axios.put("/api/tasks/", potatumDatum)
+	createRsvp: (data) => {
+    return axios.put("/api/task/", data)
     	.then(checkStatus)
     	.then(res => {
         setTimeout(() => {
-          // dispatch(onSuccessFunction(parseJSON(res).data));  // <––– to dispatch an action on res success
+          console.log("VOLVIÓ! ", res);
         }, 2500);
       });		
 	},
-  editPotato: function(id, potatumDatum) {
-    return axios.post("/api/tasks/" + id, potatumDatum)
+  editRsvp: function(id, data) {
+    return axios.post("/api/task/" + id, data)
     	.then(checkStatus)
     	.then(parseJSON);
   },
-  deletePotato: (id, potatumDatum) => {
-    return axios.delete("/api/tasks/" + id, potatumDatum)
+  deleteRsvp: (id, data) => {
+    return axios.delete("/api/task/" + id, data)
     	.then(checkStatus)
     	.then(parseJSON);
   },
