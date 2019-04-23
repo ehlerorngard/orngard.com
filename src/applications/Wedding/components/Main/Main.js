@@ -1,15 +1,17 @@
+/* eslint-disable */
+
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import { Grid, Segment } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { connect } from "react-redux";
 import "../../Wedding.css";
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import Explore from 'material-ui/svg-icons/action/explore';
 
-import { IconButton, List, ListItem } from "material-ui";
+// import { IconButton, List, ListItem } from "material-ui";
 
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+// import ActionGrade from 'material-ui/svg-icons/action/grade';
+// import Explore from 'material-ui/svg-icons/action/explore';
+// import ContentSend from 'material-ui/svg-icons/content/send';
+// import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 
 import Image1 from '../../assets/adventure.jpg';
 import Image1lite from '../../assets/adventureLite.jpg';
@@ -23,7 +25,7 @@ import Image6 from '../../assets/background6.jpg';
 export class Main extends Component {
 
 	componentDidMount() {
-		console.log("this.props:", this.props);
+
 	}
 
   render() {

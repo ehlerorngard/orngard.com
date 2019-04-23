@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, FlatButton, AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import { Dialog, FlatButton } from "material-ui";
+// import { AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
 
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ActionInfo from 'material-ui/svg-icons/action/info';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+// import NavigationClose from 'material-ui/svg-icons/navigation/close';
+// import ContentSend from 'material-ui/svg-icons/content/send';
+// import ActionInfo from 'material-ui/svg-icons/action/info';
+// import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+// import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 
 class Thanks extends Component {
