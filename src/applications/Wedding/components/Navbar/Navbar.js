@@ -46,12 +46,12 @@ export class Navbar extends Component {
   }
 
   goToRSVP = () => {
-    this.hideDrop();
-    updateStore({ rsvpOpen: true })(this.props.dispatch);
+    updateStore({ dropOpen: false, rsvpOpen: true })(this.props.dispatch);
   }
 
   goToLogin = () => {
-    this.hideDrop();
+    console.log("goToLogin NAVBAR firing...");
+    updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
 
   render() {
@@ -123,7 +123,7 @@ export class Navbar extends Component {
           <div style={buttonBoxStyle}>
           	<div className="navUser" style={userStyle} onClick={this.showDrop}>
           		<div className="navButtonText">
-          			{(this.props.screenSize !== "mobile") ? (this.props.user || `stranger`) : null}
+          			{(this.props.screenSize !== "mobile") ? ((this.props.user) ? this.props.user.firstName : `stranger`) : null}
           		</div>
           		<img className="material-icons mIcons" src={avatar} style={iconStyle}/>
           	</div>

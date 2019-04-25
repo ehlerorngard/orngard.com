@@ -6,43 +6,13 @@ import { Dialog, FlatButton } from "material-ui";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
 
-// import NavigationClose from 'material-ui/svg-icons/navigation/close';
-// import ContentSend from 'material-ui/svg-icons/content/send';
-// import ActionInfo from 'material-ui/svg-icons/action/info';
-// import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-// import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
-
 
 class Thanks extends Component {
 
-  componentDidMount() {
-
+  closeThanks = () => {
+    updateStore({ thanksOpen: false })(this.props.dispatch);
   }
 
-
-  handleChange = (event, key, values) => {
-    console.log('handlChange, event = ', event);
-    console.log("value: ", values);
-    updateStore({ [event.target.name]: event.target.value })(this.props.dispatch);
-  }
-
-  updateAttending = (event, value) => {
-    updateStore({ [event.target.name]: value })(this.props.dispatch);
-  }
-  updateCamping = (event, value) => {
-    updateStore({ camping: value })(this.props.dispatch);
-  }
-  updateNumAdults = (event, key, value) => {
-    updateStore({ numAdults: value })(this.props.dispatch);
-  }
-  updateArrivalDay = (event, key, value) => {
-    updateStore({ arrivalDay: value })(this.props.dispatch);
-  }
-
-  submit = () => {
-
-    updateStore({ rsvpOpen: false })(this.props.dispatch);
-  }
 
   render() {
     const headerStyle = { fontSize: "24px" };
@@ -79,15 +49,9 @@ class Thanks extends Component {
 
     const actions = [
       <FlatButton
-        label="cancel"
+        label="close"
         primary={false}
-        onClick={this.handleClose}
-      />,
-      <FlatButton
-        label="submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.submit}
+        onClick={this.closeThanks}
       />,
     ];
 
@@ -95,6 +59,7 @@ class Thanks extends Component {
       <div className="Thanks"> 
         <Dialog
           modal={false}
+          actions={actions}
           open={this.props.thanksOpen}
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}

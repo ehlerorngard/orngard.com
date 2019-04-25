@@ -385,6 +385,7 @@ const mapStateToProps = (state) => {
 	return {
 		scrolledToTop: state.scrolledToTop,
 		screenSize: state.screenSize,
+    loggedIn: state.loggedIn,
 	}
 }
 

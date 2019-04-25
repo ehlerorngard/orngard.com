@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, FlatButton, AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
+import { Dialog, FlatButton, TextField, AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
@@ -10,6 +10,8 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+
+import requester from "../../utils/requester.js";
 
 
 class Rsvp extends Component {
@@ -45,15 +47,27 @@ class Rsvp extends Component {
   submit = () => {
     console.log("submitting....");
 
-    requester.createRsvp({
-      attending: this.props.attending,
-      numAdults: this.props.numAdults,
+    // requester.createRsvp({
+    //   attending: this.props.attending,
+    //   numAdults: this.props.numAdults,
+    // })
+
+    requester.getInvitees();
+
+    // requester.createInvitee({firstName: 'ehler'});
+
+    requester.updateInvitee(2, {
+      lastName: "orngard",
     })
+
+    requester.getInvitee(3);
+
+
 
     updateStore({ rsvpOpen: false })(this.props.dispatch);
     if (this.props.attending !== undefined) {
       updateStore({ thanksOpen: true })(this.props.dispatch);
-      setTimeout(this.closeThanks, 4000);
+      setTimeout(this.closeThanks, 7000);
     }
   }
 
@@ -104,7 +118,7 @@ class Rsvp extends Component {
     return (
       <div className="Rsvp"> 
         <Dialog
-          title={`RSVP for ${this.props.firstName || '(no name)'}`}
+          title={`RSVP for ${this.props.user.firstName || '(no name)'}`}
           actions={actions}
           modal={false}
           open={this.props.rsvpOpen}
@@ -214,8 +228,14 @@ const mapStateToProps = (state) => {
     screenSize: state.screenSize,
     thanksOpen: state.thanksOpen,
 
+    user: PropTypes.object,
+    userFirstName: PropTypes.string,
+    userLastName: PropTypes.string,
+    userId: PropTypes.number,
+    rsvpId: PropTypes.number,
     firstName: state.firstName,
     lastName: state.lastName,
+    zipCode: state.zipCode,
     attending: state.attending,
     numAdults: state.numAdults,
     camping: state.camping,
