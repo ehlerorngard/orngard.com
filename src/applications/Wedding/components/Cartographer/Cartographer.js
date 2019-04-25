@@ -6,13 +6,16 @@ import PropTypes from "prop-types";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Drawer, AppBar, IconButton, List, ListItem } from "material-ui";
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import { updateStore } from "../../utils/action.js";
+import { updateStore, getRsvp, getInvitee } from "../../utils/action.js";
 import "../../Wedding.css";
 import Main from "../Main/Main.js";
 import Navbar from "../Navbar/Navbar.js";
 import Menubar from "../Menubar/Menubar.js";
 import Rsvp from "../Rsvp/Rsvp.js";
 import Thanks from "../Thanks/Thanks.js";
+import Login from "../Login/Login.js";
+
+import requester from "../../utils/requester.js";
 
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
@@ -27,9 +30,53 @@ class Cartographer extends Component {
     this.getScreenSize();
     setTimeout(function() {window.scroll(0, 0)}, 2000);
     this.handleScroll();
-    updateStore({ rsvpOpen: false, sidebarVisible: false, dropOpen: false })(this.props.dispatch);
+    updateStore({ 
+      rsvpOpen: false, 
+      sidebarVisible: false, 
+      dropOpen: false,
+      loginOpen: false,
+      contactOpen: false,
+      loggedIn: false,
+      rsvpId: null,
+      user: null,
+    })(this.props.dispatch);
     window.addEventListener("resize", this.getScreenSize, true);
     window.addEventListener("scroll", this.handleScroll, true);
+
+    requester.getCsrfToken();
+
+    // for (let i = 1; i < 10; i++) {
+    //   requester.deleteInvitee(i);
+    // }
+
+    // requester.createRsvp({
+    //   attending: true,
+    //   needTent: true,
+    // })
+    // .then(() => {
+    //   requester.createInvitee({
+    //     firstName: 'ludy',
+    //     lastName: 'wittig',
+    //     attending: true,
+    //     rsvp: 1,
+    //   })
+    //   requester.createInvitee({
+    //     firstName: 'ehler',
+    //     lastName: 'orngard',
+    //     attending: true,
+    //     rsvp: 1,
+    //   })
+    //   requester.createInvitee({
+    //     firstName: 'soli',
+    //     lastName: 'orngard',
+    //     attending: true,
+    //   })
+    // })
+
+
+
+    getRsvp(1)(this.props.dispatch);
+    getInvitee(3)(this.props.dispatch);
   }
 
   componentWillUnmount() {
@@ -47,7 +94,7 @@ class Cartographer extends Component {
   }
 
   handleScroll = () => {
-    console.log('pageYOffset: ', window.pageYOffset);
+    // console.log('pageYOffset: ', window.pageYOffset);
     let scrolllocation = 
       (window.pageYOffset < 12)
       ? { scrolledToTop: true }
@@ -86,6 +133,7 @@ class Cartographer extends Component {
         <Menubar />
         <Rsvp />
         <Thanks />
+        <Login />
       </div>
     );
   }
@@ -99,7 +147,11 @@ Cartographer.propTypes = {
   screenSize: PropTypes.string,
   dropOpen: PropTypes.bool,
   rsvpOpen: PropTypes.bool,
-
+  loginOpen: PropTypes.bool,
+  loggedIn: PropTypes.bool,
+  rsvpId: PropTypes.number,
+  allInvitees: PropTypes.array,
+  loginErrorText: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {

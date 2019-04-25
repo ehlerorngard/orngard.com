@@ -33,6 +33,9 @@ class Drop extends Component {
     updateStore({ dropOpen: false })(this.props.dispatch);
   }
 
+  logOut = () => {
+    updateStore({ user: null, rsvpId: null, loggedIn: false, authenticated: false })
+  }
 
   goToHome = () => {
     this.hideDrop();
@@ -40,13 +43,14 @@ class Drop extends Component {
   }
 
   goToRSVP = () => {
-    this.hideDrop();
-    updateStore({ rsvpOpen: true })(this.props.dispatch);
+    updateStore({ dropOpen: false, rsvpOpen: true })(this.props.dispatch);
   }
 
   goToLogin = () => {
-    this.hideDrop();
+    console.log("goToLogin DROP firing...");
+    updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
+
 
 
 
@@ -67,12 +71,12 @@ class Drop extends Component {
 
 
     const dropContents = () => {
-      if (this.props.authenticated === true) {
+      if (this.props.loggedIn === true) {
         return (        
             <Menu>
               <MenuItem primaryText="edit RSVP" onClick={this.goToRSVP} />
               <MenuItem primaryText="settings" />
-              <MenuItem primaryText="sign out" />
+              <MenuItem primaryText="sign out" onClick={this.logOut} />
             </Menu>)
       }
       else return (
@@ -102,6 +106,7 @@ const mapStateToProps = (state) => {
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
     authenticated: state.authenticated,
+    loggedIn: state.loggedIn,
     dropOpen: state.dropOpen,
     anchorEl: state.anchorEl,
   }

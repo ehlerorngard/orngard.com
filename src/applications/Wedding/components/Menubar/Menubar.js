@@ -89,7 +89,7 @@ class Menubar extends Component {
     this.hideSidebar();
     let height;
 
-    const bottom = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
+    const bottom = Math.max(document.body.scrollHeight, document.body.offsetHeight, 
       document.documentElement.clientHeight, document.documentElement.scrollHeight, 
       document.documentElement.offsetHeight );
     if (window.innerWidth < 500) height = bottom * .616
