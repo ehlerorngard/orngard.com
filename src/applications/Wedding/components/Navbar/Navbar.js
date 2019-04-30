@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { Popover, Menu, MenuItem } from "material-ui";
+import { Popover, Popper, Paper, Grow, ClickAwayListener, MenuList, MenuItem } from "@material-ui/core";
 import "../../Wedding.css";
 import { updateStore } from "./navbarActions.js";
 import Drop from "../Drop/Drop.js";
@@ -104,16 +104,15 @@ export class Navbar extends Component {
     const dropContents = () => {
       if (this.props.authenticated === true) {
         return (        
-            <Menu>
-              <MenuItem primaryText="edit RSVP" onClick={this.goToRSVP} />
-              <MenuItem primaryText="settings" />
-              <MenuItem primaryText="sign out" />
-            </Menu>)
+            <MenuList>
+              <MenuItem onClick={this.goToRSVP}>edit RSVP</MenuItem>
+              <MenuItem>sign out</MenuItem>
+            </MenuList>)
       }
       else return (
-          <Menu>
-            <MenuItem primaryText="log in" onClick={this.goToLogin}/>
-          </Menu> )
+          <MenuList>
+            <MenuItem onClick={this.goToLogin}>log in</MenuItem>
+          </MenuList> )
     }
 
     return (
@@ -138,15 +137,27 @@ export class Navbar extends Component {
             </div>
           </div>
 
-        	<Popover
-            open={this.props.dropOpen}
-            anchorEl={this.state.anchorEl}
+          <Popper 
+            open={this.props.dropOpen} 
+            anchorEl={this.state.anchorEl} 
+            transition 
+            disablePortal
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={this.hideDrop}
-          >
-	          {dropContents()} 
-          </Popover>
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}>
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                id="menu-list-grow"
+                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={this.hideDrop}>
+                    {dropContents()}
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
 
           <div className="leftTextBox" style={textBoxStyle()}>ehler & emily</div>
 
@@ -157,7 +168,7 @@ export class Navbar extends Component {
 
 Navbar.propTypes = {
   // field3: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-	user: PropTypes.string,
+	user: PropTypes.object,
 	sidebarVisible: PropTypes.bool,
 	scrolledToTop: PropTypes.bool,
 	showSidebar: PropTypes.func,

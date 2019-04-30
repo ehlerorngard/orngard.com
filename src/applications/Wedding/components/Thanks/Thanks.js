@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, FlatButton } from "material-ui";
+import { Dialog, Button } from "@material-ui/core";
 // import { AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
@@ -48,9 +48,9 @@ class Thanks extends Component {
     }
 
     const actions = [
-      <FlatButton
+      <Button
         label="close"
-        primary={false}
+        color='default'
         onClick={this.closeThanks}
       />,
     ];

@@ -1,17 +1,20 @@
 /* eslint-disable */
 
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from "prop-types";
 import { Grid } from "semantic-ui-react";
 import { connect } from "react-redux";
 import "../../Wedding.css";
+import { updateStore } from "../../utils/action.js";
 
-// import { IconButton, List, ListItem } from "material-ui";
 
-// import ActionGrade from 'material-ui/svg-icons/action/grade';
-// import Explore from 'material-ui/svg-icons/action/explore';
-// import ContentSend from 'material-ui/svg-icons/content/send';
-// import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+// import { IconButton, List, ListItem } from "@material-ui/core";
+
+// import ActionGrade from '@material-ui/icons/action/grade';
+// import Explore from '@material-ui/icons/action/explore';
+// import ContentSend from '@material-ui/icons/content/send';
+// import ContentDrafts from '@material-ui/icons/content/drafts';
 
 import Image1 from '../../assets/adventure.jpg';
 import Image1lite from '../../assets/adventureLite.jpg';
@@ -25,8 +28,16 @@ import Image6 from '../../assets/background6.jpg';
 export class Main extends Component {
 
 	componentDidMount() {
+    updateStore({ getDivHeights: this.getDivHeights })(this.props.dispatch);
 
 	}
+
+  getDivHeights = () => {
+    // const bigRow1 = { height: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth }
+    // const bigRow2 = { height: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth }
+
+    return "fiddlesticks";
+  }
 
   render() {
 

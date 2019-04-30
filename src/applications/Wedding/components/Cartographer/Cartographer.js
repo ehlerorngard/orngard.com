@@ -4,10 +4,11 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Drawer, AppBar, IconButton, List, ListItem } from "material-ui";
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import { Drawer, AppBar, IconButton, List, ListItem, Divider } from "@material-ui/core";
+import { Send, Inbox, Drafts } from '@material-ui/icons';
 import { updateStore, getRsvp, getInvitee } from "../../utils/action.js";
 import "../../Wedding.css";
+
 import Main from "../Main/Main.js";
 import Navbar from "../Navbar/Navbar.js";
 import Menubar from "../Menubar/Menubar.js";
@@ -16,13 +17,6 @@ import Thanks from "../Thanks/Thanks.js";
 import Login from "../Login/Login.js";
 
 import requester from "../../utils/requester.js";
-
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import Divider from 'material-ui/Divider';
-import ActionInfo from 'material-ui/svg-icons/action/info';
 
 class Cartographer extends Component {
 
@@ -38,7 +32,9 @@ class Cartographer extends Component {
       contactOpen: false,
       loggedIn: false,
       rsvpId: null,
-      user: null,
+      rsvp: { id: null },
+      user: { firstName: null },
+      allInvitees: [],
     })(this.props.dispatch);
     window.addEventListener("resize", this.getScreenSize, true);
     window.addEventListener("scroll", this.handleScroll, true);
@@ -160,6 +156,7 @@ const mapStateToProps = (state) => {
     sidebarVisible: state.sidebarVisible,
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
+    getDivHeights: state.getDivHeights,
   }
 }
 
