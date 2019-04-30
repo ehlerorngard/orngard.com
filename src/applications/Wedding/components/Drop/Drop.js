@@ -3,23 +3,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Drawer, IconButton, Popover, Menu, MenuItem } from "material-ui";
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import { Drawer, IconButton, Popover, Menu, MenuItem, Divider } from "@material-ui/core";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
 
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import Divider from 'material-ui/Divider';
-import ActionInfo from 'material-ui/svg-icons/action/info';
-
 class Drop extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {};
-  // }
 
   componentDidMount() {
     this.hideDrop();  

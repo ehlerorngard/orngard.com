@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, FlatButton, TextField, AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, AppBar, IconButton, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel } from "@material-ui/core";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
 
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ActionInfo from 'material-ui/svg-icons/action/info';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import DropSelect from './DropSelect.js';
+
+import { Send } from '@material-ui/icons';
 
 import requester from "../../utils/requester.js";
 
@@ -17,14 +15,31 @@ import requester from "../../utils/requester.js";
 class Rsvp extends Component {
 
   componentDidMount() {
-
+    updateStore({ 
+      numChildren: null,
+      numAdults: null,
+      numVeg: null,
+      numNoDairy: null,
+      numNoGluten: null,
+      numInviteesAlotted: null,
+      attending: null,
+      lodging: null,
+      arrivalDay: null,
+      departureDay: null,
+    })(this.props.dispatch)
   }
 
 
-  handleChange = (event, key, values) => {
+  handleChange = (event) => {
     console.log('handlChange, event = ', event);
-    console.log("value: ", values);
+    console.log("event.target.value: ", event.target.value);
     updateStore({ [event.target.name]: event.target.value })(this.props.dispatch);
+  }
+  handleChangeAttending = (event) => {
+    console.log('handleChangeAttending, event = ', event);
+    console.log("event.target.value: ", event.target.value);
+    let val = (event.target.value === "true") ? true : false;
+    updateStore({ [event.target.name]: val })(this.props.dispatch);
   }
 
   updateAttending = (event, value) => {
@@ -77,127 +92,200 @@ class Rsvp extends Component {
 
 
   render() {
+    const dialogStyle = (this.props.screenSize === "mobile")
+      ? { padding: "10px", }
+      : { padding: "44px !important", }
     const headerStyle = { cursor: 'pointer' };
     const iconStyle = { width: '48px'};
 
-    // const home = require('../../assets/icons/^home.svg');
-    // const envelope = require('../../assets/icons/^envelope.svg');
-    // const calendar = require('../../assets/icons/^calendar.svg');
-    // const bed = require('../../assets/icons/^bed.svg');
-    // const navArrow = require('../../assets/icons/^navArrow.svg');
-    // const suitcase = require('../../assets/icons/^suitcase.svg');
-    // const phone = require('../../assets/icons/^phone.svg');
-
-
-    const bajoHeader = { fontStyle: 'italic', fontSize: "24px", padding: "12px" }
+    const bajoHeader = { fontFamily: "Roboto", fontStyle: 'italic', fontSize: "24px", padding: "12px" }
     const questionStyle = 
       (this.props.screenSize === "mobile")
       ? { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" }
       : { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" };
     const questionRow = (this.props.screenSize === "mobile")
-      ? { padding: "6px" }
-      : { padding: "6px", display: "inline-flex", };
+      ? { padding: "20px", display: "block", minHeight: "100px", minWidth: "300px" }
+      : { padding: "6px", display: "inline-flex", minHeight: "100px", minWidth: "300px" };
     const radioButton = {
       marginBottom: 16,
     }
+    const radioLabelStyle = { display: "block", }
+
+    const rsvpHeaderText = () => {
+
+      let text = 'Note: feel free to test, but you did not login via the portal so no RSVP will be saved to the database.'
+      return text;
+    }
+
+    const getFirstName = () => {
+      console.log("Rsvp PROPS: ", this.props);
+      if (this.props.user !== undefined) return this.props.user.firstName;
+      else return null;
+    }
+    const getRsvpTitle = () => {
+      let string = "RSVP";
+      let name = getFirstName();
+      if (name !== null) string += ` for ${name}`;
+      return string; 
+    }
+    const numberOfChildrenTexts = () => {
+        let children = ["None"];
+        for (let i = 1; i < 5; i++) children.push(i);
+        return children;
+    }
+    const numberOfChildrenValues = () => {
+        let children = [0];
+        for (let i = 1; i < 5; i++) children.push(i);
+        return children;
+    }
+
+    const numVegTexts = () => {
+        let vegetarians = ["None"];
+        for (let i = 1; i < 5; i++) vegetarians.push(i);
+        return vegetarians;
+    }
+    const numVegValues = () => {
+        let vegetarians = [0];
+        for (let i = 1; i < 5; i++) vegetarians.push(i);
+        return vegetarians;
+    }
+    const numNoDairyTexts = () => {
+        let milkless = ["None"];
+        for (let i = 1; i < 5; i++) milkless.push(i);
+        return milkless;
+    }
+    const numNoDairyValues = () => {
+        let milkless = [0];
+        for (let i = 1; i < 5; i++) milkless.push(i);
+        return milkless;
+    }
+    const numNoGlutenTexts = () => {
+        let glutenfree = ["None"];
+        for (let i = 1; i < 5; i++) glutenfree.push(i);
+        return glutenfree;
+    }
+    const numNoGlutenValues = () => {
+        let glutenfree = [0];
+        for (let i = 1; i < 5; i++) glutenfree.push(i);
+        return glutenfree;
+    }
+    const arrivalDayValues = ["Thursday", "Friday", "Saturday"];
+    const departureDayValues = ["Saturday", "Sunday", "Monday"];
+
+    const { classes } = this.props;
 
     const actions = [
-      <FlatButton
-        label="cancel"
-        primary={false}
+      <Button 
+        variant="contained" 
+        color="default" 
+        key={false}
         onClick={this.closeRsvp}
-      />,
-      <FlatButton
+      >cancel</Button>,
+      <Button
+        variant="contained" 
+        color="secondary" 
         label="submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.submit}
-      />,
+        key={true}
+        onClick={this.submit}>
+        submit
+        <Send/>
+      </Button>,
     ];
+
+    const theRestOfTheQuestions = (this.props.attending === true)
+      ? (
+        <div>
+          <div style={questionRow}>
+            which people
+          </div>
+          <Divider />
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.numChildren} 
+              name='numChildren'
+              labelText='Number of children'
+              optionsTexts={numberOfChildrenTexts()} 
+              optionsValues={numberOfChildrenValues()} 
+              handleChange={this.handleChange} />
+          </div>
+          <Divider />
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.arrivalDay} 
+              name='arrivalDay'
+              labelText='What day do you plan to arrive?'
+              optionsTexts={arrivalDayValues} 
+              optionsValues={arrivalDayValues} 
+              handleChange={this.handleChange} />
+          </div>
+          <Divider />
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.departureDay} 
+              name='departureDay'
+              labelText='Day of departure'
+              optionsTexts={departureDayValues} 
+              optionsValues={departureDayValues} 
+              handleChange={this.handleChange} />
+          </div>
+          <Divider />
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.numVeg} 
+              name='numVeg'
+              labelText='Number of vegetarians'
+              optionsTexts={numVegTexts()} 
+              optionsValues={numVegValues()} 
+              handleChange={this.handleChange} />
+          </div>
+        </div>
+        )
+      : (<div style={questionRow}>
+          additionalNotes here
+        </div>)
 
     return (
       <div className="Rsvp"> 
         <Dialog
-          title={`RSVP for ${this.props.user.firstName || '(no name)'}`}
           actions={actions}
-          modal={false}
+          fullScreen={this.props.screenSize === "mobile"}
+          fullWidth={true}
+          maxWidth='lg'
+          scroll='paper'
           open={this.props.rsvpOpen}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}
         >
-          <div style={bajoHeader}>Note: feel free to test, but you did not login via the portal so no RSVP will be saved to the database.</div>
+          <DialogTitle>{getRsvpTitle()}</DialogTitle>
+          <DialogContent>
+            <div style={bajoHeader}>{rsvpHeaderText()}</div>
 
-          <div style={questionRow}>
-            <div style={questionStyle}>Do you plan to attend?</div>
-            <RadioButtonGroup name="attending" defaultSelected={null} onChange={this.updateAttending}>
-              <RadioButton
-                value={true}
-                label="yes"
-                checkedIcon={<ActionFavorite style={{color: '#F44336'}} />}
-                uncheckedIcon={<ActionFavoriteBorder />}
-                style={radioButton}
-              />
-              <RadioButton
-                value={false}
-                label="no"
-                style={radioButton}
-              />
-            </RadioButtonGroup>
-          </div> 
-          <Divider />
+            <div style={questionRow}>
+              <FormLabel component="legend">Will you be attending the wedding?</FormLabel>
+              <div syle={radioLabelStyle}>
+                <Radio
+                  checked={this.props.attending === true}
+                  onChange={this.handleChangeAttending}
+                  value={true}
+                  name="attending"
+                  aria-label="true"
+                />
+                <FormLabel>hill yiss</FormLabel>
+              </div>
+              <div syle={radioLabelStyle}>
+                <Radio
+                  checked={this.props.attending === false}
+                  onChange={this.handleChangeAttending}
+                  value={false}
+                  name="attending"
+                  aria-label="false"
+                />
+                <FormLabel>hill naoo</FormLabel>
+              </div>
+            </div> 
+            <Divider />
 
-          <div style={questionRow}>
-            <div style={questionStyle}>How many of you will be coming?</div>
-            <SelectField
-              floatingLabelText={(this.props.screenSize === "mobile") ? `# of guests` : null}
-              name="numAdults"
-              value={this.props.numAdults}
-              onChange={this.updateNumAdults}
-            >
-              <MenuItem value={null} name="numAdults" primaryText="" />
-              <MenuItem value={1} name="numAdults" primaryText="1" />
-              <MenuItem value={2} name="numAdults" primaryText="2" />
-              <MenuItem value={3} name="numAdults" primaryText="3" />
-              <MenuItem value={4} name="numAdults" primaryText="4" />
-              <MenuItem value={5} name="numAdults" primaryText="5" />
-              <MenuItem value={6} name="numAdults" primaryText="6" />
-              <MenuItem value={7} name="numAdults" primaryText="7" />
-            </SelectField>
-          </div>
-          <Divider />
-
-          <div style={questionRow}>
-            <div style={questionStyle}>What day do you plan to arrive?</div>
-            <SelectField
-              floatingLabelText={(this.props.screenSize === "mobile") ? `arrival day` : null}
-              value={this.props.arrivalDay}
-              onChange={this.updateArrivalDay}
-            >
-              <MenuItem value={null} primaryText="" />
-              <MenuItem value={"Thursday"} primaryText="Thursday" />
-              <MenuItem value={"Friday"} primaryText="Friday" />
-              <MenuItem value={"Saturday"} primaryText="Saturday" />
-            </SelectField>
-          </div>
-          <Divider />
-
-          <div style={questionRow}>
-            <div style={questionStyle}>Do you plan on camping?</div>
-            <RadioButtonGroup name="camping" defaultSelected={null} onChange={this.updateCamping}>
-              <RadioButton
-                value={true}
-                label="yes"
-                style={radioButton}
-              />
-              <RadioButton
-                value={false}
-                label="no"
-                style={radioButton}
-              />
-            </RadioButtonGroup>
-          </div>
-
-
+            {theRestOfTheQuestions}
+          </DialogContent>
+          <DialogActions>{actions}</DialogActions>
         </Dialog>
       </div>
     );
@@ -213,12 +301,25 @@ Rsvp.propTypes = {
   submit: PropTypes.func,
   closeThanks: PropTypes.func,
 
+  user: PropTypes.object,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
+  zipCode: PropTypes.string,
   attending: PropTypes.bool,
-  numAdults: PropTypes.number,
-  camping: PropTypes.bool,
+  lodging: PropTypes.string,
   arrivalDay: PropTypes.string,
+  departureDay: PropTypes.string,
+  numVeg: PropTypes.number,
+  numNoDairy: PropTypes.number,
+  numNoGluten: PropTypes.number,
+  numInviteesAlotted: PropTypes.number,
+  numAdults: PropTypes.number,
+  numChildren: PropTypes.number,
+  additionalNotes: PropTypes.string,
+  submitted: PropTypes.bool,
+  email: PropTypes.string,
+  mobileNumber: PropTypes.number,
+  rsvpSubmitted: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => {
@@ -228,18 +329,26 @@ const mapStateToProps = (state) => {
     screenSize: state.screenSize,
     thanksOpen: state.thanksOpen,
 
-    user: PropTypes.object,
-    userFirstName: PropTypes.string,
-    userLastName: PropTypes.string,
-    userId: PropTypes.number,
-    rsvpId: PropTypes.number,
+    user: state.user,
+    rsvp: state.rsvp,
     firstName: state.firstName,
     lastName: state.lastName,
     zipCode: state.zipCode,
     attending: state.attending,
-    numAdults: state.numAdults,
-    camping: state.camping,
+    lodging: state.lodging,
     arrivalDay: state.arrivalDay,
+    departureDay: state.departureDay,
+    numVeg: state.numVeg,
+    numNoDairy: state.numNoDairy,
+    numNoGluten: state.numNoGluten,
+    numInviteesAlotted: state.numInviteesAlotted,
+    numAdults: state.numAdults,
+    numChildren: state.numChildren,
+    additionalNotes: state.additionalNotes,
+    submitted: state.submitted,
+    email: state.email,
+    mobileNumber: state.mobileNumber,
+    rsvpSubmitted: state.rsvpSubmitted,
   }
 }
 

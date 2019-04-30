@@ -3,20 +3,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Drawer, AppBar, IconButton, List, ListItem } from "material-ui";
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { updateStore } from "../../utils/action.js";
+import Navigator from './Navigator.js';
+
 import "../../Wedding.css";
 
-// import ContentInbox from 'material-ui/svg-icons/content/inbox';
-// import ActionGrade from 'material-ui/svg-icons/action/grade';
-// import ContentSend from 'material-ui/svg-icons/content/send';
-// import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-// import Divider from 'material-ui/Divider';
-// import ActionInfo from 'material-ui/svg-icons/action/info';
-
 class Menubar extends Component {
-
   componentDidMount() {
     this.hideSidebar();   
   }
@@ -123,15 +115,6 @@ class Menubar extends Component {
 
 
   render() {
-    const { sidebarVisible } = this.props;
-    const headerStyle = { cursor: 'pointer' };
-    const iconStyle = { width: '48px'};
-
-    const menubarStyle = { 
-      fontFamily: "Lato !important",
-      fontSize: "48px !important", 
-    }
-
     const home = require('../../assets/icons/^home.svg');
     const envelope = require('../../assets/icons/^envelope.svg');
     const calendar = require('../../assets/icons/^calendar.svg');
@@ -141,48 +124,20 @@ class Menubar extends Component {
     const phone = require('../../assets/icons/^phone.svg');
     const car = require('../../assets/icons/^car.svg');
 
+    const menuIconArray = [home, navArrow, envelope, calendar, bed, suitcase, car, phone];
+    const menuTextArray = ['home', 'where & when', 'RSVP', 'schedule', 'where to stay', 'what to bring', 'how to get there', 'contact us'];
+    const menuActionsArray = [this.goToHome, this.goToWhenAndWhere, this.goToRSVP, this.goToSchedule, this.goToLodging, this.goToWhatToBring, this.goToArriving, this.goToContactUs];
+
     return (
       <div className="menubarWrapper"> 
-        <Drawer 
-            width={300} 
-            className="menubar"
-            openSecondary={true}
-            containerStyle={menubarStyle}
-            open={sidebarVisible}>
-          <AppBar 
-            className="menuHeader"
-            onClick={this.hideSidebar}
-            title={<span style={headerStyle}>menu</span>} 
-            iconElementRight={
-              <IconButton onClick={this.hideSidebar}><NavigationClose /></IconButton>}/>
-          <List>
-            <ListItem
-              onClick={this.goToHome}
-              innerDivStyle={menubarStyle}
-              leftIcon={<img className="material-icons mIcons" src={home} style={iconStyle}/>}><div style={menubarStyle}>home</div></ListItem>
-            <ListItem primaryText="where & when" 
-              onClick={this.goToWhenAndWhere}
-              leftIcon={<img className="material-icons mIcons" src={navArrow} style={iconStyle}/>} />
-            <ListItem primaryText="RSVP" 
-              onClick={this.goToRSVP}
-              leftIcon={<img className="material-icons mIcons" src={envelope} style={iconStyle}/>} />
-            <ListItem primaryText="schedule" 
-              onClick={this.goToSchedule}
-              leftIcon={<img className="material-icons mIcons" src={calendar} style={iconStyle}/>} />
-            <ListItem primaryText="where to stay" 
-              onClick={this.goToLodging}
-              leftIcon={<img className="material-icons mIcons" src={bed} style={iconStyle}/>} />
-            <ListItem primaryText="what to bring" 
-              onClick={this.goToWhatToBring}
-              leftIcon={<img className="material-icons mIcons" src={suitcase} style={iconStyle}/>} />
-            <ListItem primaryText="how to get there" 
-              onClick={this.goToArriving}
-              leftIcon={<img className="material-icons mIcons" src={car} style={iconStyle}/>} />
-            <ListItem primaryText="contact us" 
-              onClick={this.goToContactUs}
-              leftIcon={<img className="material-icons mIcons" src={phone} style={iconStyle}/>} />
-          </List>
-        </Drawer>
+
+        <Navigator 
+          icons={menuIconArray} 
+          texts={menuTextArray} 
+          actions={menuActionsArray}
+          sidebarVisible={this.props.sidebarVisible}
+          hideSidebar={this.hideSidebar}
+          screenSize={this.props.screenSize} />
       </div>
     );
   }

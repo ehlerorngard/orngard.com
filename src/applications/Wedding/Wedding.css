@@ -39,8 +39,8 @@
 	font-family: 'Dawning of a New Day', cursive;
 	font-family: 'Meddon', cursive;
 	font-family: 'Oleo Script Swash Caps', cursive;
-	font-family: 'Megrim', cursive;
 	font-family: 'Miss Fajardose', cursive;
+	font-family: 'Sacramento', cursive;
 	color: white;
 	transition: .5s;
 	display: inline-flex;
@@ -128,6 +128,16 @@
 	background-color: gray !important;
 }
 
+ul.MuiList-root-63 {
+	margin-block-start: 4em !important;
+}
+
+
+.listItemText {
+	font-size: 1.5rem !important;
+	font-family: "Roboto" !important;
+}
+
 /*============================
 ======= MAIN ================
 ============================*/
@@ -138,9 +148,8 @@
 
 }
 .mainTextLarge {
-	font-family: 'Dawning of a New Day', cursive;
 	font-family: 'Miss Fajardose', cursive;
-
+	font-family: 'Sacramento', Georgia;
 	color: white;
 	margin: 0;
 	padding-top: 240px;
