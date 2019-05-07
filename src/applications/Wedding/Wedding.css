@@ -90,10 +90,18 @@
 	font-family: 'Oswald', Georgia, sans-serif;
 	display: inline-table;
 }
-
+.navIconMarginBottom {
+	margin-bottom: 7px;
+}
 .mIcons {
 	display: inline-table;
 	vertical-align: middle;
+}
+.whiteIcon {
+	color: rgba(255, 255, 255, 1);
+}
+.material-icons.md-light { 
+	color: rgba(255, 255, 255, 1); 
 }
 
 .sidebarTrigger {
@@ -155,9 +163,6 @@ ul.MuiList-root-63 {
 	padding-top: 240px;
 	display: inline-flex;
 	transition: .5s;
-}
-.gettingMarriedText {
-
 }
 
 .imageBox {
@@ -247,17 +252,24 @@ ul.MuiList-root-63 {
 	background-color: white;
 	display: block;
 	padding: 0 0 0 0;
+/* 	box-shadow: 0 0px 16px 4px gray;
+ */
 }
 
 .header {
-	font-family: 'Oswald', cursive;
-	font-weight: 700;
+	font-family: 'Pacifico', sans;
+/* 	font-weight: 500; */
 	color: rgba(102, 0, 87, 1);
-	margin: 120px 0 0 0;
+	margin: 60px 0 0 0;
 	padding: 12px;
 }
 .gettingMarriedText {
-	color: rgba(158, 0, 92, 1) !important;
+/* 	color: rgba(158, 0, 92, 1); */
+	color: rgba(128, 0, 108, 1);
+	font-family: 'Montez', sans-serif;
+	margin: 120px auto 48px auto;
+	text-align: center;
+	padding: 12px 0;
 }
 .header2 {
 	font-family: 'Megrim', cursive;
@@ -268,15 +280,179 @@ ul.MuiList-root-63 {
 }
 .bajoHeader {
 	color: rgba(31, 31, 31, 1);
+	width: 100%;
 	margin: 24px 0 0 0;
-	padding: 12px;
+	padding: 12px 0;
 }
 .bajoHeaderFont {
 	font-family: 'Sacramento', cursive;
 }
+.smallCategoryHeaderFont {
+	font-family: 'Poiret One', sans;
+	font-weight: 900;
+}
 .smallText {
-	font-family: "Oswald", sans-serif;
-	color: rgba(31, 31, 31, 1);
+	font-family: "Montserrat", sans-serif;
+	color: rgba(36, 36, 36, 1);
+	width: 100%;
+}
+.smallText1 {
+	font-family: "Montserrat", sans-serif;
+	color: rgba(36, 36, 36, 1);
 	margin: 6px 0 0 0;
 	padding: 0px;
+}
+.smallText2 {
+	font-family: "Montserrat", sans-serif;
+	color: rgba(36, 36, 36, 1);
+	width: 100%;
+	min-height: 1.25em;
+	margin-bottom: 8px;
+}
+.alignCenter {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+.alignTextCenter {
+	text-align: center;
+	margin: auto;
+}
+.fatMarginBottom {
+	margin-bottom: 60px;
+}
+.thinMarginBottom {
+	margin-bottom: 30px;
+}
+.skinnyMarginBottom {
+	margin-bottom: .75em !important;
+}
+.smallMarginRight {
+	margin-right: 12px;
+}
+.fatHorizSpacer {
+	width:  100%;
+	height: 1px;
+	margin-bottom: 60px;
+}
+.thinHorizSpacer {
+	width:  100%;
+	height: 1px;
+	margin-bottom: 24px;
+}
+.missF {
+	font-family: "Miss Fajardose", sans !important;
+}
+.sacramento {
+	font-family: "Sacramento", sans !important;
+}
+.roboto {
+	font-family: "Roboto", sans;
+}
+.bold {
+	font-weight: 700;
+}
+.italic {
+	font-weight: 300;
+	font-style: italic;
+}
+.normalWeight {
+	font-weight: 400;
+}
+.block {
+	display: block;
+}
+.flex {
+	display: flex;
+}
+.inlineTable {
+	display: inline-table;
+}
+.centerHoriz {
+	margin: 0 auto !important;
+}
+.noDec {
+	text-decoration: none;
+}
+.purplish {
+	color: rgba(102, 0, 87, 1);
+}
+.justABorder {
+	border: solid gray 1px;
+	border-radius: 4px;
+	margin: 6px 6px 6px 0;
+	padding: 8px 12px;
+	width: auto !important;
+}
+.mediumGray {
+	color: rgba(56, 56, 56, 1);
+}
+.joinUs {
+	max-width: 850px;
+}
+.emailAddress {
+	color: rgba(102, 0, 87, 1);
+	display: inline;
+	margin: 0 6px;
+}
+.emailAddress:hover {
+	cursor: pointer;
+}
+.linkAway {
+	display: inline;
+	color: rgba(102, 0, 87, 1);
+	transition: .125s;
+}
+.linkAway:hover {
+	cursor: pointer;
+	color: rgba(146, 101, 159, 1);
+}
+.mapsButton {
+	background: blue;
+	color: white;
+	width: auto;
+	font-family: "Montserrat", sans;
+	border-radius: 4px;
+	padding: 8px 12px 8px 16px;
+	margin: 20px 0;
+	transition: .125s;
+	box-shadow: 4px 6px 20px 0px darkgray;
+}
+.mapsButton:hover {
+	cursor: pointer;
+	background: green;
+	box-shadow: 2px 3px 20px -6px darkgray;
+}
+.linkAwayHeader {
+	display: inline;
+	color: rgba(36, 36, 36, 1);
+}
+.linkAwayHeader:hover {
+	cursor: pointer;
+	color: rgba(84, 84, 84, 1);
+}
+.loginButton {
+	font-weight: 700;
+	box-shadow: 4px 6px 20px 0px darkgray;
+	transition: .125s;
+}
+.loginButton:hover {
+	cursor: pointer;
+	box-shadow: 5px 7px 20px -6px;
+	background: #438481 !important;
+}
+.loginButton:active {
+	cursor: pointer;
+	box-shadow: 0px 0px 4px -4px;
+	background: #437284 !important;
+}
+.footer {
+	margin: 0px auto;
+	padding: 32px 0;
+	width: 100vw;
+	text-align: center;
+	color: white;
+	font-family: "Montserrat", sans;
+	background: rgba(54, 54, 54, 1);
+	box-shadow: 0 0px 16px 3px gray;
 }
