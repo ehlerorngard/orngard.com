@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, Button } from "@material-ui/core";
+import { Dialog, DialogContent, DialogActions, Button } from "@material-ui/core";
 // import { AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
@@ -31,7 +31,7 @@ class Thanks extends Component {
     }
 
     const renderMessage = () => {
-      const style = {margin: "15px"};
+      const style = { margin: "15px", fontFamily: "Roboto", fontSize: "18px", color: "#2e2e2e", };
       if (this.props.attending === true) {
         return (
           <div>
@@ -43,7 +43,7 @@ class Thanks extends Component {
         <div> 
           <div style={style}>Shoot, we're so sad you can't make it :( </div>
           <div style={style}>But no worries of course, we'll catch up you soon enough.</div>
-          <div style={style}>Be well in the meantime, and thanks so much for doing the RSVP.`</div>
+          <div style={style}>Be well in the meantime, and thanks so much for doing the RSVP.</div>
         </div> );
     }
 
@@ -64,7 +64,17 @@ class Thanks extends Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >
-          <div style={headerStyle}>{renderMessage()}</div>
+          <DialogContent>
+            <div style={headerStyle}>{renderMessage()}</div>
+          </DialogContent>
+          <DialogActions>      
+            <Button 
+              variant="contained" 
+              color="default" 
+              key={false}
+              onClick={this.closeThanks}
+            >cancel</Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

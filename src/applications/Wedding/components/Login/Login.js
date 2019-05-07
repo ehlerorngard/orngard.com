@@ -177,6 +177,7 @@ class Login extends Component {
               <TextField
                 label="first name"
                 className='loginTextFields'
+                autoFocus={true}
                 style={textFieldsStyle}
                 value={this.props.firstName}
                 onChange={this.handleChange('firstName')}

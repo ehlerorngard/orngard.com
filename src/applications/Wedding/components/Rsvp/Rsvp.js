@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, AppBar, IconButton, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel } from "@material-ui/core";
-import { updateStore } from "../../utils/action.js";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, IconButton, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel } from "@material-ui/core";
+import { updateStore, updateRsvp } from "../../utils/action.js";
 import "../../Wedding.css";
 
 import DropSelect from './DropSelect.js';
+import TextInput from './TextInput.js';
 
 import { Send } from '@material-ui/icons';
 
@@ -26,12 +27,13 @@ class Rsvp extends Component {
       lodging: null,
       arrivalDay: null,
       departureDay: null,
+      encounteredRsvpError: false,
+      rsvpErrorText: null,
     })(this.props.dispatch)
   }
 
 
   handleChange = (event) => {
-    console.log('handlChange, event = ', event);
     console.log("event.target.value: ", event.target.value);
     updateStore({ [event.target.name]: event.target.value })(this.props.dispatch);
   }
@@ -59,35 +61,67 @@ class Rsvp extends Component {
     updateStore({ thanksOpen: false })(this.props.dispatch);
   }
 
-  submit = () => {
-    console.log("submitting....");
-
-    // requester.createRsvp({
-    //   attending: this.props.attending,
-    //   numAdults: this.props.numAdults,
-    // })
-
-    requester.getInvitees();
-
-    // requester.createInvitee({firstName: 'ehler'});
-
-    requester.updateInvitee(2, {
-      lastName: "orngard",
-    })
-
-    requester.getInvitee(3);
-
-
-
-    updateStore({ rsvpOpen: false })(this.props.dispatch);
-    if (this.props.attending !== undefined) {
-      updateStore({ thanksOpen: true })(this.props.dispatch);
-      setTimeout(this.closeThanks, 7000);
+  validate = () => {
+    console.log("attempting to validate");
+    const { attending, firstName, lastName, lodging, arrivalDay, departureDay } = this.props;
+    // CHANGE THIS TO TRUE WHEN ACTUALLY LOADING RSVPs
+    if (this.props.rsvpLoaded === false) {
+      if (attending === false) {
+        return true;
+      }
+      else if (attending !== true) {
+        // "Must mark yes or no to attending"
+        console.log("attending error");
+        return false;
+      }
+      else if (lodging === null || lodging === undefined || lodging === '') {
+        // "Field required"
+        console.log("lodging error");
+        return false;
+      }
+      else return true;
     }
   }
 
+  submit = () => {
+    console.log("submitting....");
+
+    // If it validates, update RSVP in the database:
+    if (this.validate() === true) {
+      updateRsvp({ 
+        attending: this.props.attending,
+        lodging: this.props.lodging,
+        numChildren: this.props.numChildren,
+        numAdults: this.props.numAdults,
+        numVeg: this.props.numVeg,
+        numNoDairy: this.props.numNoDairy,
+        numNoGluten: this.props.numNoGluten,
+        arrivalDay: this.props.arrivalDay,
+        departureDay: this.props.departureDay,
+        additionalNotes: this.props.additionalNotes,
+        submitted: true,
+      })(this.props.dispatch);
+
+      // Open the "Thanks for doing the RSVP" dialog:
+      updateStore({ rsvpOpen: false, thanksOpen: true })(this.props.dispatch);
+      setTimeout(this.closeThanks, 7000);
+    }
+    else {
+      // "Your RSVP is missing something"
+      updateStore({ 
+        encounteredRsvpError: true,
+        rsvpErrorText: "Uhhh... you missed something...",
+      })(this.props.dispatch);
+    }
+
+  }
+
   closeRsvp = () => {
-    updateStore({ rsvpOpen: false })(this.props.dispatch);
+    updateStore({ 
+      rsvpOpen: false,
+      encounteredRsvpError: false,
+      rsvpErrorText: null,
+    })(this.props.dispatch);
   }
 
 
@@ -116,6 +150,22 @@ class Rsvp extends Component {
       let text = 'Note: feel free to test, but you did not login via the portal so no RSVP will be saved to the database.'
       return text;
     }
+
+    const shouldDisplay = (this.props.encounteredRsvpError) 
+      ? "block" : "none"
+
+    const errorTextStyle = (this.props.screenSize === "mobile")
+      ? { padding: "20px", display: "block", fontSize: "16px", }
+      : { padding: "6px",  
+          fontSize: "20px", 
+          fontFamily: "Roboto", 
+          background: "orange", 
+          color: "white", 
+          border: "1px solid gray", 
+          borderRadius: "4px", 
+          display: shouldDisplay,
+        };
+
 
     const getFirstName = () => {
       console.log("Rsvp PROPS: ", this.props);
@@ -171,8 +221,14 @@ class Rsvp extends Component {
     }
     const arrivalDayValues = ["Thursday", "Friday", "Saturday"];
     const departureDayValues = ["Saturday", "Sunday", "Monday"];
+    const lodgingTexts = ["camping", "hotel", "commute / other"];
+    const lodgingValues = ["camping", "hotel", "other"];
 
     const { classes } = this.props;
+
+    const errorText = (this.props.encounteredRsvpError === true) 
+      ? (<div>{this.props.rsvpErrorText}</div>)
+      : (<div/>);
 
     const actions = [
       <Button 
@@ -195,10 +251,8 @@ class Rsvp extends Component {
     const theRestOfTheQuestions = (this.props.attending === true)
       ? (
         <div>
-          <div style={questionRow}>
-            which people
-          </div>
-          <Divider />
+
+
           <div style={questionRow}>
             <DropSelect 
               value={this.props.numChildren} 
@@ -208,7 +262,7 @@ class Rsvp extends Component {
               optionsValues={numberOfChildrenValues()} 
               handleChange={this.handleChange} />
           </div>
-          <Divider />
+
           <div style={questionRow}>
             <DropSelect 
               value={this.props.arrivalDay} 
@@ -218,7 +272,7 @@ class Rsvp extends Component {
               optionsValues={arrivalDayValues} 
               handleChange={this.handleChange} />
           </div>
-          <Divider />
+
           <div style={questionRow}>
             <DropSelect 
               value={this.props.departureDay} 
@@ -228,7 +282,7 @@ class Rsvp extends Component {
               optionsValues={departureDayValues} 
               handleChange={this.handleChange} />
           </div>
-          <Divider />
+
           <div style={questionRow}>
             <DropSelect 
               value={this.props.numVeg} 
@@ -238,10 +292,39 @@ class Rsvp extends Component {
               optionsValues={numVegValues()} 
               handleChange={this.handleChange} />
           </div>
+
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.numNoDairy} 
+              name='numNoDairy'
+              labelText='Number of lactose-free'
+              optionsTexts={numNoDairyTexts()} 
+              optionsValues={numNoDairyValues()} 
+              handleChange={this.handleChange} />
+          </div>
+
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.numNoGluten} 
+              name='numNoGluten'
+              labelText='Number of gluten-free'
+              optionsTexts={numNoGlutenTexts()} 
+              optionsValues={numNoGlutenValues()} 
+              handleChange={this.handleChange} />
+          </div>
+
+          <div style={questionRow}>
+            <DropSelect 
+              value={this.props.lodging} 
+              name='lodging'
+              labelText='Where do you plan on lodging?'
+              optionsTexts={lodgingTexts} 
+              optionsValues={lodgingValues} 
+              handleChange={this.handleChange} />
+          </div>
         </div>
         )
       : (<div style={questionRow}>
-          additionalNotes here
         </div>)
 
     return (
@@ -259,7 +342,7 @@ class Rsvp extends Component {
             <div style={bajoHeader}>{rsvpHeaderText()}</div>
 
             <div style={questionRow}>
-              <FormLabel component="legend">Will you be attending the wedding?</FormLabel>
+              <FormLabel component="legend" style={radioLabelStyle}>Will you be attending the wedding?</FormLabel>
               <div syle={radioLabelStyle}>
                 <Radio
                   checked={this.props.attending === true}
@@ -284,6 +367,15 @@ class Rsvp extends Component {
             <Divider />
 
             {theRestOfTheQuestions}
+            <div style={questionRow}>
+              <TextInput 
+                handleChange={this.handleChange} 
+                notes={this.props.additionalNotes}
+                labelText='any additional notes or comments' />
+            </div>
+            <div style={errorTextStyle}>
+              {errorText}
+            </div>
           </DialogContent>
           <DialogActions>{actions}</DialogActions>
         </Dialog>
@@ -349,6 +441,9 @@ const mapStateToProps = (state) => {
     email: state.email,
     mobileNumber: state.mobileNumber,
     rsvpSubmitted: state.rsvpSubmitted,
+    encounteredRsvpError: state.encounteredRsvpError,
+    rsvpErrorText: state.rsvpErrorText,
+    rsvpLoaded: state.rsvpLoaded,
   }
 }
 

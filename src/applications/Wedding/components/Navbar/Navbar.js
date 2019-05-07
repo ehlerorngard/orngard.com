@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import { Popover, Popper, Paper, Grow, ClickAwayListener, MenuList, MenuItem } from "@material-ui/core";
 import "../../Wedding.css";
 import { updateStore } from "./navbarActions.js";
@@ -10,6 +9,8 @@ import Drop from "../Drop/Drop.js";
 export class Navbar extends Component {
 	constructor(props) {
 		super(props);
+    // The anchorEl required for Material-UI's dropdown ("Popper") only works
+    // with component state, not with universal (Redux) store
 		this.state = {};
 	}
 
@@ -23,7 +24,11 @@ export class Navbar extends Component {
 		: { backgroundColor: "rgba(184, 184, 184, 0.7)" }
 	}
 
-	showSidebar = (e) => {
+	showSidebar = () => {
+    // Update the locations of the div elements used for navigation,
+    // now that we know they are fully loaded:
+    this.props.updateDivTops();
+
 		updateStore({ sidebarVisible: true })(this.props.dispatch);
 	}
 
@@ -77,18 +82,20 @@ export class Navbar extends Component {
 	  	else return { fontSize: "70px", margin: "0 8px", padding: "0px 10px 6px 10px" }
   	}
 
-
+    const ehlerandemily = (this.props.screenSize === 'mobile' && !this.props.scrolledToTop)
+      ? `e + e`
+      : `ehler & emily`;
   	const triggerStyle = (this.props.scrolledToTop) 
-  		? { fontSize: "32px", transition: ".4s", padding: "4px 7px", display: "inline-table" }
-  		: { fontSize: "28px", transition: ".4s", padding: "4px 5px", display: "inline-table" };
+  		? { fontSize: "32px", transition: ".4s", minWidth: "36px", minHeight: "36px", padding: "4px 7px", display: "inline-table" }
+  		: { fontSize: "28px", transition: ".4s", minWidth: "36px", minHeight: "36px", padding: "4px 5px", display: "inline-table" };
 
     const buttonBoxStyle = (this.props.scrolledToTop) 
       ? { minWidth: "128px", display: "inline-flex", float: "right" }
       : { minWidth: "108px", display: "inline-flex", float: "right" };
 
   	const userStyle = (this.props.scrolledToTop) 
-  		? { backgroundColor: "rgba(184, 184, 184, 0.7)", fontSize: "36px", display: "inline-table", transition: ".4s" }
-  		: { backgroundColor: "rgba(184, 184, 184, 0.9)", fontSize: "30px", display: "inline-table", transition: ".4s" };
+  		? { backgroundColor: "rgba(184, 184, 184, 0.7)", fontSize: "36px", display: "inline-table", transition: ".4s", minWidth: "36px", minHeight: "36px", }
+  		: { backgroundColor: "rgba(184, 184, 184, 0.9)", fontSize: "30px", display: "inline-table", transition: ".4s", minWidth: "36px", minHeight: "36px", };
 
   	const buttonStyle = (this.props.scrolledToTop) 
   		? { fontSize: "36px" }
@@ -117,23 +124,30 @@ export class Navbar extends Component {
 
     return (
         
-        <Grid.Row className="navbar" style={navStyle}>
+        <div className="navbar" style={navStyle}>
 
           <div style={buttonBoxStyle}>
           	<div className="navUser" style={userStyle} onClick={this.showDrop}>
-          		<div className="navButtonText">
-          			{(this.props.screenSize !== "mobile") ? ((this.props.user) ? this.props.user.firstName : `stranger`) : null}
-          		</div>
-          		<img className="material-icons mIcons" src={avatar} style={iconStyle}/>
+          		{(this.props.screenSize !== "mobile") 
+                ? (<div>
+                    <div className="navButtonText">
+                			{(this.props.user && this.props.user.firstName !== null) ? this.props.user.firstName : `stranger`}
+                		</div>
+                		<img className="material-icons mIcons navIconMarginBottom" src={avatar} style={iconStyle}/>
+                  </div>)
+                : (<img className="material-icons mIcons alignCenter" src={avatar} style={iconStyle}/>)
+              }
           	</div>
 
             <div className="sidebarTrigger" onClick={this.showSidebar} style={triggerStyle}>
-              <div className="navButtonText" 
-                style={buttonStyle}
-              >
-                {(this.props.screenSize !== "mobile") ? (`menu`) : null}
-              </div>
-              <img className="material-icons mIcons" src={menuIcon} style={iconStyle}/>
+              {(this.props.screenSize !== "mobile") 
+              ? (<div>
+                  <div className="navButtonText" style={buttonStyle}>
+                    menu
+                  </div>
+                  <img className="material-icons mIcons navIconMarginBottom" src={menuIcon} style={iconStyle}/>
+                </div>)
+              : (<img className="material-icons mIcons alignCenter" src={menuIcon} style={iconStyle}/>)}
             </div>
           </div>
 
@@ -141,9 +155,7 @@ export class Navbar extends Component {
             open={this.props.dropOpen} 
             anchorEl={this.state.anchorEl} 
             transition 
-            disablePortal
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}>
+            disablePortal>
             {({ TransitionProps, placement }) => (
               <Grow
                 {...TransitionProps}
@@ -159,9 +171,9 @@ export class Navbar extends Component {
             )}
           </Popper>
 
-          <div className="leftTextBox" style={textBoxStyle()}>ehler & emily</div>
+          <div className="leftTextBox" style={textBoxStyle()}>{ehlerandemily}</div>
 
-        </Grid.Row>
+        </div>
     );
   }
 }
@@ -185,6 +197,8 @@ const mapStateToProps = (state) => {
 		screenSize: state.screenSize,
 		anchorEl: state.anchorEl,
 		dropOpen: state.dropOpen,
+    divTops: state.divTops,
+    updateDivTops: state.updateDivTops,
 	}
 }
 

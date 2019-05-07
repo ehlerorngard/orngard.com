@@ -16,13 +16,9 @@ class Menubar extends Component {
   showSidebar = () => {
     updateStore({ sidebarVisible: true })(this.props.dispatch);
   }
-
   hideSidebar = () => {
     updateStore({ sidebarVisible: false })(this.props.dispatch);
   }
-
-  // width 375 (iPhone X) – maxYscroll: 11562
-  // 
 
   goToHome = () => {
     this.hideSidebar();
@@ -30,17 +26,7 @@ class Menubar extends Component {
   }
   goToWhenAndWhere = () => {
     this.hideSidebar();
-    let height;
-    const bottom = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-      document.documentElement.clientHeight, document.documentElement.scrollHeight, 
-      document.documentElement.offsetHeight );
-
-    if (window.innerWidth < 500) height = bottom * .054
-    else if (this.props.screenSize === "mobile") height = bottom * .059
-    else if (this.props.screenSize === "tablet") height = bottom * .057
-    else height = bottom * .0543;
-
-    window.scrollTo(0, height);
+    window.scrollTo(0, this.props.divTops.whereAndWhen - 108);
   }
   goToRSVP = () => {
     this.hideSidebar();
@@ -48,61 +34,23 @@ class Menubar extends Component {
   }
   goToSchedule = () => {
     this.hideSidebar();
-    let height;
-    const bottom = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-      document.documentElement.clientHeight, document.documentElement.scrollHeight, 
-      document.documentElement.offsetHeight );
-
-    if (window.innerWidth < 500) height = bottom * .182
-    else if (this.props.screenSize === "mobile") height = bottom * .18
-    else if (this.props.screenSize === "tablet") height = bottom * .192
-    else height = height * .18;
-
-    window.scroll(0, height); // 1965, 18% of bottom
+    window.scroll(0, this.props.divTops.schedule - 7);
   }
   goToLodging = () => {
     this.hideSidebar();
-    let height;
-
-    const bottom = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-      document.documentElement.clientHeight, document.documentElement.scrollHeight, 
-      document.documentElement.offsetHeight );
-
-    if (window.innerWidth < 500) height = bottom * .406
-    else if (this.props.screenSize === "mobile") height = bottom * .41
-    else if (this.props.screenSize === "tablet") height = bottom * .4153
-    else if (window.innnerWidth < 1200) height = bottom * .41
-    else height = bottom * .406;
-
-    window.scroll(0, height);  // 41.5% of bottom
-
+    window.scroll(0, this.props.divTops.whereToStay - 7);  // 41.5% of bottom
   }
   goToWhatToBring = () => {
     this.hideSidebar();
-    let height;
-
-    const bottom = Math.max(document.body.scrollHeight, document.body.offsetHeight, 
-      document.documentElement.clientHeight, document.documentElement.scrollHeight, 
-      document.documentElement.offsetHeight );
-    if (window.innerWidth < 500) height = bottom * .616
-    else if (this.props.screenSize === "mobile") height = bottom * .615
-    else if (this.props.screenSize === "tablet") height = bottom * .61
-    else height = bottom * .61;
-
-    window.scroll(0, height); // 61% of bottom
+    window.scroll(0, this.props.divTops.whatToBring - 10); // 61% of bottom
+  }
+  goToQuestions = () => {
+    this.hideSidebar();
+    window.scroll(0, this.props.divTops.faqs - 32);
   }
   goToArriving = () => {
     this.hideSidebar();
-    let height;
-    const bottom = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-      document.documentElement.clientHeight, document.documentElement.scrollHeight, 
-      document.documentElement.offsetHeight );
-    console.log('bottom: ', bottom); 
-    if (window.innerWidth < 500) height = bottom * .847
-    else if (this.props.screenSize === "mobile") height = bottom * .83
-    else if (this.props.screenSize === "tablet") height = bottom * .8147 // of 9672
-    else height = bottom * .822
-    window.scroll(0, height);  //8640, 82.2% of bottom
+    window.scroll(0, this.props.divTops.howToGetThere - 10);  //8640, 82.2% of bottom
   }
   goToContactUs = () => {
     this.hideSidebar();
@@ -111,7 +59,6 @@ class Menubar extends Component {
       document.documentElement.offsetHeight );
     window.scroll(0, bottom);
   }
-
 
 
   render() {
@@ -123,10 +70,11 @@ class Menubar extends Component {
     const suitcase = require('../../assets/icons/^suitcase.svg');
     const phone = require('../../assets/icons/^phone.svg');
     const car = require('../../assets/icons/^car.svg');
+    const question = require('../../assets/icons/^question.svg');
 
-    const menuIconArray = [home, navArrow, envelope, calendar, bed, suitcase, car, phone];
-    const menuTextArray = ['home', 'where & when', 'RSVP', 'schedule', 'where to stay', 'what to bring', 'how to get there', 'contact us'];
-    const menuActionsArray = [this.goToHome, this.goToWhenAndWhere, this.goToRSVP, this.goToSchedule, this.goToLodging, this.goToWhatToBring, this.goToArriving, this.goToContactUs];
+    const menuIconArray = [home, navArrow, envelope, calendar, bed, suitcase, question, car, phone];
+    const menuTextArray = ['home', 'where & when', 'RSVP', 'schedule', 'where to stay', 'what to bring', 'FAQs', 'how to get there', 'contact us'];
+    const menuActionsArray = [this.goToHome, this.goToWhenAndWhere, this.goToRSVP, this.goToSchedule, this.goToLodging, this.goToWhatToBring, this.goToQuestions, this.goToArriving, this.goToContactUs];
 
     return (
       <div className="menubarWrapper"> 
@@ -155,6 +103,7 @@ const mapStateToProps = (state) => {
     sidebarVisible: state.sidebarVisible,
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
+    divTops: state.divTops,
   }
 }
 

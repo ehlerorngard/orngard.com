@@ -20,7 +20,7 @@ const styles = theme => ({
   },
   dropSelect: {
     margin: theme.spacing.unit,
-    minWidth: 120,
+    minWidth: 140,
   },
   select: {
     minHeight: '1.25em',
@@ -70,10 +70,10 @@ class DropSelect extends Component {
             value={this.state.value}
             name={this.props.name}
             onChange={this.handleChange}
-            input={<Input name={this.props.name} id={this.props.name} classes={{ input: classes.input }}/>}
+            input={<Input required={true} name={this.props.name} id={this.props.name} classes={{ input: classes.input }}/>}
           >
             {this.props.optionsValues.map((val, i) => (
-              <MenuItem value={val} key={val} classes={{ root: classes.menuItem }}>{(this.props.optionsValues[i] === 0) ? "None" : this.props.optionsTexts[i]}</MenuItem>
+              <MenuItem value={val} key={val} classes={{ root: classes.menuItem }}>{this.props.optionsTexts[i]}</MenuItem>
             ))}
           </Select>
         </FormControl>

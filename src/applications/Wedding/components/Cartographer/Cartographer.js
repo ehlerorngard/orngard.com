@@ -22,16 +22,18 @@ class Cartographer extends Component {
 
   componentDidMount() {
     this.getScreenSize();
-    setTimeout(function() {window.scroll(0, 0)}, 2000);
+    setTimeout(function() {window.scroll(0, 0)}, 1000);
     this.handleScroll();
     updateStore({ 
       rsvpOpen: false, 
       sidebarVisible: false, 
       dropOpen: false,
       loginOpen: false,
+      thanksOpen: false,
       contactOpen: false,
       loggedIn: false,
       rsvpId: null,
+      rsvpLoaded: false,
       rsvp: { id: null },
       user: { firstName: null },
       allInvitees: [],
