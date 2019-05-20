@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Typography } from "@material-ui/core";
 // import { AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "@material-ui/core";
 import { updateStore, getInvitees, getRsvp } from "../../utils/action.js";
 import "../../Wedding.css";
@@ -14,10 +14,7 @@ class Login extends Component {
     updateStore({ encounteredLoginError: false, loginErrorText: '' })(this.props.dispatch);
   }
 
-
   handleChange = (name) => (event) => {
-    console.log('handlChange, event = ', event);
-    console.log("value: ", event.target.value);
     updateStore({ [name]: event.target.value })(this.props.dispatch);
   }
 
@@ -37,22 +34,36 @@ class Login extends Component {
   // otherwise returns false:
   match = () => {
     if (!this.props.firstName || this.props.firstName.trim() === '') return false;
-    const { firstName, lastName, zipCode } = this.props;
+    const { firstName, lastName, zipCode } = this.props.user;
     this.props.allInvitees.forEach(inv => {
-      if (firstName === inv.firstName && 
-          lastName === inv.lastName && 
-          zipCode === inv.zipCode) {
-        updateStore({ user: inv })(this.props.dispatch);
-        return inv.rsvp;
+      if (firstName.trim() === inv.firstName && 
+          lastName.trim() === inv.lastName && 
+          zipCode.trim() === inv.zipCode) {
+        return inv;
       }
     });
     return false;
   }
-
+  logout = () => {
+    updateStore({ 
+      user: { firstName: null },
+      rsvp: { id: null },
+      rsvpId: null,
+      loggedIn: false,
+      encounteredRsvpError: false,
+      rsvpOpen: false,
+    })(this.props.dispatch);
+  }
   login = () => {
     const matchFound = this.match();
     if (matchFound) {
-      updateStore({ loginOpen: false })(this.props.dispatch);
+      updateStore({ 
+        user: matchFound,
+        rsvpId: matchFound.rsvp,
+        loginOpen: false, 
+        loggedIn: true,
+      })(this.props.dispatch);
+
       getRsvp(matchFound)(this.props.dispatch);
     }
     else {
@@ -65,8 +76,8 @@ class Login extends Component {
 
   render() {
     const headerStyle = (this.props.screenSize === "mobile")
-      ? { fontSize: "20px", fontFamily: "Oswald", margin: "24px", color: '#37474f' }
-      : { fontSize: "48px", fontFamily: "Oswald", margin: "24px", color: '#37474f' };
+      ? { fontSize: "20px", fontWeight: "700", fontFamily: "Montserrat", margin: "24px", color: '#37474f' }
+      : { fontSize: "48px", fontWeight: "700", fontFamily: "Montserrat", margin: "24px", color: '#37474f' };
     const iconStyle = { width: '48px'};
 
     const bajoHeader = { fontStyle: 'italic', fontSize: "24px", padding: "12px" }
@@ -97,7 +108,7 @@ class Login extends Component {
       if (this.props.loggedIn === true) {
         return (
           <div>
-            <div>you're alread logged in...</div>
+            <div>You've already signed in...</div>
           </div> )
       }
       else return (
@@ -172,40 +183,57 @@ class Login extends Component {
           autoScrollBodyContent={true}
         >
           <div style={headerStyle}>{renderMessage()}</div>
-          <DialogContent >
-            <form className='loginForm' noValidate autoComplete="off">
-              <TextField
-                label="first name"
-                className='loginTextFields'
-                autoFocus={true}
-                style={textFieldsStyle}
-                value={this.props.firstName}
-                onChange={this.handleChange('firstName')}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                label="last name"
-                className='loginTextFields'
-                style={textFieldsStyle}
-                value={this.props.lastName}
-                onChange={this.handleChange('lastName')}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                label="zip code"
-                className='loginTextFields'
-                style={textFieldsStyle}
-                value={this.props.zipCode}
-                onChange={this.handleChange('zipCode')}
-                margin="normal"
-                variant="outlined"
-              />
+          {(this.props.loggedIn === true) 
+          ? (<DialogContent >
+              <Typography variant="h5" className='skinnyMarginBottom'>
+                You're already logged in 
+                as <span className='bold'>{this.props.user.firstName}
+                <span className='inline'> </span>
+                {this.props.user.lastName}</span>.
+              </Typography>
+              <Button
+                color='default'
+                size='large'
+                variant='contained'
+                keyboardFocused={true}
+                onClick={this.logout}
+              >log out</Button>
+            </DialogContent>)
+          : (<DialogContent >
+              <form className='loginForm' noValidate autoComplete="off">
+                <TextField
+                  label="first name"
+                  className='loginTextFields'
+                  autoFocus={true}
+                  style={textFieldsStyle}
+                  value={this.props.firstName}
+                  onChange={this.handleChange('firstName')}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <TextField
+                  label="last name"
+                  className='loginTextFields'
+                  style={textFieldsStyle}
+                  value={this.props.lastName}
+                  onChange={this.handleChange('lastName')}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <TextField
+                  label="zip code"
+                  className='loginTextFields'
+                  style={textFieldsStyle}
+                  value={this.props.zipCode}
+                  onChange={this.handleChange('zipCode')}
+                  margin="normal"
+                  variant="outlined"
+                />
 
-            </form>
-            <div style={loginErrorTextStyle}>{loginErrorText}</div>
-          </DialogContent>
+              </form>
+              <div style={loginErrorTextStyle}>{loginErrorText}</div>
+            </DialogContent>)
+          }
           {actions}
         </Dialog>
       </div>
@@ -236,18 +264,20 @@ const mapStateToProps = (state) => {
     loginOpen: state.loginOpen,
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
-
+    user: state.user,
+    rsvp: state.rsvp,
     encounteredLoginError: state.encounteredLoginError,
     contactOpen: state.contactOpen,
     loginErrorText: state.loginErrorText,
     loggedIn: state.loggedIn,
-    zipCode: state.number,
+    zipCode: state.zipCode,
     allInvitees: state.allInvitees,
+    attendeesPossible: state.attendeesPossible,
+    attendeesConfirmed: state.attendeesConfirmed,
     firstName: state.firstName,
     lastName: state.lastName,
     attending: state.attending,
     numAdults: state.numAdults,
-
     arrivalDay: state.arrivalDay,
   }
 }

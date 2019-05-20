@@ -21,15 +21,16 @@ export const getRsvp = (id) => (dispatch) => {
 			console.log("getRsvp response = ", response);
 			dispatch({
 				type: "UPDATE_STORE",
-				payload: Object.assign({}, response.data),
+				payload: Object.assign({}, { rsvp: response.data }),
 			});
 
 			requester.getInviteesOnRsvp(id).then(res => {
+				
 				console.log("getInviteesOnRsvp res = ", res.data);
 				if (res.status >= 200 && res.status < 300) {
 					dispatch({
 						type: "UPDATE_STORE",
-						payload: Object.assign({}, res.data),
+						payload: Object.assign({}, { attendeesPossible: res.data }),
 					});
 				}
 			})
@@ -51,10 +52,12 @@ export const updateRsvp = (id, data) => (dispatch) => {
 export const getInvitee = (id) => (dispatch) => {
 	requester.getInvitee(id).then(response => {
 		console.log("getInvitee ___ ", response);
-		// dispatch({
-		// 	type: "UPDATE_STORE",
-		// 	payload: Object.assign({}, response.data),
-		// });
+		if (response.status >= 200 && response.status < 300) {
+			dispatch({
+				type: "UPDATE_STORE",
+				payload: Object.assign({}, { user: response.data, loggedIn: true }),
+			});
+		}
 	})
 }
 export const getInvitees = () => (dispatch) => {
@@ -63,6 +66,15 @@ export const getInvitees = () => (dispatch) => {
 		dispatch({
 			type: "UPDATE_STORE",
 			payload: Object.assign({}, { allInvitees: res.data }),
+		});
+	})
+}
+export const getInviteesOnRsvp = (id) => (dispatch) => {
+	requester.getInviteesOnRsvp(id).then(res => {
+		console.log("getInvitees res = ", res);
+		dispatch({
+			type: "UPDATE_STORE",
+			payload: Object.assign({}, { attendeesPossible: res.data }),
 		});
 	})
 }

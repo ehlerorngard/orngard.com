@@ -44,13 +44,36 @@ class Wedding extends Component {
             background: '#812859',
           }
         },
+        MuiButton: {
+          text: {
+            fontSize: '20px',
+            fontWeight: 700,
+          }
+        },
+        MuiMenuItem: {
+          root: {
+            fontSize: "22px",
+            minHeight: "50px",
+          }
+        },
+        MuiListItemText: {
+          root: {
+            minWidth: "120px",
+          }
+        },
+        MuiDialogActions: {
+          root: {
+            margin: "14px",
+          }
+        }
       },
       typography: { 
+        fontFamily: '"Montserrat", "Roboto", "Arial", sans',
         useNextVariants: true,
-        MuiListItem: {
-          fontSize: "1.5rem",
-          fontFamily: "Oswald",
+        headline: {
+          fontWeight: 700,
         }
+
       },
       classes: {
         modalPaper: {

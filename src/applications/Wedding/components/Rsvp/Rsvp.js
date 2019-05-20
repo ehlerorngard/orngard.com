@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, IconButton, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel } from "@material-ui/core";
-import { updateStore, updateRsvp } from "../../utils/action.js";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, IconButton, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel, Checkbox, ListItemText, ListItemIcon, Paper, MenuList, ClickAwayListener, Typography } from "@material-ui/core";
+import { updateStore, updateRsvp, getRsvp, getInvitee } from "../../utils/action.js";
 import "../../Wedding.css";
 
 import DropSelect from './DropSelect.js';
@@ -14,6 +14,10 @@ import requester from "../../utils/requester.js";
 
 
 class Rsvp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   componentDidMount() {
     updateStore({ 
@@ -29,20 +33,70 @@ class Rsvp extends Component {
       departureDay: null,
       encounteredRsvpError: false,
       rsvpErrorText: null,
-    })(this.props.dispatch)
+    })(this.props.dispatch);
+
+    setTimeout(this.setSelectedAttendees, 4000)
+    ;
   }
 
 
+  setSelectedAttendees = () => {
+    this.props.attendeesConfirmed.forEach(att => {
+      this.setState({ [att.id]: {...this.state[att.id], checked: true} });
+    });
+  }
+
   handleChange = (event) => {
-    console.log("event.target.value: ", event.target.value);
     updateStore({ [event.target.name]: event.target.value })(this.props.dispatch);
   }
   handleChangeAttending = (event) => {
-    console.log('handleChangeAttending, event = ', event);
-    console.log("event.target.value: ", event.target.value);
     let val = (event.target.value === "true") ? true : false;
     updateStore({ [event.target.name]: val })(this.props.dispatch);
   }
+  handleNameChange = (event, id, name) => {
+    this.setState({ [name]: event.target.value });
+
+    const newList = this.props.attendeesPossible.map(poss => {
+      if (poss.id === id) return {...poss, [name]: event.target.value};
+      else return poss;
+    })
+    updateStore({ attendeesPossible: newList })(this.props.dispatch);
+    if (id === this.props.user.id) {
+      updateStore({ 
+        user: {...this.props.user, [name]: event.target.value }
+      })(this.props.dispatch);
+    }
+  }
+  selectFirstName = (id) => {
+    console.log('selecting first name ', id);
+    updateStore({ firstNameSelected: id })(this.props.dispatch);
+  }
+  selectLastName = (id) => {
+    updateStore({ lastNameSelected: id })(this.props.dispatch);
+  }
+
+  toggleCheckbox = (guest) => {
+    const index = this.props.attendeesConfirmed.indexOf(guest);
+
+    if (index > -1) {
+      let copy = [...this.props.attendeesConfirmed];
+      copy.splice(index, 1);
+      updateStore({ attendeesConfirmed: copy })(this.props.dispatch);
+    }
+    else {
+      updateStore({ attendeesConfirmed: [...this.props.attendeesConfirmed, guest]})(this.props.dispatch);
+    }
+  }
+
+  editize = (e, id, name) => {
+    console.log('editize triggered...');
+
+    updateStore({ [name + "Selected"]: id })(this.props.dispatch);
+  }
+  textify = () => {
+    updateStore({ firstNameSelected: null, lastNameSelected: null })(this.props.dispatch);
+  }
+
 
   updateAttending = (event, value) => {
     updateStore({ [event.target.name]: value })(this.props.dispatch);
@@ -62,7 +116,6 @@ class Rsvp extends Component {
   }
 
   validate = () => {
-    console.log("attempting to validate");
     const { attending, firstName, lastName, lodging, arrivalDay, departureDay } = this.props;
     // CHANGE THIS TO TRUE WHEN ACTUALLY LOADING RSVPs
     if (this.props.rsvpLoaded === false) {
@@ -116,12 +169,31 @@ class Rsvp extends Component {
 
   }
 
+  logout = () => {
+    updateStore({ 
+      user: { firstName: null },
+      rsvp: { id: null },
+      rsvpId: null,
+      loggedIn: false,
+      encounteredRsvpError: false,
+      rsvpOpen: false,
+    })(this.props.dispatch);
+  }
+  loadSample = () => {
+    getInvitee(1001)(this.props.dispatch);
+    getRsvp(1001)(this.props.dispatch);
+  }
+
   closeRsvp = () => {
     updateStore({ 
       rsvpOpen: false,
       encounteredRsvpError: false,
       rsvpErrorText: null,
     })(this.props.dispatch);
+  }
+  goToLogin = () => {
+    this.closeRsvp();
+    updateStore({ loginOpen: true })(this.props.dispatch);
   }
 
 
@@ -132,24 +204,28 @@ class Rsvp extends Component {
     const headerStyle = { cursor: 'pointer' };
     const iconStyle = { width: '48px'};
 
-    const bajoHeader = { fontFamily: "Roboto", fontStyle: 'italic', fontSize: "24px", padding: "12px" }
+    const bajoHeader = { fontStyle: 'italic', fontWeight: 300, fontSize: "24px", padding: "12px", maxWidth: "700px", display: "block", marginLeft: "auto", marginRight: "auto", }
     const questionStyle = 
       (this.props.screenSize === "mobile")
       ? { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" }
       : { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" };
     const questionRow = (this.props.screenSize === "mobile")
-      ? { padding: "20px", display: "block", minHeight: "100px", minWidth: "300px" }
-      : { padding: "6px", display: "inline-flex", minHeight: "100px", minWidth: "300px" };
+      ? { padding: "20px 0", display: "block", minHeight: "100px", minWidth: "300px" }
+      : { padding: "6px 12px 6px 0px", display: "inline-flex", minHeight: "100px", minWidth: "300px" };
     const radioButton = {
       marginBottom: 16,
     }
     const radioLabelStyle = { display: "block", }
 
-    const rsvpHeaderText = () => {
+    const rsvpHeaderText = () => (this.props.user.id === 1001)  
+      ? `Please feel free to test all features of the RSVP form, 
+      including submitting & saving – this is just a sample ;)`
+      : null;
 
-      let text = 'Note: feel free to test, but you did not login via the portal so no RSVP will be saved to the database.'
-      return text;
-    }
+
+    const mediumText = (this.props.screenSize === "mobile")
+      ? { fontSize: "22px", margin: "12px 0", }
+      : { fontSize: "30px", margin: "18px 0", };
 
     const shouldDisplay = (this.props.encounteredRsvpError) 
       ? "block" : "none"
@@ -165,10 +241,11 @@ class Rsvp extends Component {
           borderRadius: "4px", 
           display: shouldDisplay,
         };
-
+    const hideTheButton = (this.props.loggedIn === false)
+      ? { visibility: "visible" }
+      : { display: "none" };
 
     const getFirstName = () => {
-      console.log("Rsvp PROPS: ", this.props);
       if (this.props.user !== undefined) return this.props.user.firstName;
       else return null;
     }
@@ -251,8 +328,63 @@ class Rsvp extends Component {
     const theRestOfTheQuestions = (this.props.attending === true)
       ? (
         <div>
+          <div className='thinHorizSpacer'/>
+          <div className='mediumText' style={mediumText}>guests:</div>
+          <Paper className='inlineBlock'>
+          <FormControl className='formControl'>
+              {this.props.attendeesPossible.map(attendee => (
+                <MenuItem key={attendee.id} value={attendee}>
+                  <Checkbox 
+                    name='attendeesConfirmed'
+                    checked={this.props.attendeesConfirmed.indexOf(attendee) > -1}
+                    onChange={() => this.toggleCheckbox(attendee)} />
+                  {(this.props.firstNameSelected === attendee.id) 
+                    ? 
+                      <ClickAwayListener onClickAway={this.textify}>
+                        <TextField
+                          id="outlined-name"
+                          label="first name"
+                          className={'textfieldz'}
+                          inputProps={{autoFocus: true}}
+                          value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].firstName}
+                          onChange={(event) => this.handleNameChange(event, attendee.id, `firstName`)}
+                          margin="dense"
+                          variant="outlined"
+                        />
+                      </ClickAwayListener>
+                    : <ListItemText 
+                        primary={attendee.firstName} 
+                        onClick={(e) => this.editize(e, attendee.id, "firstName")}
+                      /> 
+                  }
+                  {(this.props.lastNameSelected === attendee.id) 
+                    ? 
+                      <ClickAwayListener onClickAway={this.textify}>
+                        <TextField
+                          id="outlined-name"
+                          label="last name"
+                          className={'textfieldz'}
+                          inputProps={{autoFocus: true}}
+                          value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].lastName}
+                          onChange={(event) => this.handleNameChange(event, attendee.id, `lastName`)}
+                          margin="dense"
+                          variant="outlined"
+                        />
+                      </ClickAwayListener>
+                    : <ListItemText 
+                        primary={attendee.lastName} 
+                        onClick={(e) => this.editize(e, attendee.id, "lastName")}
+                      /> 
+                  }
+
+                  <div className='thinMarginBottom'/>
+                </MenuItem>
+              ))}
+          </FormControl>
+          </Paper>
 
 
+          <div className='fatHorizSpacer'/>
           <div style={questionRow}>
             <DropSelect 
               value={this.props.numChildren} 
@@ -325,7 +457,79 @@ class Rsvp extends Component {
         </div>
         )
       : (<div style={questionRow}>
-        </div>)
+        </div>);
+
+    const getRsvpContents = () => (this.props.loggedIn === true)
+          ? (<DialogContent>
+              <div className="smallText" style={bajoHeader}>
+                {rsvpHeaderText()}
+              </div>
+
+              <div style={questionRow}>
+                <FormLabel component="legend" style={radioLabelStyle}>Will you be attending the wedding?</FormLabel>
+                <div syle={radioLabelStyle}>
+                  <Radio
+                    checked={this.props.attending === true}
+                    onChange={this.handleChangeAttending}
+                    value={true}
+                    name="attending"
+                    aria-label="true"
+                  />
+                  <FormLabel>hill yiss</FormLabel>
+                </div>
+                <div syle={radioLabelStyle}>
+                  <Radio
+                    checked={this.props.attending === false}
+                    onChange={this.handleChangeAttending}
+                    value={false}
+                    name="attending"
+                    aria-label="false"
+                  />
+                  <FormLabel>hill naoo</FormLabel>
+                </div>
+              </div> 
+              <Divider />
+
+              {theRestOfTheQuestions}
+              <div style={questionRow}>
+                <TextInput 
+                  handleChange={this.handleChange} 
+                  notes={this.props.additionalNotes}
+                  labelText='any additional notes or comments' />
+              </div>
+              <div style={errorTextStyle}>
+                {errorText}
+              </div>
+            </DialogContent>)
+          : (<DialogContent >
+              <Typography variant='h5' className='smallText skinnyMarginBottom inline'>
+                You're not logged in; try out a sample RSVP in sandbox mode:
+              </Typography>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                label="submit"
+                key={true}
+                onClick={this.loadSample}
+              >
+                try sample RSVP
+              </Button>
+
+              <div className='thinHorizSpacer'/>
+              <Typography variant='h5' className='smallText skinnyMarginBottom inline'>
+                OR
+              </Typography>
+              <Button 
+                variant="contained" 
+                color="default" 
+                label="submit"
+                style={hideTheButton}
+                key={true}
+                onClick={this.goToLogin}
+              >
+                log in
+              </Button>
+            </DialogContent>);
 
     return (
       <div className="Rsvp"> 
@@ -337,47 +541,13 @@ class Rsvp extends Component {
           scroll='paper'
           open={this.props.rsvpOpen}
         >
-          <DialogTitle>{getRsvpTitle()}</DialogTitle>
-          <DialogContent>
-            <div style={bajoHeader}>{rsvpHeaderText()}</div>
-
-            <div style={questionRow}>
-              <FormLabel component="legend" style={radioLabelStyle}>Will you be attending the wedding?</FormLabel>
-              <div syle={radioLabelStyle}>
-                <Radio
-                  checked={this.props.attending === true}
-                  onChange={this.handleChangeAttending}
-                  value={true}
-                  name="attending"
-                  aria-label="true"
-                />
-                <FormLabel>hill yiss</FormLabel>
-              </div>
-              <div syle={radioLabelStyle}>
-                <Radio
-                  checked={this.props.attending === false}
-                  onChange={this.handleChangeAttending}
-                  value={false}
-                  name="attending"
-                  aria-label="false"
-                />
-                <FormLabel>hill naoo</FormLabel>
-              </div>
-            </div> 
-            <Divider />
-
-            {theRestOfTheQuestions}
-            <div style={questionRow}>
-              <TextInput 
-                handleChange={this.handleChange} 
-                notes={this.props.additionalNotes}
-                labelText='any additional notes or comments' />
-            </div>
-            <div style={errorTextStyle}>
-              {errorText}
-            </div>
-          </DialogContent>
-          <DialogActions>{actions}</DialogActions>
+          <DialogTitle>
+            <Typography variant='h2'>
+              {getRsvpTitle()}
+            </Typography>
+          </DialogTitle>
+          {getRsvpContents()}
+          <DialogActions className='charcoalBackground'>{actions}</DialogActions>
         </Dialog>
       </div>
     );
@@ -423,6 +593,8 @@ const mapStateToProps = (state) => {
 
     user: state.user,
     rsvp: state.rsvp,
+    attendeesPossible: state.attendeesPossible,
+    attendeesConfirmed: state.attendeesConfirmed,
     firstName: state.firstName,
     lastName: state.lastName,
     zipCode: state.zipCode,
@@ -444,6 +616,9 @@ const mapStateToProps = (state) => {
     encounteredRsvpError: state.encounteredRsvpError,
     rsvpErrorText: state.rsvpErrorText,
     rsvpLoaded: state.rsvpLoaded,
+    firstNameSelected: state.firstNameSelected,
+    lastNameSelected: state.lastNameSelected,
+    loggedIn: state.loggedIn,
   }
 }
 
