@@ -58,6 +58,17 @@ export class Navbar extends Component {
     console.log("goToLogin NAVBAR firing...");
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
+  logout = () => {
+    updateStore({ 
+      user: { firstName: null },
+      rsvp: { id: null },
+      rsvpId: null,
+      loggedIn: false,
+      encounteredRsvpError: false,
+      rsvpOpen: false,
+      dropOpen: false,
+    })(this.props.dispatch);
+  }
 
   render() {
   	const navStyle = (this.props.scrolledToTop) 
@@ -109,11 +120,11 @@ export class Navbar extends Component {
   	const avatar = require('../../assets/icons/^portraitAvatar.svg');
 
     const dropContents = () => {
-      if (this.props.authenticated === true) {
+      if (this.props.loggedIn === true) {
         return (        
             <MenuList>
               <MenuItem onClick={this.goToRSVP}>edit RSVP</MenuItem>
-              <MenuItem>sign out</MenuItem>
+              <MenuItem onClick={this.logout}>sign out</MenuItem>
             </MenuList>)
       }
       else return (
@@ -199,6 +210,7 @@ const mapStateToProps = (state) => {
 		dropOpen: state.dropOpen,
     divTops: state.divTops,
     updateDivTops: state.updateDivTops,
+    loggedIn: state.loggedIn,
 	}
 }
 

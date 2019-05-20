@@ -47,8 +47,6 @@ class TextInput extends Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log("inside TextInput, PROPS: ", this.props);
     
     return (
       <OutlinedInput 

@@ -16,16 +16,17 @@ const styles = theme => ({
     // flexWrap: 'wrap',
   },
   inputLabel: {
-    fontSize: '1.25rem',
+    fontSize: '1.2rem',
   },
   dropSelect: {
     margin: theme.spacing.unit,
-    minWidth: 140,
+    minWidth: 160,
+
   },
   select: {
-    minHeight: '1.25em',
+    minHeight: '1.5em',
     whiteSpace: 'wrap',
-    fontSize: '1.25rem',
+    fontSize: '1.2rem',
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,

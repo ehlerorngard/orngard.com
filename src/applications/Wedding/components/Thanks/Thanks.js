@@ -31,18 +31,26 @@ class Thanks extends Component {
     }
 
     const renderMessage = () => {
-      const style = { margin: "15px", fontFamily: "Roboto", fontSize: "18px", color: "#2e2e2e", };
+      const style = { 
+        margin: "15px", 
+        fontFamily: "Montserrat", 
+        fontSize: (this.props.screenSize === 'mobile') ? "18px" : "24px", 
+        color: "#2e2e2e", 
+      };
       if (this.props.attending === true) {
         return (
           <div>
             <div style={style}>YAY! We're so excited you're coming!!!</div>
+            <div className='thinHorizSpacer'/>
             <div style={style}>And thanks for doing the RSVP ;)</div> 
           </div> )
       }
       else return (
         <div> 
           <div style={style}>Shoot, we're so sad you can't make it :( </div>
+          <div className='thinHorizSpacer'/>
           <div style={style}>But no worries of course, we'll catch up you soon enough.</div>
+          <div className='thinHorizSpacer'/>
           <div style={style}>Be well in the meantime, and thanks so much for doing the RSVP.</div>
         </div> );
     }

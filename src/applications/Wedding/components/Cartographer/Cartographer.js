@@ -37,6 +37,8 @@ class Cartographer extends Component {
       rsvp: { id: null },
       user: { firstName: null },
       allInvitees: [],
+      attendeesPossible: [],
+      attendeesConfirmed: [],
     })(this.props.dispatch);
     window.addEventListener("resize", this.getScreenSize, true);
     window.addEventListener("scroll", this.handleScroll, true);
@@ -72,9 +74,6 @@ class Cartographer extends Component {
     // })
 
 
-
-    getRsvp(1)(this.props.dispatch);
-    getInvitee(3)(this.props.dispatch);
   }
 
   componentWillUnmount() {

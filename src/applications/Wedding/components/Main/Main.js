@@ -56,7 +56,6 @@ export class Main extends Component {
       howToGetThere: this.howToGetThereRef.current.offsetTop,
       conactUs: this.contactUsRef.current.offsetTop,
     }
-    console.log("getDivTops FIRING...", refs);
     return refs;
   }
 
@@ -931,7 +930,7 @@ export class Main extends Component {
                           </div>
                           <div className='smallText block' style={smallText}>
                             I wish I could say "just Uber/Lyft from the airport!"... 
-                            but that's pretty unrealistic.  Renting a car
+                            but that's pretty unrealistic.  Renting a car or carpooling
                             will most likely be your best 
                             bet. <span className='bold'>But if you are flying in</span> and 
                             might like to split a rental car,

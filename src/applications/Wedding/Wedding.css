@@ -309,6 +309,11 @@ ul.MuiList-root-63 {
 	min-height: 1.25em;
 	margin-bottom: 8px;
 }
+.mediumText {
+	font-family: "Montserrat", sans-serif;
+	color: rgba(36, 36, 36, 1);
+	width: 100%;
+}
 .alignCenter {
 	margin-left: auto;
 	margin-right: auto;
@@ -362,6 +367,12 @@ ul.MuiList-root-63 {
 .block {
 	display: block;
 }
+.inlineBlock {
+	display: inline-block;
+}
+.inline {
+	display: inline;
+}
 .flex {
 	display: flex;
 }
@@ -383,6 +394,10 @@ ul.MuiList-root-63 {
 	margin: 6px 6px 6px 0;
 	padding: 8px 12px;
 	width: auto !important;
+}
+.justASpace {
+	width: 10px !important;
+	height: 1px;
 }
 .mediumGray {
 	color: rgba(56, 56, 56, 1);
@@ -456,3 +471,20 @@ ul.MuiList-root-63 {
 	background: rgba(54, 54, 54, 1);
 	box-shadow: 0 0px 16px 3px gray;
 }
+
+
+/*============================
+==== RSVP ================
+============================*/
+
+.nameItem {
+	min-width: 180px;
+}
+
+.noShadow {
+	border-radius: 0px !important;
+	box-shadow: none !important;
+}
+.charcoalBackground {
+/* 	background: rgba(72, 72, 72, 1)
+ */}

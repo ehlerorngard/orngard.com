@@ -91,8 +91,6 @@ const Navigator = (props) => {
 
   }
 
-  console.log("inside Navigator, PROPS: ", props);
-
   return (
     <SwipeableDrawer anchor="right" open={sidebarVisible} classes={{paper: classes.drawer}}>
       <AppBar 
