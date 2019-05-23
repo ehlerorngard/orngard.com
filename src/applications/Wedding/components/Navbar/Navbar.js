@@ -58,6 +58,7 @@ export class Navbar extends Component {
     console.log("goToLogin NAVBAR firing...");
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
+  
   logout = () => {
     updateStore({ 
       user: { firstName: null },
@@ -67,6 +68,15 @@ export class Navbar extends Component {
       encounteredRsvpError: false,
       rsvpOpen: false,
       dropOpen: false,
+      firstName: null,
+      lastName: null,
+      zipCode: null,
+      lodging: null,
+      arrivalDay: null,
+      departureDay: null,
+      email: null,
+      attendeesPossible: [],
+      successText: '',
     })(this.props.dispatch);
   }
 
@@ -101,8 +111,8 @@ export class Navbar extends Component {
   		: { fontSize: "28px", transition: ".4s", minWidth: "36px", minHeight: "36px", padding: "4px 5px", display: "inline-table" };
 
     const buttonBoxStyle = (this.props.scrolledToTop) 
-      ? { minWidth: "128px", display: "inline-flex", float: "right" }
-      : { minWidth: "108px", display: "inline-flex", float: "right" };
+      ? { minWidth: "128px", display: "inline-flex", float: "right", marginRight: "12px" }
+      : { minWidth: "108px", display: "inline-flex", float: "right", marginRight: "12px" };
 
   	const userStyle = (this.props.scrolledToTop) 
   		? { backgroundColor: "rgba(184, 184, 184, 0.7)", fontSize: "36px", display: "inline-table", transition: ".4s", minWidth: "36px", minHeight: "36px", }
@@ -114,7 +124,7 @@ export class Navbar extends Component {
 
   	const iconStyle = (this.props.scrolledToTop) 
   		? { width: "40px" }
-  		: { width: "30px" };
+  		: { width: "40px" };
 
   	const menuIcon = require('../../assets/icons/^menuIconWhite.svg');
   	const avatar = require('../../assets/icons/^portraitAvatar.svg');

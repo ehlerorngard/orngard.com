@@ -19,7 +19,7 @@ const styles = theme => ({
     fontSize: '1.2rem',
   },
   dropSelect: {
-    margin: theme.spacing.unit,
+    margin: 0,
     minWidth: 160,
 
   },
@@ -37,7 +37,7 @@ const styles = theme => ({
   input: {
     fontSize: '1.25rem',
     paddingLeft: '12px',
-    paddingTop: '12px',
+    paddingTop: '18px',
   },
 });
 
@@ -60,8 +60,6 @@ class DropSelect extends Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log("inside DropSelect, PROPS: ", this.props);
     
     return (
         <FormControl classes={{ root: classes.dropSelect }} fullWidth={true}>

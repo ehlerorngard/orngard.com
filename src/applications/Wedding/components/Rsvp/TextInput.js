@@ -14,7 +14,7 @@ const styles = theme => ({
 
   textInput: {
     margin: theme.spacing.unit,
-    minWidth: 300,
+    minWidth: 288,
     // borderRadius: 4,
     // border: '1px solid gray',
     // padding: '10px 26px 10px 12px',

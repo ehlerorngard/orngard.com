@@ -6,12 +6,23 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, T
 import { updateStore, getInvitees, getRsvp } from "../../utils/action.js";
 import "../../Wedding.css";
 
+import ErrorSnackbar from '../Snackbar/ErrorSnackbar.js';
+
 
 class Login extends Component {
 
   componentDidMount() {
     getInvitees()(this.props.dispatch);
-    updateStore({ encounteredLoginError: false, loginErrorText: '' })(this.props.dispatch);
+    updateStore({ 
+      encounteredLoginError: false, 
+      loginErrorText: '', 
+      loginErrorSnackbarOpen: false,
+      loginSuccessSnackbarOpen: false,
+      successText: "",
+      firstName: '',
+      lastName: '',
+      zipCode: '',
+    })(this.props.dispatch);
   }
 
   handleChange = (name) => (event) => {
@@ -21,28 +32,48 @@ class Login extends Component {
   updateAttending = (event, value) => {
     updateStore({ [event.target.name]: value })(this.props.dispatch);
   }
-
-  openContact = () => {
-    updateStore({ loginOpen: false, contactOpen: true, encounteredLoginError: false })(this.props.dispatch);
+  closeErrorSnackbar = () => {
+    updateStore({ 
+      loginErrorSnackbarOpen: false,
+    })(this.props.dispatch);   
   }
-
+  closeErrorSnackbarInAFew = () => {
+    setTimeout(this.closeErrorSnackbar, 6200);
+  }
+  closeSuccessSnackbar = () => {
+    updateStore({ 
+      loginSuccessSnackbarOpen: false,
+    })(this.props.dispatch);   
+  }
+  closeSuccessSnackbarInAFew = () => {
+    setTimeout(this.closeSuccessSnackbar, 5000);
+  }
   closeLogin = () => {
     updateStore({ loginOpen: false, encounteredLoginError: false })(this.props.dispatch);
   }
+  openContact = () => {
+    this.closeLogin();
+    updateStore({ 
+      contactOpen: true,
+      loginErrorSnackbarOpen: false, 
+    })(this.props.dispatch);
+  }
+
 
   // If the user authenticates, returns his/her RSVP id,
   // otherwise returns false:
   match = () => {
     if (!this.props.firstName || this.props.firstName.trim() === '') return false;
-    const { firstName, lastName, zipCode } = this.props.user;
+    const { firstName, lastName, zipCode } = this.props;
+    let theMatch = false;
     this.props.allInvitees.forEach(inv => {
-      if (firstName.trim() === inv.firstName && 
-          lastName.trim() === inv.lastName && 
+      if (firstName.trim().toLowerCase() === inv.firstName.toLowerCase() && 
+          lastName.trim().toLowerCase() === inv.lastName.toLowerCase() && 
           zipCode.trim() === inv.zipCode) {
-        return inv;
+        theMatch = inv;
       }
     });
-    return false;
+    return theMatch;
   }
   logout = () => {
     updateStore({ 
@@ -52,23 +83,36 @@ class Login extends Component {
       loggedIn: false,
       encounteredRsvpError: false,
       rsvpOpen: false,
+      firstName: null,
+      lastName: null,
+      zipCode: null,
+      lodging: null,
+      arrivalDay: null,
+      departureDay: null,
+      email: null,
+      attendeesPossible: [],
     })(this.props.dispatch);
   }
   login = () => {
     const matchFound = this.match();
+    console.log("inv = ", matchFound);
     if (matchFound) {
       updateStore({ 
         user: matchFound,
         rsvpId: matchFound.rsvp,
         loginOpen: false, 
         loggedIn: true,
+        loginErrorSnackbarOpen: false,
+        loginSuccessSnackbarOpen: true,
+        successText: `Hello ${matchFound.firstName} ${matchFound.lastName}!`
       })(this.props.dispatch);
 
-      getRsvp(matchFound)(this.props.dispatch);
+      getRsvp(matchFound.rsvp)(this.props.dispatch);
     }
     else {
       updateStore({ 
         encounteredLoginError: true,
+        loginErrorSnackbarOpen: true,
       })(this.props.dispatch);
     }
 
@@ -95,10 +139,6 @@ class Login extends Component {
       ? { display: "block", marginRight: "12px" }
       : { display: "inline-block", marginRight: "12px" };
 
-    const loginErrorTextStyle = (this.props.screenSize === "mobile")
-      ? { display: "block", minHeight: "120px", margin: "24px 0 0 0", fontSize: "16px", fontFamily: "Roboto", color: "#263238" }
-      : { display: "block", minHeight: "120px", margin: "40px 24px 0 0", fontSize: "24px", fontFamily: "Roboto", color: "#263238" };
-
     const fader = (this.props.encounteredLoginError)
       ? { opacity: '1', transition: '1.5s' }
       : { opacity: '0', transition: '1.5s' }
@@ -117,60 +157,59 @@ class Login extends Component {
         </div> );
     }
 
-    const loginErrorText = (this.props.encounteredLoginError) ?
-    (<div style={fader}>
-      <div>No match was found on the list for the name entered...</div>
-      <div>If you see a mistake or alternative, try again; otherwise send us a quick note about it via the CONTACT US button below and we'll fix it and get back to you!</div>
-    </div>) 
-    : 
-    (<div syle={fader}>
-      <div />
-    </div>);
+    const loginErrorText = 
+      // otherwise send us a quick note about it via the CONTACT US button below and we'll fix it and get back to you!
+      (<div style={fader}>
+        <div>No match was found on the list for the name & zip code entered...</div>
+        <div className="thinHorizSpacer" />
+        <div>If you see a mistake or alternative, try again, otherwise you can send us a 
+          message with the CONTACT US button at the bottom of the form.
+        </div>
+      </div>) 
 
-    const actions = (this.props.encounteredLoginError) ?
-    (<DialogActions >
-      <Button
-        color='secondary'
-        size='large'
-        variant='contained'
-        keyboardFocused={true}
-        onClick={this.openContact}
-      >contact us</Button>
-      <Button
-        label="cancel"
-        size='large'
-        variant='outlined'
-        onClick={this.closeLogin}
-      >cancel</Button>
-      <Button
-        label="log in"
-        color="primary"
-        size='large'
-        variant='outlined'
-        keyboardFocused={true}
-        autoFocus
-        onClick={this.login}
-      >log in</Button>
-    </DialogActions>) 
-    : 
-    (<DialogActions >
-      <Button
-        label="cancel"
-        color='default'
-        size='large'
-        variant='outlined'
-        onClick={this.closeLogin}
-      >cancel</Button>
-      <Button
-        label="log in"
-        color="primary"
-        size='large'
-        variant='contained'
-        keyboardFocused={true}
-        autoFocus
-        onClick={this.login}
-      >log in</Button>
-    </DialogActions>);
+    const actions = (this.props.encounteredLoginError)
+      ? (<DialogActions >
+          <Button
+            color='secondary'
+            size='large'
+            variant='contained'
+            keyboardFocused={true}
+            onClick={this.openContact}
+          >contact us</Button>
+          <Button
+            label="cancel"
+            size='large'
+            variant='outlined'
+            onClick={this.closeLogin}
+          >cancel</Button>
+          <Button
+            label="log in"
+            color="primary"
+            size='large'
+            variant='outlined'
+            keyboardFocused={true}
+            autoFocus
+            onClick={this.login}
+          >log in</Button>
+        </DialogActions>) 
+      : (<DialogActions >
+          <Button
+            label="cancel"
+            color='default'
+            size='large'
+            variant='outlined'
+            onClick={this.closeLogin}
+          >cancel</Button>
+          <Button
+            label="log in"
+            color="primary"
+            size='large'
+            variant='contained'
+            keyboardFocused={true}
+            autoFocus
+            onClick={this.login}
+          >log in</Button>
+        </DialogActions>);
 
     return (
       <div className="Login"> 
@@ -231,7 +270,14 @@ class Login extends Component {
                 />
 
               </form>
-              <div style={loginErrorTextStyle}>{loginErrorText}</div>
+
+              <ErrorSnackbar
+                errorText={loginErrorText}
+                errorSnackbarOpen={this.props.loginErrorSnackbarOpen}
+                closeErrorSnackbar={this.closeErrorSnackbar}
+                closeErrorSnackbarInAFew={this.closeErrorSnackbarInAFew}
+              />
+
             </DialogContent>)
           }
           {actions}
@@ -269,6 +315,9 @@ const mapStateToProps = (state) => {
     encounteredLoginError: state.encounteredLoginError,
     contactOpen: state.contactOpen,
     loginErrorText: state.loginErrorText,
+    successText: state.successText,
+    loginSuccessSnackbarOpen: state.loginSuccessSnackbarOpen,
+    loginErrorSnackbarOpen: state.loginErrorSnackbarOpen,
     loggedIn: state.loggedIn,
     zipCode: state.zipCode,
     allInvitees: state.allInvitees,

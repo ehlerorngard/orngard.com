@@ -50,6 +50,34 @@ class Wedding extends Component {
             fontWeight: 700,
           }
         },
+        MuiSelect: {
+          select: {
+            maxWidth: 300,
+          }
+        },
+        MuiGridList: {
+          root: {
+            maxWidth: 650,
+            margin: "0px",
+            overflowY: "hidden",
+          },
+        },
+        MuiGridListTile: {
+          root: {
+            maxWidth: 650,
+            minWidth: 300,
+            height: "112px !important",
+          },
+          tile: {
+            width: 300,
+            height: 112,
+          },
+        },
+        MuiTextField: {
+          root: {
+            maxWidth: 104,
+          }
+        },
         MuiMenuItem: {
           root: {
             fontSize: "22px",
@@ -58,14 +86,23 @@ class Wedding extends Component {
         },
         MuiListItemText: {
           root: {
-            minWidth: "120px",
+            minWidth: "90px",
           }
+        },
+        MuiOutlinedInput: {
+          inputMarginDense: {
+            minWidth: "90px",
+            maxWidth: "156px",
+          },
+          // multiline: {
+          //   width: "288px",
+          // },
         },
         MuiDialogActions: {
           root: {
-            margin: "14px",
+            margin: "24px",
           }
-        }
+        },
       },
       typography: { 
         fontFamily: '"Montserrat", "Roboto", "Arial", sans',

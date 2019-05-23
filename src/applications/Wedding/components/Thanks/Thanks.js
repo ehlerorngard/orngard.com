@@ -66,7 +66,6 @@ class Thanks extends Component {
     return (
       <div className="Thanks"> 
         <Dialog
-          modal={false}
           actions={actions}
           open={this.props.thanksOpen}
           onRequestClose={this.handleClose}
@@ -81,7 +80,7 @@ class Thanks extends Component {
               color="default" 
               key={false}
               onClick={this.closeThanks}
-            >cancel</Button>
+            >close</Button>
           </DialogActions>
         </Dialog>
       </div>

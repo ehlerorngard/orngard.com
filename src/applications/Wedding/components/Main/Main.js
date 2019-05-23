@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "../../Wedding.css";
 import { updateStore } from "../../utils/action.js";
+import SuccessSnackbar from '../Snackbar/SuccessSnackbar.js';
 
 import Image1 from '../../assets/adventure.jpg';
 import Image1lite from '../../assets/adventureLite.jpg';
@@ -58,7 +59,15 @@ export class Main extends Component {
     }
     return refs;
   }
-
+  closeSuccessSnackbar = () => {
+    updateStore({ 
+      loginSuccessSnackbarOpen: false,
+      contactSuccessSnackbarOpen: false,
+    })(this.props.dispatch);   
+  }
+  closeSuccessSnackbarInAFew = () => {
+    setTimeout(this.closeSuccessSnackbar, 5000);
+  }
   goToLogin = () => {
     console.log("goToLogin in MAIN firing...");
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
@@ -991,6 +1000,20 @@ export class Main extends Component {
             </div>
         	</div>
 
+          <SuccessSnackbar
+            successText={this.props.successText}
+            successSnackbarOpen={this.props.contactSuccessSnackbarOpen}
+            closeSuccessSnackbar={this.closeSuccessSnackbar}
+            closeSuccessSnackbarInAFew={this.closeSuccessSnackbarInAFew}
+          />
+
+          <SuccessSnackbar
+            successText={this.props.successText}
+            successSnackbarOpen={this.props.loginSuccessSnackbarOpen}
+            closeSuccessSnackbar={this.closeSuccessSnackbar}
+            closeSuccessSnackbarInAFew={this.closeSuccessSnackbarInAFew}
+          />
+
         </div>
 
     );
@@ -1010,6 +1033,9 @@ const mapStateToProps = (state) => {
 		screenSize: state.screenSize,
     loggedIn: state.loggedIn,
     divTops: state.divTops,
+    contactSuccessSnackbarOpen: state.contactSuccessSnackbarOpen,
+    loginSuccessSnackbarOpen: state.loginSuccessSnackbarOpen,
+    successText: state.successText,
 	}
 }
 
