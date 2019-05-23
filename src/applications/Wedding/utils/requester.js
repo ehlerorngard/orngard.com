@@ -67,7 +67,7 @@ export default {
     	.then(checkStatus);	
 	},
   updateRsvp: (id, data) => {
-    return pyxios.post(`/api/rsvps/${id}/`, data)
+    return pyxios.put(`/api/rsvps/${id}/`, data)
     	.then(checkStatus);
   },
   deleteRsvp: (id) => {
@@ -91,7 +91,7 @@ export default {
       .then(checkStatus);
   },
   createInvitee: (data) => {
-    return pyxios.post("/api/invitees/", data)
+    return pyxios.put("/api/invitees/", data)
       .then(checkStatus)  
   },
   updateInvitee: (id, data) => {
@@ -103,5 +103,20 @@ export default {
       .then(checkStatus);
   },
 
+  //=================|
+  //==== Messages ===|
+  //=================|
+  getMessage: (id) => {
+    return pyxios.get(`/api/messages/${id}/`)
+      .then(checkStatus);
+  },
+  getMessages: () => {
+    return pyxios.get("/api/messages/")
+      .then(checkStatus);
+  },
+  createMessage: (data) => {
+    return pyxios.post("/api/messages/", data)
+      .then(checkStatus); 
+  },
 
 }

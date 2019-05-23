@@ -21,11 +21,29 @@ export const getRsvp = (id) => (dispatch) => {
 			console.log("getRsvp response = ", response);
 			dispatch({
 				type: "UPDATE_STORE",
-				payload: Object.assign({}, { rsvp: response.data }),
+				payload: Object.assign({}, { 
+					rsvp: response.data,
+					attending: response.data.attending,
+					numChildren: response.data.numChildren,
+					numAdults: response.data.numAdults,
+					numVeg: response.data.numVeg,
+					numInviteesAlotted: response.data.numInviteesAlotted,
+					numNoGluten: response.data.numNoGluten,
+					numNoDairy: response.data.numNoDairy,
+					lodging: response.data.lodging,
+					arrivalDay: response.data.arrivalDay,
+					departureDay: response.data.departureDay,
+					FridayDinner: response.data.FridayDinner, 
+				    SaturdayBreakfast: response.data.SaturdayBreakfast, 
+				    SaturdayLunch: response.data.SaturdayLunch, 
+				    SaturdayDinner: response.data.SaturdayDinner, 
+				    SundayBrunch: response.data.SundayBrunch,
+					additionalNotes: response.data.additionalNotes,
+				}),
 			});
 
 			requester.getInviteesOnRsvp(id).then(res => {
-				
+
 				console.log("getInviteesOnRsvp res = ", res.data);
 				if (res.status >= 200 && res.status < 300) {
 					dispatch({
@@ -55,7 +73,7 @@ export const getInvitee = (id) => (dispatch) => {
 		if (response.status >= 200 && response.status < 300) {
 			dispatch({
 				type: "UPDATE_STORE",
-				payload: Object.assign({}, { user: response.data, loggedIn: true }),
+				payload: Object.assign({}, { user: response.data, sandboxMode: true }),
 			});
 		}
 	})
@@ -78,12 +96,26 @@ export const getInviteesOnRsvp = (id) => (dispatch) => {
 		});
 	})
 }
-export const updateInvitee = (chicken) => (dispatch) => {
-	dispatch({
-		type: "UPDATE_STORE",
-		payload: Object.assign({}, chicken),
-	});
-	requester.updateInvitee(chicken).then(res => {
+export const updateInvitee = (id, chicken, attendees) => (dispatch) => {
+	requester.updateInvitee(id, chicken).then(res => {
 		console.log("updateInvitee res: ", res);
+		attendees.forEach((atn, i) => {
+			if (atn.id === id) {
+				attendees[i] = chicken;
+				dispatch({
+					type: "UPDATE_STORE",
+					payload: Object.assign({}, { attendeesPossible: attendees }),
+				});
+			}
+		})
 	});
+}
+export const createMessage = (data) => (dispatch) => {
+	requester.createMessage(data).then(res => {
+		console.log("createMessage res = ", res);
+		dispatch({
+			type: "UPDATE_STORE",
+			payload: Object.assign({}, { messageCreated: data }),
+		});
+	})
 }

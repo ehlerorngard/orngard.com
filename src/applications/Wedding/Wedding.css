@@ -89,6 +89,8 @@
 .navButtonText {
 	font-family: 'Oswald', Georgia, sans-serif;
 	display: inline-table;
+	margin-left: 6px;
+	margin-right: 4px;
 }
 .navIconMarginBottom {
 	margin-bottom: 7px;
@@ -344,6 +346,9 @@ ul.MuiList-root-63 {
 	width:  100%;
 	height: 1px;
 	margin-bottom: 24px;
+}
+.maxW300 {
+	max-width: 290px !important;
 }
 .missF {
 	font-family: "Miss Fajardose", sans !important;

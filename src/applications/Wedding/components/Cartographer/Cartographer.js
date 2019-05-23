@@ -15,6 +15,7 @@ import Menubar from "../Menubar/Menubar.js";
 import Rsvp from "../Rsvp/Rsvp.js";
 import Thanks from "../Thanks/Thanks.js";
 import Login from "../Login/Login.js";
+import Contact from "../Contact/Contact.js";
 
 import requester from "../../utils/requester.js";
 
@@ -22,7 +23,7 @@ class Cartographer extends Component {
 
   componentDidMount() {
     this.getScreenSize();
-    setTimeout(function() {window.scroll(0, 0)}, 1000);
+    setTimeout(function() {window.scroll(0, 0)}, 3000);
     this.handleScroll();
     updateStore({ 
       rsvpOpen: false, 
@@ -32,6 +33,7 @@ class Cartographer extends Component {
       thanksOpen: false,
       contactOpen: false,
       loggedIn: false,
+      sandboxMode: false,
       rsvpId: null,
       rsvpLoaded: false,
       rsvp: { id: null },
@@ -131,6 +133,7 @@ class Cartographer extends Component {
         <Rsvp />
         <Thanks />
         <Login />
+        <Contact />
       </div>
     );
   }
