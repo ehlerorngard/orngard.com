@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 
 // Customize the base for all calls to the Python/Django API:
 let pyxios = axios.create({
-  baseURL: (process.env.NODE_ENV === "development") 
+  baseURL: (process.env.NODE_ENV === "production") 
       ? 'https://orngard.herokuapp.com' 
       : 'http://localhost:8000',
   timeout: 11000,
@@ -14,7 +14,7 @@ let pyxios = axios.create({
 // Once we have a csrf token, call this to create a new axios instance:
 const resetAxiosBase = csrfToken => {
   pyxios = axios.create({
-    baseURL: (process.env.NODE_ENV === "development") 
+    baseURL: (process.env.NODE_ENV === "production") 
         ? 'https://orngard.herokuapp.com/' 
         : 'http://localhost:8000',
     timeout: 6000,
