@@ -63,8 +63,6 @@ class Login extends Component {
   }
 
   checkForInvitees = () => {
-    console.log("props", this.props);
-
     if (!this.props.allInvitees[1]) {
       getInvitees()(this.props.dispatch);
     }
@@ -112,6 +110,7 @@ class Login extends Component {
       updateStore({ 
         user: matchFound,
         rsvpId: matchFound.rsvp,
+        email: matchFound.email,
         loginOpen: false, 
         loggedIn: true,
         loginErrorSnackbarOpen: false,

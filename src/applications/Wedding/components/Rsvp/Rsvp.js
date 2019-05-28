@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel, Checkbox, ListItemText, ListItemIcon, Paper, MenuList, Snackbar, IconButton, GridList, GridListTile, ClickAwayListener, Typography } from "@material-ui/core";
 import { Send, Close } from '@material-ui/icons';
-import { updateStore, updateRsvp, getRsvp, getInvitee, updateInvitee } from "../../utils/action.js";
+import { updateStore, updateRsvp, getRsvp, getInvitee, getInvitees, updateInvitee } from "../../utils/action.js";
 import "../../Wedding.css";
 
 import DropSelect from './DropSelect.js';
@@ -14,7 +14,7 @@ import ErrorSnackbar from '../Snackbar/ErrorSnackbar.js';
 class Rsvp extends Component {
   constructor(props) {
     super(props);
-    // the MaterialUI text input components only 
+    // A couple of the MaterialUI text input components only 
     // work with component state, not with redux store:
     this.state = {}; 
   }
@@ -64,6 +64,18 @@ class Rsvp extends Component {
         user: {...this.props.user, [name]: event.target.value }
       })(this.props.dispatch);
     }
+  }
+
+  handleEmailChange = (event) => {
+    const guestList = this.props.attendeesPossible.map(poss => {
+      if (poss.id === this.props.user.id) return {...poss, email: event.target.value};
+      else return poss;
+    });
+    updateStore({ 
+      attendeesPossible: guestList, 
+      user: {...this.props.user, email: event.target.value},
+      email: event.target.value,
+    })(this.props.dispatch);
   }
 
   selectFirstName = (id) => {
@@ -212,6 +224,9 @@ class Rsvp extends Component {
       // Open the "Thanks for doing the RSVP" dialog:
       updateStore({ rsvpOpen: false, thanksOpen: true })(this.props.dispatch);
       setTimeout(this.closeThanks, 7000);
+
+      // Because at least one user is likely to have updated, get a new list of invitees:
+      getInvitees()(this.props.dispatch);
     }
     else {
       // "Your RSVP is missing something"
@@ -279,7 +294,7 @@ class Rsvp extends Component {
 
     const questionRow = (this.props.screenSize === "mobile")
       ? { padding: "20px 0", display: "block", minHeight: "100px", minWidth: "280px" }
-      : { padding: "6px 12px 6px 0px", display: "inline-table", minHeight: "100px", minWidth: "300px" };
+      : { padding: "0px", display: "inline-table", minHeight: "100px", minWidth: "300px" };
 
     const dropSelectBox = (this.props.screenSize === "mobile")
       ? { padding: "20px 0", display: "block", minHeight: "100px", minWidth: "280px" }
@@ -292,18 +307,22 @@ class Rsvp extends Component {
       : { display: "flex", overflowY: "hidden", padding: 3, margin: 3 };
 
     const rightColumnRsvp = (this.props.screenSize === "mobile")
-      ? { display: "block", margin: 0, padding: 0, }
-      : { display: "inline", width: "30% !important", };
+      ? { display: "block", margin: "0 0 8px 0", padding: 0, }
+      : { display: "block", width: "30% !important", margin: "0 0 8px 0" };
 
     const theRightColumn = (this.props.attending === true)
       ? ((this.props.screenSize === "mobile")
-          ? { padding: "20px 0", display: "block", minHeight: "100px", minWidth: "280px" }
-          : { padding: "6px 12px 6px 0px", display: "inline-table", minHeight: "100px", minWidth: "300px" })
+          ? { marginLeft: "8px", padding: "20px 0", display: "block", minHeight: "100px", minWidth: "280px" }
+          : { marginLeft: "8px", padding: "0px", display: "inline-table", minHeight: "100px", minWidth: "300px" })
       : { display: "none" };
+
+    const rightColumnWrapper = (this.props.screenSize === "mobile")
+          ? { marginLeft: "0px", padding: "20px 0", display: "block", minHeight: "100px", minWidth: "288px" }
+          : { marginLeft: "0px", padding: "0px", display: "inline-table", minHeight: "100px", minWidth: "308px" };
 
     const willAttendWrapperStyle = (this.props.screenSize === "mobile")
       ? { padding: "20px 0", display: "block", minHeight: "100px", minWidth: "280px" }
-      : { padding: "6px 12px 6px 0px", display: "flex", minHeight: "100px", minWidth: "300px" };
+      : { marginLeft: "8px", padding: "6px 12px 6px 0px", display: "flex", minHeight: "100px", minWidth: "300px" };
 
     const gridWrap = { display: "flex", flexWrap: "wrap", justifyContent: 'space-around', overflow: "hidden", };
 
@@ -333,6 +352,10 @@ class Rsvp extends Component {
     const shouldDisplay = (this.props.encounteredRsvpError) 
       ? "1" : "0"
 
+    const textFieldsStyle = (this.props.screenSize === "mobile")
+      ? { display: "block", marginRight: "12px" }
+      : { display: "inline-block", marginRight: "12px" };
+
     const errorTextStyle = (this.props.screenSize === "mobile")
       ? { padding: "20px",  
           fontSize: "18px", 
@@ -359,6 +382,22 @@ class Rsvp extends Component {
     const hideTheButton = (this.props.loggedIn === false)
       ? { visibility: "visible" }
       : { display: "none" };
+
+    const hideIfNotAttending = (this.props.attending === true)
+      ? { visibility: "visible", margin: 0, padding: 0 }
+      : { display: "none", margin: 0, padding: 0 };
+
+    const leftMarginNotMobile = (this.props.screenSize === "mobile")
+      ? {marginLeft: "-2px"}
+      : {marginLeft: "8px"};
+
+    const responsiveHorizSpacer = (this.props.screenSize === "mobile")
+      ? { width: "100%", height: "20px" }
+      : { width: "100%", height: "40px" };
+
+    const centerWhenLonely = (this.props.attending === false)
+      ? { margin: "0 auto", padding: 0 }
+      : { margin: 0, padding: 0 };
 
     const getFirstName = () => {
       if (this.props.user !== undefined) return this.props.user.firstName;
@@ -442,160 +481,153 @@ class Rsvp extends Component {
       ? (
         <div key="content3" style={questionRow}>
           <div className='thinHorizSpacer'/>
-          <div className='smallText block' style={mediumText}>guests:</div>
-          <Paper className='inlineBlock'>
-            <FormControl className='formControl'>
-                {this.props.attendeesPossible.map(attendee => (
-                  <MenuItem key={attendee.id} value={attendee}>
-                    <Checkbox 
-                      name='attendeesConfirmed'
-                      checked={attendee.attending === true}
-                      onChange={() => this.toggleCheckbox(attendee)} />
-                    {(this.props.firstNameSelected === attendee.id) 
-                      ? 
-                        <ClickAwayListener onClickAway={this.textify}>
-                          <TextField
-                            id="outlined-name"
-                            label="first name"
-                            className={'textfieldz'}
-                            inputProps={{autoFocus: true}}
-                            value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].firstName}
-                            onChange={(event) => this.handleNameChange(event, attendee.id, `firstName`)}
-                            margin="dense"
-                            variant="outlined"
-                          />
-                        </ClickAwayListener>
-                      : <ListItemText 
-                          primary={attendee.firstName} 
-                          onClick={(e) => this.editize(e, attendee.id, "firstName")}
-                        /> 
-                    }
-                    {(this.props.lastNameSelected === attendee.id) 
-                      ? 
-                        <ClickAwayListener onClickAway={this.textify}>
-                          <TextField
-                            id="outlined-name"
-                            label="last name"
-                            className={'textfieldz'}
-                            inputProps={{autoFocus: true}}
-                            value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].lastName}
-                            onChange={(event) => this.handleNameChange(event, attendee.id, `lastName`)}
-                            margin="dense"
-                            variant="outlined"
-                          />
-                        </ClickAwayListener>
-                      : <ListItemText 
-                          primary={attendee.lastName} 
-                          onClick={(e) => this.editize(e, attendee.id, "lastName")}
-                        /> 
-                    }
+          <div style={leftMarginNotMobile}>
+            <div className='smallText block' style={mediumText}>guests:</div>
+            <Paper className='inlineBlock'>
+              <FormControl className='formControl'>
+                  {this.props.attendeesPossible.map(attendee => (
+                    <MenuItem key={attendee.id} value={attendee}>
+                      <Checkbox 
+                        name='attendeesConfirmed'
+                        checked={attendee.attending === true}
+                        onChange={() => this.toggleCheckbox(attendee)} />
+                      {(this.props.firstNameSelected === attendee.id) 
+                        ? 
+                          <ClickAwayListener onClickAway={this.textify}>
+                            <TextField
+                              id="outlined-name"
+                              label="first name"
+                              className={'textfieldz'}
+                              inputProps={{autoFocus: true}}
+                              value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].firstName}
+                              onChange={(event) => this.handleNameChange(event, attendee.id, `firstName`)}
+                              margin="dense"
+                              variant="outlined"
+                            />
+                          </ClickAwayListener>
+                        : <ListItemText 
+                            primary={attendee.firstName} 
+                            onClick={(e) => this.editize(e, attendee.id, "firstName")}
+                          /> 
+                      }
+                      {(this.props.lastNameSelected === attendee.id) 
+                        ? 
+                          <ClickAwayListener onClickAway={this.textify}>
+                            <TextField
+                              id="outlined-name"
+                              label="last name"
+                              className={'textfieldz'}
+                              inputProps={{autoFocus: true}}
+                              value={this.props.attendeesPossible[this.props.attendeesPossible.indexOf(attendee)].lastName}
+                              onChange={(event) => this.handleNameChange(event, attendee.id, `lastName`)}
+                              margin="dense"
+                              variant="outlined"
+                            />
+                          </ClickAwayListener>
+                        : <ListItemText 
+                            primary={attendee.lastName} 
+                            onClick={(e) => this.editize(e, attendee.id, "lastName")}
+                          /> 
+                      }
 
-                    <div className='thinMarginBottom'/>
-                  </MenuItem>
-                ))}
-            </FormControl>
-          </Paper>
-
+                      <div className='thinMarginBottom'/>
+                    </MenuItem>
+                  ))}
+              </FormControl>
+            </Paper>
+          </div>
 
           <div className='fatHorizSpacer'/>
 
           <div style={{width: "100%", padding: 2, overflow: "hidden"}}>
+            <div className="leftColumnRsvp" style={leftColumnRsvp}>
+              <GridList >
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.numChildren} 
+                      name='numChildren'
+                      labelText='Number of children'
+                      optionsTexts={numberOfChildrenTexts()} 
+                      optionsValues={numberOfChildrenValues()} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-          <div className="leftColumnRsvp" style={leftColumnRsvp}>
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.arrivalDay} 
+                      name='arrivalDay'
+                      labelText='What day do you plan to arrive?'
+                      optionsTexts={arrivalDayValues} 
+                      optionsValues={arrivalDayValues} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-          <GridList >
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.departureDay} 
+                      name='departureDay'
+                      labelText='Day of departure'
+                      optionsTexts={departureDayValues} 
+                      optionsValues={departureDayValues} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.numChildren} 
-                  name='numChildren'
-                  labelText='Number of children'
-                  optionsTexts={numberOfChildrenTexts()} 
-                  optionsValues={numberOfChildrenValues()} 
-                  handleChange={this.handleChange} />
-              </div>
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.numVeg} 
+                      name='numVeg'
+                      labelText='Number of vegetarians'
+                      optionsTexts={numVegTexts()} 
+                      optionsValues={numVegValues()} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-            </GridListTile>
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.numNoDairy} 
+                      name='numNoDairy'
+                      labelText='Number of lactose-free'
+                      optionsTexts={numNoDairyTexts()} 
+                      optionsValues={numNoDairyValues()} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-            <GridListTile>
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.numNoGluten} 
+                      name='numNoGluten'
+                      labelText='Number of gluten-free'
+                      optionsTexts={numNoGlutenTexts()} 
+                      optionsValues={numNoGlutenValues()} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
 
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.arrivalDay} 
-                  name='arrivalDay'
-                  labelText='What day do you plan to arrive?'
-                  optionsTexts={arrivalDayValues} 
-                  optionsValues={arrivalDayValues} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.departureDay} 
-                  name='departureDay'
-                  labelText='Day of departure'
-                  optionsTexts={departureDayValues} 
-                  optionsValues={departureDayValues} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.numVeg} 
-                  name='numVeg'
-                  labelText='Number of vegetarians'
-                  optionsTexts={numVegTexts()} 
-                  optionsValues={numVegValues()} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.numNoDairy} 
-                  name='numNoDairy'
-                  labelText='Number of lactose-free'
-                  optionsTexts={numNoDairyTexts()} 
-                  optionsValues={numNoDairyValues()} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.numNoGluten} 
-                  name='numNoGluten'
-                  labelText='Number of gluten-free'
-                  optionsTexts={numNoGlutenTexts()} 
-                  optionsValues={numNoGlutenValues()} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            <GridListTile>
-              <div style={dropSelectBox}>
-                <DropSelect 
-                  value={this.props.lodging} 
-                  name='lodging'
-                  labelText='Where do you plan on lodging?'
-                  optionsTexts={lodgingTexts} 
-                  optionsValues={lodgingValues} 
-                  handleChange={this.handleChange} />
-              </div>
-            </GridListTile>
-
-            </GridList>
-
+                <GridListTile>
+                  <div style={dropSelectBox}>
+                    <DropSelect 
+                      value={this.props.lodging} 
+                      name='lodging'
+                      labelText='Where do you plan on lodging?'
+                      optionsTexts={lodgingTexts} 
+                      optionsValues={lodgingValues} 
+                      handleChange={this.handleChange} />
+                  </div>
+                </GridListTile>
+              </GridList>
+            </div>
           </div>
-
-        </div>
 
         </div>
         )
@@ -608,6 +640,7 @@ class Rsvp extends Component {
                 {rsvpHeaderText()}
               </div>
 
+              <div className="thinHorizSpacer"/>
               <div style={willAttendWrapperStyle}>
                 <div component="legend" className="smallText inline-block" style={willAttendStyle}>
                   Will you be attending the wedding?
@@ -637,41 +670,56 @@ class Rsvp extends Component {
                   </div>
                 </div>
               </div> 
-              <Divider />
 
               {theRestOfTheQuestions}
 
-
-              <div className="theRightColumn" style={theRightColumn}>
-                <div className="rightColumnRsvp" style={rightColumnRsvp}>
-                  <div style={{width: "300px !important"}}>
-                    <div className='smallText maxW300' style={labelText}>What meals do you expect to be around for?</div>
+              <div style={rightColumnWrapper}>
+                <div style={theRightColumn}>
+                  <div style={rightColumnRsvp}>
+                    <div style={{width: "300px !important"}}>
+                      <div className='smallText maxW300' style={labelText}>What meals do you expect to be around for?</div>
+                    </div>
+                    <Paper className='inlineBlock'>
+                      <FormControl className='formControl'>
+                          {mealValues.map((val, i) => (
+                            <MenuItem key={val} value={val}>
+                              <Checkbox 
+                                name='attendeesConfirmed'
+                                checked={this.props[val] === true}
+                                onChange={() => this.toggleMealCheckbox(val)} 
+                              />
+                              <Typography >{mealTexts[i]}</Typography>
+                            </MenuItem>)
+                          )}
+                      </FormControl>
+                    </Paper>
                   </div>
-                  <Paper className='inlineBlock'>
-                    <FormControl className='formControl'>
-                        {mealValues.map((val, i) => (
-                          <MenuItem key={val} value={val}>
-                            <Checkbox 
-                              name='attendeesConfirmed'
-                              checked={this.props[val] === true}
-                              onChange={() => this.toggleMealCheckbox(val)} 
-                            />
-                            <Typography >{mealTexts[i]}</Typography>
-                          </MenuItem>)
-                        )}
-                    </FormControl>
-                  </Paper>
                 </div>
-              </div>
 
-              <div className='thinHorizSpacer'/>
+                <div style={hideIfNotAttending}>
+                  <div style={responsiveHorizSpacer}/>
 
-              <div style={questionRow}>
-                <div className="smallText block" style={labelText}>Additional notes or comments</div>
-                <TextInput 
-                  handleChange={this.handleChange} 
-                  notes={this.props.additionalNotes}
-                />
+                  <form className='block emailForm' noValidate autoComplete="off">
+                    <TextInput
+                      version="wide"
+                      handleChange={this.handleEmailChange}
+                      value={this.props.email}
+                    />
+                  </form>
+
+                  <div style={responsiveHorizSpacer}/>
+                </div>
+
+                <div style={questionRow}>
+                  <div style={centerWhenLonely}>
+                    <TextInput 
+                      version="multiline"
+                      handleChange={this.handleChange} 
+                      value={this.props.additionalNotes}
+                    />
+                  </div>
+                </div>
+
               </div>
 
               <Snackbar
@@ -770,6 +818,7 @@ Rsvp.propTypes = {
   user: PropTypes.object,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
+  email: PropTypes.string,
   zipCode: PropTypes.string,
   attending: PropTypes.bool,
   lodging: PropTypes.string,
@@ -781,6 +830,11 @@ Rsvp.propTypes = {
   numInviteesAlotted: PropTypes.number,
   numAdults: PropTypes.number,
   numChildren: PropTypes.number,
+  FridayDinner: PropTypes.bool,
+  SaturdayBreakfast: PropTypes.bool,
+  SaturdayLunch: PropTypes.bool,
+  SaturdayDinner: PropTypes.bool,
+  SundayBrunch: PropTypes.bool,
   additionalNotes: PropTypes.string,
   submitted: PropTypes.bool,
   email: PropTypes.string,
@@ -794,7 +848,6 @@ const mapStateToProps = (state) => {
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
     thanksOpen: state.thanksOpen,
-
     user: state.user,
     rsvp: state.rsvp,
     attendeesPossible: state.attendeesPossible,

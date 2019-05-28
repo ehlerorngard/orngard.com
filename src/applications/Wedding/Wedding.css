@@ -339,8 +339,7 @@
 }
 .thinHorizSpacer {
 	width:  100%;
-	height: 1px;
-	margin-bottom: 24px;
+	height: 24px;
 }
 .maxW300 {
 	max-width: 290px !important;
