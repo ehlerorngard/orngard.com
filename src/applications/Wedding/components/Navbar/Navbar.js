@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Popover, Popper, Paper, Grow, ClickAwayListener, MenuList, MenuItem } from "@material-ui/core";
+import { Popper, Paper, Grow, ClickAwayListener, MenuList, MenuItem } from "@material-ui/core";
 import "../../Wedding.css";
-import { updateStore } from "./navbarActions.js";
-import Drop from "../Drop/Drop.js";
+import { updateStore } from "../../utils/action.js";
 
 export class Navbar extends Component {
 	constructor(props) {
@@ -55,10 +54,9 @@ export class Navbar extends Component {
   }
 
   goToLogin = () => {
-    console.log("goToLogin NAVBAR firing...");
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
-  
+
   logout = () => {
     updateStore({ 
       user: { firstName: null },
@@ -154,9 +152,9 @@ export class Navbar extends Component {
                     <div className="navButtonText">
                 			{(this.props.user && this.props.user.firstName !== null) ? this.props.user.firstName : `stranger`}
                 		</div>
-                		<img className="material-icons mIcons navIconMarginBottom" src={avatar} style={iconStyle}/>
+                		<img className="material-icons mIcons navIconMarginBottom" alt='' src={avatar} style={iconStyle}/>
                   </div>)
-                : (<img className="material-icons mIcons alignCenter" src={avatar} style={iconStyle}/>)
+                : (<img className="material-icons mIcons alignCenter" alt='' src={avatar} style={iconStyle}/>)
               }
           	</div>
 
@@ -166,9 +164,9 @@ export class Navbar extends Component {
                   <div className="navButtonText" style={buttonStyle}>
                     menu
                   </div>
-                  <img className="material-icons mIcons navIconMarginBottom" src={menuIcon} style={iconStyle}/>
+                  <img className="material-icons mIcons navIconMarginBottom" alt='' src={menuIcon} style={iconStyle}/>
                 </div>)
-              : (<img className="material-icons mIcons alignCenter" src={menuIcon} style={iconStyle}/>)}
+              : (<img className="material-icons mIcons alignCenter" alt='' src={menuIcon} style={iconStyle}/>)}
             </div>
           </div>
 
@@ -200,7 +198,6 @@ export class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  // field3: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 	user: PropTypes.object,
 	sidebarVisible: PropTypes.bool,
 	scrolledToTop: PropTypes.bool,
@@ -208,6 +205,7 @@ Navbar.propTypes = {
 	hideSidebar: PropTypes.func,
 	anchorEl: PropTypes.object,
 	dropOpen: PropTypes.bool,
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
 }
 
 const mapStateToProps = (state) => {

@@ -5,13 +5,9 @@ import { Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
 
-// The `withStyles()` higher-order component is injecting a `classes` property
-
-import cx from 'classnames';
-
-
+// The `withStyles()` higher-order component is injecting a `classes` property,
+// which includes the styles delineated below, used to override defaults.
 const styles = theme => ({
-
   message: {
     fontSize: "20px",
     maxWidth: 500,
@@ -28,8 +24,8 @@ const styles = theme => ({
       marginBottom: 12,
     },
   },
-
 });
+
 
 class ErrorSnackbar extends Component {
   constructor(props) {

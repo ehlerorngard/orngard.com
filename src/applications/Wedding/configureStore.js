@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
-// import masterReducer from './masterReducer.js';
 import thunkMiddleware from "redux-thunk";
 import reducer from "./utils/reducer.js";
 
@@ -31,7 +30,6 @@ export default function configureStore(initialState = {}, history) {
 
   const store = createStore(
     reducer,
-    // potatoReducer,
     fromJS({...initialState}),
     composeEnhancers(...enhancers)
   );

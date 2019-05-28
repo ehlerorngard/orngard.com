@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from "prop-types";
@@ -30,7 +28,7 @@ export class Main extends Component {
   }
 
 	componentDidMount() {
-    // DOM elements must have fully loaded for refs to have 
+    // DOM elements must be fully loaded for refs to have 
     // accurate "offsetTop" properties; the hereupon is essentially 
     // a backup in case more certainly accurate values for 
     // element locations are not set / not set in time 
@@ -69,19 +67,21 @@ export class Main extends Component {
     setTimeout(this.closeSuccessSnackbar, 5000);
   }
   goToLogin = () => {
-    console.log("goToLogin in MAIN firing...");
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
+  }
+  goToContact = () => {
+    updateStore({ 
+      contactOpen: true,
+    })(this.props.dispatch);
   }
 
   copyToClipboard = (text) => {
-    navigator.permissions.query({name: "clipboard-write"}).then(result => {
-      console.log('nav permissions: ', result.state);
-    });
+    navigator.permissions.query({name: "clipboard-write"});
 
     navigator.clipboard.writeText(text).then(function() {
-      console.log('successfully copied', text);
+      console.log('The following text was successfully copied:', text);
     }, function() {
-      console.log('NOT copied', text);
+      console.log('The following was NOT copied:', text);
     });
   }
 
@@ -145,7 +145,7 @@ export class Main extends Component {
   	const px56 = { fontSize: "56px" };
     const px48 = { fontSize: "48px" };
   	const px32 = { fontSize: "32px" }; 
-  	const px28 = { fontSize: "28px" }; 
+  	const px26 = { fontSize: "28px" }; 
     const px24 = { fontSize: "24px" }; 
     const px16 = { fontSize: "16px" }; 
 
@@ -153,8 +153,8 @@ export class Main extends Component {
   	const adventureText = () => {
   		if (this.props.scrolledToTop) {
   			if (this.props.screenSize === "mobile") return { opacity: 1, fontSize: "56px", paddingLeft: "100px" }
-				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "96px", paddingLeft: "140px" }
-				else return { opacity: 1, fontSize: "108px",paddingLeft: "200px" }
+				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "84px", paddingLeft: "140px" }
+				else return { opacity: 1, fontSize: "96px",paddingLeft: "200px" }
   		}
   		else if (this.props.screenSize === "mobile") return { opacity: 0, fontSize: "56px" }
   		else return { opacity: 0, fontSize: "96px" }
@@ -191,10 +191,12 @@ export class Main extends Component {
 
   	const smallText = (this.props.screenSize === "mobile") 
       ? px16
-  		: px28;
+  		: px26;
     const gettingMarried = (this.props.screenSize === "mobile")
       ? { fontSize: "64px", }
-      : { fontSize: "136px", };
+      : (this.props.screenSize === "tablet")
+        ? { fontSize: "96px", }
+        : { fontSize: "136px", };
     const dayOfTheWeek = (this.props.screenSize === "mobile")
       ? { fontSize: "32px", }
       : { fontSize: "64px", };
@@ -209,11 +211,15 @@ export class Main extends Component {
       : { fontSize: "48px", margin: "0", };
     const headerIcon = { margin: "0 18px", };
     const timeBox = (this.props.screenSize === "mobile")
-      ? { fontSize: "16px", margin: "0", display: "inline-flex", width: four16.width, fontWeight: 700, height: "100%", }
-      : { fontSize: "28px", margin: "0", display: "inline-flex", width: two16.width, fontWeight: 700, height: "100%", };
+      ? { fontSize: "18px", margin: "0", display: "inline-flex", width: four16.width, fontWeight: 700, height: "100%", }
+      : (this.props.screenSize === "tablet")
+        ? { fontSize: "22px", margin: "0", display: "inline-flex", width: three16.width, fontWeight: 700, height: "100%", }
+        : { fontSize: "28px", margin: "0", display: "inline-flex", width: two16.width, fontWeight: 700, height: "100%", };
     const eventBox = (this.props.screenSize === "mobile")
-      ? { fontSize: "16px", margin: "0", display: "inline-flex", width: nine16.width, }
-      : { fontSize: "28px", margin: "0", display: "inline-flex", width: eight16.width, };
+      ? { fontSize: "17px", margin: "0", display: "inline-flex", width: nine16.width, }
+      : (this.props.screenSize === "tablet")
+        ? { fontSize: "22px", margin: "0", display: "inline-flex", width: nine16.width, }
+        : { fontSize: "28px", margin: "0", display: "inline-flex", width: eight16.width, };
     const gridBoxLeft = (this.props.screenSize === "mobile")
       ? { fontSize: "16px", margin: "0 auto", display: "block", width: "100%", textAlign: "center", }
       : { fontSize: "28px", margin: "0", display: "inline-flex", width: three16.width, };
@@ -232,10 +238,13 @@ export class Main extends Component {
   	}
     const smallCategoryHeader = (this.props.screenSize === 'mobile')
       ? { fontSize: "24px", fontWeight: 700, }
-      : { fontSize: "40px", fontWeight: 700, };
+      : { fontSize: "36px", fontWeight: 700, };
     const loginButtonStyle = (this.props.screenSize === 'mobile')
-      ? { background: "#438466", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "10px 16px", display: "inline-table", }
-      : { background: "#438466", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "10px 16px", display: "inline-table", };
+      ? { background: "#438481", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "10px 16px", display: "inline-table", }
+      : { background: "#438481", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "16px 22px", display: "inline-table", };
+    const contactButtonStyle = (this.props.screenSize === 'mobile')
+      ? { background: "#437284", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "10px 16px", display: "inline-table", }
+      : { background: "#437284", color: "white", border: "solid gray 1px", borderRadius: "4px", margin: "4px 12px", padding: "16px 22px", display: "inline-table", };
     const paddingLeftWrapper = (this.props.screenSize === 'mobile')
       ? { paddingLeft: two16.width }
       : { paddingLeft: one16.width };
@@ -367,7 +376,7 @@ export class Main extends Component {
         		<div style={mainBody()}>
         			<div className="downArrowRow">
         				<div style={eleven32} />
-        				<img className="material-icons mIcons downArrow" src={downArrow} style={downArrowMove()}/>
+        				<img alt='' className="material-icons mIcons downArrow" src={downArrow} style={downArrowMove()}/>
         			</div>
         			<div className='gettingMarriedText' style={gettingMarried} ref={this.whereAndWhenRef}>
                 We're Getting Married!
@@ -393,6 +402,7 @@ export class Main extends Component {
                 <div className="alignTextCenter fatMarginBottom">
                   <span className="sacramento" style={booneCounty}>Boone County</span>, Iowa
                 </div>
+                <div className="thinHorizSpacer" />
               </div>              
         		</div>	
 						<div style={three16}/>
@@ -406,7 +416,7 @@ export class Main extends Component {
         	<div className="bigRow2" ref={this.scheduleRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
-        			<div className='header fatMarginBottom' style={header()}>schedule<span style={headerIcon}><img className="material-icons mIcons" src={calendar} style={iconStyle}/></span></div>
+        			<div className='header fatMarginBottom' style={header()}>schedule<span style={headerIcon}><img alt='' className="material-icons mIcons" src={calendar} style={iconStyle}/></span></div>
         			<div className='bajoHeader'>
         				<div className='bajoHeaderFont' style={categoryHeader()}>Friday:</div>
         				<div className='smallText2' style={smallText}>
@@ -473,7 +483,7 @@ export class Main extends Component {
         		<div style={mainBody()}>
         			<div className='header' 
               onClick={this.getDivTops}
-              style={header()}>where to stay<img className="material-icons mIcons" src={bed} style={iconStyle}/></div>
+              style={header()}>where to stay<img alt='' className="material-icons mIcons" src={bed} style={iconStyle}/></div>
         			
               <div className='bajoHeader'>
                 <div className='bajoHeaderFont' style={categoryHeader()}>camping:</div>
@@ -492,7 +502,7 @@ export class Main extends Component {
               </div>
               <div className='smallText thinMarginBottom' style={smallText}>
                 If you are coming from a long distance, or don’t already have gear, 
-                we are partnering with <a className='bold linkAway' target='_blank' href='https://www.lowergear.com/'>Lower Gear Rentals</a> located in Arizona for camping rentals.  
+                we are partnering with <a className='bold linkAway' target='_blank' rel="noopener noreferrer" href='https://www.lowergear.com/'>Lower Gear Rentals</a> located in Arizona for camping rentals.  
                 A basic 2-person package including a tent, sleeping bags, mattress pads, and 
                 shipping cost will run close to $85 per person for the whole weekend. They will ship 
                 directly to the farm and we’ll have it waiting for you!  We will also take care of 
@@ -506,7 +516,7 @@ export class Main extends Component {
                   {(this.props.loggedIn === true) 
                     ? (<div><div className='block'>924 118th Street</div> 
                        <div className='block' >Pilot Mound, IA 50223</div></div>)
-                    : (<div className='loginButton' style={loginButtonStyle} onClick={this.goToLogin}>log in to see address</div>)}
+                    : (<div className='loginButton bold' style={loginButtonStyle} onClick={this.goToLogin}>log in to see address</div>)}
                 </div>
               </div>
               <div className='smallText thinMarginBottom' style={smallText}>
@@ -527,11 +537,11 @@ export class Main extends Component {
                 </div>
 
                 <div className='smallText block skinnyMarginBottom' style={smallCategoryHeader}>
-                  <a className='bold linkAwayHeader noDec' target='_blank' href='https://www.wyndhamhotels.com/baymont/boone-iowa/baymont-inn-suites-boone/overview?CID=LC:BU::GGL:RIO:National:70199&iata=00065402'>
+                  <a className='bold linkAwayHeader noDec' target='_blank' rel="noopener noreferrer" href='https://www.wyndhamhotels.com/baymont/boone-iowa/baymont-inn-suites-boone/overview?CID=LC:BU::GGL:RIO:National:70199&iata=00065402'>
                   Baymont Inn </a><span className='normalWeight'>
                   <span style={hideOnMobile}>located in </span>Boone <span className='block'/>
                   <span className='mediumGray' style={mediumSmallText}>
-                  <img className="material-icons mIcons smallMarginRight" src={car} style={smallIconStyle}/>
+                  <img alt='' className="material-icons mIcons smallMarginRight" src={car} style={smallIconStyle}/>
                   23 minutes <span style={hideOnMobile}>away </span>from the farm</span></span>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
@@ -552,11 +562,11 @@ export class Main extends Component {
                 </div>
 
                 <div className='smallText block bold skinnyMarginBottom' style={smallCategoryHeader}>
-                  <a className='bold linkAwayHeader noDec' target='_blank' href='https://www.radisson.com/ames-hotel-ia-50010/usaamia?s_cid=os.amer-us-rad-usaamia-gmb'>
+                  <a className='bold linkAwayHeader noDec' target='_blank' rel="noopener noreferrer" href='https://www.radisson.com/ames-hotel-ia-50010/usaamia?s_cid=os.amer-us-rad-usaamia-gmb'>
                   Radisson Hotel </a><span className='normalWeight'>
                   <span style={hideOnMobile}>located in </span>Ames <span className='block'/>
                   <span className='mediumGray' style={mediumSmallText}>
-                  <img className="material-icons mIcons smallMarginRight" src={car} style={smallIconStyle}/>
+                  <img alt='' className="material-icons mIcons smallMarginRight" src={car} style={smallIconStyle}/>
                   35 minutes <span style={hideOnMobile}>away </span>from the farm</span></span>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
@@ -600,7 +610,7 @@ export class Main extends Component {
         	<div className="bigRow4" ref={this.whatToBringRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
-        			<div className='header' style={header()}>what to bring<img className="material-icons mIcons" src={suitcase} style={iconStyle}/></div>
+        			<div className='header' style={header()}>what to bring<img alt='' className="material-icons mIcons" src={suitcase} style={iconStyle}/></div>
         			<div className='bajoHeader'>
                 <div className='bajoHeaderFont' style={categoryHeader()}>If you're...</div>
                 <div style={notFancyOnMobile}>camping:</div>
@@ -617,7 +627,7 @@ export class Main extends Component {
                   • ear plugs <span className='italic'>(if you’re a light sleeper)</span> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  • a pillow <span className='italic'>(we love <a className='linkAway' target='_blank' href='https://www.amazon.com/Trekology-Ultralight-Inflating-Camping-Pillows/dp/B072M4M4VT/ref=sr_1_3?crid=1M8E5RGWMMHLX&keywords=inflatable+pillow+camping&qid=1555292011&s=gateway&sprefix=inflatable+pillow+%2Caps%2C202&sr=8-3'
+                  • a pillow <span className='italic'>(we love <a className='linkAway' target='_blank' rel="noopener noreferrer" href='https://www.amazon.com/Trekology-Ultralight-Inflating-Camping-Pillows/dp/B072M4M4VT/ref=sr_1_3?crid=1M8E5RGWMMHLX&keywords=inflatable+pillow+camping&qid=1555292011&s=gateway&sprefix=inflatable+pillow+%2Caps%2C202&sr=8-3'
                     >this one</a>)</span>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}> 
@@ -636,7 +646,7 @@ export class Main extends Component {
                   • Layers - you never know what the weather in the Midwest will do!
                 </div> 
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  • Eucalyptus oil for natural, DEET-free <a className='linkAway' target='_blank' href='https://www.amazon.com/dp/B01INIXAHA/ref=psdc_3737951_t3_B004N59OFU'>bug repellent</a>
+                  • Eucalyptus oil for natural, DEET-free <a className='linkAway' target='_blank' rel="noopener noreferrer" href='https://www.amazon.com/dp/B01INIXAHA/ref=psdc_3737951_t3_B004N59OFU'>bug repellent</a>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
                   • Sunscreen/Sunglasses/Hat
@@ -653,7 +663,7 @@ export class Main extends Component {
               </div>
 
               <div className='fatHorizSpacer' ref={this.faqsRef}/>
-              <div className='smallText bold purplish' style={header()}>FAQs<img className="material-icons mIcons" src={suitcase} style={iconStyle}/></div>
+              <div className='smallText bold purplish' style={header()}>FAQs<img alt='' className="material-icons mIcons" src={suitcase} style={iconStyle}/></div>
               <div className='bajoHeader'>
                 <div className='smallText bold' style={smallCategoryHeader}>What should I wear?</div>
                 <div className='smallText block fatMarginBottom' style={smallText}>
@@ -664,7 +674,7 @@ export class Main extends Component {
                   smell like campfire!
                 </div>
                 <div className='smallText bold' style={smallCategoryHeader}>What will the weather be like?
-                  <img className="material-icons mIcons" src={cloud} style={iconStyle}/>
+                  <img alt='' className="material-icons mIcons" src={cloud} style={iconStyle}/>
                 </div>
                 <div className='smallText block fatMarginBottom' style={smallText}>
                   The festivities will be primarily outdoors, barring heavier precipitation.
@@ -695,22 +705,22 @@ export class Main extends Component {
                   Are there any fun things to do in the area?
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.iowadnr.gov/Places-to-Go/State-Parks/Iowa-State-Parks/ParkDetails/ParkID/610148'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.iowadnr.gov/Places-to-Go/State-Parks/Iowa-State-Parks/ParkDetails/ParkID/610148'>
                     Ledges State Park
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://bsvrr.com/wp/'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://bsvrr.com/wp/'>
                     Boone & Scenic Valley Railroad
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.traveliowa.com/trails/high-trestle-trail/28/'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.traveliowa.com/trails/high-trestle-trail/28/'>
                     High Trestle Bike Trail
                   </a> 
                 </div>
                 <div className='smallText block fatMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.iowadnr.gov/Places-to-Go/State-Parks/Iowa-State-Parks/ParkDetails/ParkID/610107'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.iowadnr.gov/Places-to-Go/State-Parks/Iowa-State-Parks/ParkDetails/ParkID/610107'>
                     Dolliver State Park
                   </a> 
                 </div>
@@ -719,58 +729,58 @@ export class Main extends Component {
                   Nearby places for food, coffee, wine, and beer:
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Provisions+Lot+F/@42.0006777,-93.6379568,16z/data=!4m8!1m2!3m1!2sProvisions+Lot+F!3m4!1s0x87ee7a4274884ccd:0x16748809eac337f7!8m2!3d42.0007278!4d-93.6355627'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Provisions+Lot+F/@42.0006777,-93.6379568,16z/data=!4m8!1m2!3m1!2sProvisions+Lot+F!3m4!1s0x87ee7a4274884ccd:0x16748809eac337f7!8m2!3d42.0007278!4d-93.6355627'>
                     Provisions
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/The+Cafe/@42.0487255,-93.6458522,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70c2eeb686bb:0x7b7d9600cdf75960!8m2!3d42.0487215!4d-93.6436635'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/The+Cafe/@42.0487255,-93.6458522,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70c2eeb686bb:0x7b7d9600cdf75960!8m2!3d42.0487215!4d-93.6436635'>
                     the Café
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/India+Palace/@42.0219132,-93.6536491,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70a7db3c8511:0x1ba56ae81d88bea!8m2!3d42.0219092!4d-93.6514604'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/India+Palace/@42.0219132,-93.6536491,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70a7db3c8511:0x1ba56ae81d88bea!8m2!3d42.0219092!4d-93.6514604'>
                     India Palace
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Indian+Delights/@42.0218801,-93.6739096,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee77579c8a8b3b:0x9f0c736c9871fe8b!8m2!3d42.0218761!4d-93.6717209'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Indian+Delights/@42.0218801,-93.6739096,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee77579c8a8b3b:0x9f0c736c9871fe8b!8m2!3d42.0218761!4d-93.6717209'>
                     Indian Delights
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Cafe+Beaudelaire/@42.0225186,-93.652676,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70a7b253cccd:0x2b92310127cf2502!8m2!3d42.0225146!4d-93.6504873'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Cafe+Beaudelaire/@42.0225186,-93.652676,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70a7b253cccd:0x2b92310127cf2502!8m2!3d42.0225146!4d-93.6504873'>
                     Café Beaudelaire
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Bar+La+Tosca/@42.0248252,-93.6177273,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70793e72490f:0xa2071c00ba7a3879!8m2!3d42.0248212!4d-93.6155386'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Bar+La+Tosca/@42.0248252,-93.6177273,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee70793e72490f:0xa2071c00ba7a3879!8m2!3d42.0248212!4d-93.6155386'>
                     Bar La Tosca
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Stomping+Grounds+Cafe/@42.02015,-93.6527504,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee7a0826b61ec5:0x5940ed366cdfcff6!8m2!3d42.020146!4d-93.6505617'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Stomping+Grounds+Cafe/@42.02015,-93.6527504,17z/data=!3m1!4b1!4m5!3m4!1s0x87ee7a0826b61ec5:0x5940ed366cdfcff6!8m2!3d42.020146!4d-93.6505617'>
                     Stomping Grounds <span className='italic'>(coffee shop + food)</span>
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Prairie+Moon+Winery/@42.0781995,-93.6706547,16.94z/data=!4m5!3m4!1s0x87ee76c8353d3325:0x5f80cf77ecc6bab5!8m2!3d42.078118!4d-93.670624'>
-                    Prairie Moon Winery / </a><a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Alluvial+Brewing+Company/@42.0787225,-93.670129,16.94z/data=!4m12!1m6!3m5!1s0x87ee76c8353d3325:0x5f80cf77ecc6bab5!2sPrairie+Moon+Winery!8m2!3d42.078118!4d-93.670624!3m4!1s0x0:0x4867ec0dcb1ff6b3!8m2!3d42.0797398!4d-93.66662'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Prairie+Moon+Winery/@42.0781995,-93.6706547,16.94z/data=!4m5!3m4!1s0x87ee76c8353d3325:0x5f80cf77ecc6bab5!8m2!3d42.078118!4d-93.670624'>
+                    Prairie Moon Winery / </a><a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Alluvial+Brewing+Company/@42.0787225,-93.670129,16.94z/data=!4m12!1m6!3m5!1s0x87ee76c8353d3325:0x5f80cf77ecc6bab5!2sPrairie+Moon+Winery!8m2!3d42.078118!4d-93.670624!3m4!1s0x0:0x4867ec0dcb1ff6b3!8m2!3d42.0797398!4d-93.66662'>
                     Alluvial Brewing Co.
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href='https://www.google.com/maps/place/Boone+Valley+Brewing+Co/@42.062589,-93.8828623,17z/data=!3m1!4b1!4m5!3m4!1s0x87eddb10acee2973:0xe1f3875b671386b0!8m2!3d42.062585!4d-93.8806736'>
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/Boone+Valley+Brewing+Co/@42.062589,-93.8828623,17z/data=!3m1!4b1!4m5!3m4!1s0x87eddb10acee2973:0xe1f3875b671386b0!8m2!3d42.062585!4d-93.8806736'>
                     Boone Valley Brewing Co.
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href="https://www.google.com/maps/place/The+Livery+Deli/@42.0627105,-93.8812074,17z/data=!4m8!1m2!3m1!2sThe+Livery+Deli!3m4!1s0x87eddb1756cfaacd:0x6f18cb50cb788a6a!8m2!3d42.0625955!4d-93.8812034">
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href="https://www.google.com/maps/place/The+Livery+Deli/@42.0627105,-93.8812074,17z/data=!4m8!1m2!3m1!2sThe+Livery+Deli!3m4!1s0x87eddb1756cfaacd:0x6f18cb50cb788a6a!8m2!3d42.0625955!4d-93.8812034">
                     the Livery Deli
                   </a> 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <a className='bold linkAway noDec' target='_blank' href="https://www.google.com/maps/place/Van+Hemert's+Dutch+Oven+Bakery+-+Boone,+IA/@42.0627105,-93.8812074,17z/data=!4m8!1m2!3m1!2sVan+Hemert's+Dutch+Oven+Bakery+-+Boone,+IA!3m4!1s0x87eddb1a0fadbb81:0xfeb4477bb53e252!8m2!3d42.0620558!4d-93.8802103">
+                  <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href="https://www.google.com/maps/place/Van+Hemert's+Dutch+Oven+Bakery+-+Boone,+IA/@42.0627105,-93.8812074,17z/data=!4m8!1m2!3m1!2sVan+Hemert's+Dutch+Oven+Bakery+-+Boone,+IA!3m4!1s0x87eddb1a0fadbb81:0xfeb4477bb53e252!8m2!3d42.0620558!4d-93.8802103">
                     Dutch Oven Bakery
                   </a> 
                 </div>
@@ -800,7 +810,7 @@ export class Main extends Component {
 
         			<div className='bajoHeader'>
         				<div className='bajoHeaderFont' style={categoryHeader()}>
-                  <img className="material-icons mIcons" src={food} style={iconStyle}/>
+                  <img alt='' className="material-icons mIcons" src={food} style={iconStyle}/>
                   Potluck
                 </div>
         				<div className='smallText' style={smallText}>
@@ -843,12 +853,12 @@ export class Main extends Component {
                       <div className='fatHorizSpacer'/>
                       <div className='bajoHeaderFont' style={categoryHeader()}>
                         driving
-                        <img className="material-icons mIcons" src={car} style={iconStyle}/>
+                        <img alt='' className="material-icons mIcons" src={car} style={iconStyle}/>
                         <div style={responsiveHorizSpacer}/>
                         <div style={paddingLeftWrapperNotOnMobile}>
                           <div className='smallText block skinnyMarginBottom' style={smallText}>
-                            <a className='bold mapsButton noDec' target='_blank' href='https://www.google.com/maps/place/924+118th+St,+Pilot+Mound,+IA+50223/@42.1726934,-94.0129144,13z/'>
-                              GoogleMaps<img className="material-icons mIcons whiteIcon" src={directions} style={smallIconStyle}/>
+                            <a className='bold mapsButton noDec' target='_blank' rel="noopener noreferrer" href='https://www.google.com/maps/place/924+118th+St,+Pilot+Mound,+IA+50223/@42.1726934,-94.0129144,13z/'>
+                              GoogleMaps<img alt='' className="material-icons mIcons whiteIcon" src={directions} style={smallIconStyle}/>
                             </a> 
                           </div>
 
@@ -864,7 +874,7 @@ export class Main extends Component {
                       <div className='fatHorizSpacer'/>
                       <div className='bajoHeaderFont' style={categoryHeader()}>
                         flying
-                        <img className="material-icons mIcons" src={airplane} style={iconStyle}/>
+                        <img alt='' className="material-icons mIcons" src={airplane} style={iconStyle}/>
                         <div style={paddingLeftWrapperNotOnMobile}>
                           <div className='smallText block skinnyMarginBottom' style={smallText}>
                             Des Moines (<span className='bold'>DSM</span>) <span style={breakOnMobile}/>is the nearest airport, at just over an hour away.
@@ -898,20 +908,20 @@ export class Main extends Component {
                     </div>)
                   : (<div>
                       <div className='bajoHeaderFont' style={categoryHeader()}>address</div>
-                      <div className='loginButton' style={loginButtonStyle} onClick={this.goToLogin}>
+                      <div className='loginButton bold' style={loginButtonStyle} onClick={this.goToLogin}>
                         log in to get address
-                        <img className="material-icons mIcons" src={navArrow} style={smallIconStyle}/>
+                        <img alt='' className="material-icons mIcons" src={navArrow} style={smallIconStyle}/>
                       </div>
 
                       <div className='fatHorizSpacer'/>
                       <div className='bajoHeaderFont' style={categoryHeader()}>
                         driving
-                        <img className="material-icons mIcons" src={car} style={iconStyle}/>
+                        <img alt='' className="material-icons mIcons" src={car} style={iconStyle}/>
                         <div style={responsiveHorizSpacer}/>
                         <div style={paddingLeftWrapperNotOnMobile}>
                           <div className='block skinnyMarginBottom' style={smallText}>
                             <div className='bold mapsButton noDec inlineTable' onClick={this.goToLogin}>
-                              GoogleMaps<img className="material-icons mIcons whiteIcon" src={directions} style={smallIconStyle}/>
+                              GoogleMaps<img alt='' className="material-icons mIcons whiteIcon" src={directions} style={smallIconStyle}/>
                             </div> 
                           </div>
                           <div className='fatHorizSpacer'/>
@@ -920,7 +930,7 @@ export class Main extends Component {
 
                       <div className='bajoHeaderFont' style={categoryHeader()}>
                         flying
-                        <img className="material-icons mIcons" src={airplane} style={iconStyle}/>
+                        <img alt='' className="material-icons mIcons" src={airplane} style={iconStyle}/>
                         <div style={paddingLeftWrapperNotOnMobile}>
                           <div className='smallText block skinnyMarginBottom' style={smallText}>
                             Des Moines (<span className='bold'>DSM</span>) <span style={breakOnMobile}/>is the nearest airport, at just over an hour away.
@@ -967,7 +977,7 @@ export class Main extends Component {
         		<div style={mainBody()}>
         			<div className='header' style={header()}>
                 contact info
-                <img className="material-icons mIcons" src={phone} style={smallIconStyle}/>
+                <img alt='' className="material-icons mIcons" src={phone} style={smallIconStyle}/>
               </div>
         			<div className='bajoHeader'></div>
         			<div className='smallText' style={smallText}>
@@ -990,7 +1000,17 @@ export class Main extends Component {
                           <span style={breakOnMobile}>(515)290-5972</span>
                         </div>
                     </div>)
-                  : (<div className='loginButton' style={loginButtonStyle} onClick={this.goToLogin}>log in to see contact info</div>)
+                  : (<div>
+                      <div className='loginButton bold' style={loginButtonStyle} onClick={this.goToLogin}>
+                        log in to see contact info
+                      </div>
+                      <div className='thinMarginBottom'/>
+                      <div className='block mediumMarginLeft bold'>or</div>
+                      <div className='thinMarginBottom'/>
+                      <div className='loginButton bold' style={contactButtonStyle} onClick={this.goToContact}>
+                        send us a message
+                      </div>
+                    </div>)
                 }
         			</div>
         		</div>	
@@ -1021,10 +1041,14 @@ export class Main extends Component {
 }
 
 Main.propTypes = {
-  // field3: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 	scrolledToTop: PropTypes.bool,
-	screenSize: PropTypes.string,
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
   divTops: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  successText: PropTypes.string,
+  contactSuccessSnackbarOpen: PropTypes.bool,
+  loginSuccessSnackbarOpen: PropTypes.bool,
+  contactOpen: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => {
@@ -1035,6 +1059,7 @@ const mapStateToProps = (state) => {
     divTops: state.divTops,
     contactSuccessSnackbarOpen: state.contactSuccessSnackbarOpen,
     loginSuccessSnackbarOpen: state.loginSuccessSnackbarOpen,
+    contactOpen: true,
     successText: state.successText,
 	}
 }

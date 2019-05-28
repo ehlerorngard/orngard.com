@@ -2,26 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { withStyles } from '@material-ui/core/styles';
 import { FormControl, Select, Input, InputLabel, MenuItem } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
 
 
-// The `withStyles()` higher-order component is injecting a `classes` property
-
-import cx from 'classnames';
-
-
+// The `withStyles()` higher-order component is injecting a `classes` property,
+// which includes the styles delineated below, used to override defaults.
 const styles = theme => ({
-  root: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-  },
   inputLabel: {
     fontSize: '1.2rem',
   },
   dropSelect: {
     margin: 0,
     minWidth: 160,
-
   },
   select: {
     minHeight: '1.5em',
@@ -32,7 +23,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
   },
   menuItem: {
-    fontSize: '1.5rem',
+    fontSize: '1.25rem',
   },
   input: {
     fontSize: '1.25rem',
@@ -40,6 +31,7 @@ const styles = theme => ({
     paddingTop: '18px',
   },
 });
+
 
 class DropSelect extends Component {
   constructor(props) {

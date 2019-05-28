@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -94,7 +92,7 @@ class Menubar extends Component {
 Menubar.propTypes = {
   sidebarVisible: PropTypes.bool,
   scrolledToTop: PropTypes.bool,
-  screenSize: PropTypes.string,
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
 }
 
 const mapStateToProps = (state) => {

@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel, Checkbox, ListItemText, ListItemIcon, Paper, MenuList, Snackbar, IconButton, GridList, GridListTile, ClickAwayListener, Typography } from "@material-ui/core";
+import { Send, Close } from '@material-ui/icons';
 import { updateStore, updateRsvp, getRsvp, getInvitee, updateInvitee } from "../../utils/action.js";
 import "../../Wedding.css";
 
 import DropSelect from './DropSelect.js';
 import TextInput from './TextInput.js';
 import ErrorSnackbar from '../Snackbar/ErrorSnackbar.js';
-
-import { Send, Close } from '@material-ui/icons';
-
-import requester from "../../utils/requester.js";
 
 
 class Rsvp extends Component {
@@ -70,7 +67,6 @@ class Rsvp extends Component {
   }
 
   selectFirstName = (id) => {
-    console.log('selecting first name ', id);
     updateStore({ firstNameSelected: id })(this.props.dispatch);
   }
 
@@ -91,8 +87,6 @@ class Rsvp extends Component {
   }
 
   editize = (e, id, name) => {
-    console.log('editize triggered...');
-
     updateStore({ [name + "Selected"]: id })(this.props.dispatch);
   }
 
@@ -122,7 +116,7 @@ class Rsvp extends Component {
   }
 
   validate = () => {
-    const { attending, firstName, lastName, lodging, arrivalDay, departureDay } = this.props;
+    const { attending, lodging, arrivalDay, departureDay } = this.props;
     // Make sure all inputs are fulfilled as required;
     // if not, update the error text and return "false", 
     // preventing a PUT call to the database:
@@ -439,7 +433,7 @@ class Rsvp extends Component {
         label="submit"
         key={true}
         onClick={this.submit}>
-        submit
+          submit<span style={{width: "10px", height: "4px"}}/>
         <Send/>
       </Button>,
     ];
@@ -625,7 +619,7 @@ class Rsvp extends Component {
                       onChange={this.handleChangeAttending}
                       value={true}
                       name="attending"
-                      aria-label="true"
+                      aria-label="'true'"
                       className="inline-block"
                     />
                     <FormLabel className="inline-block">yes</FormLabel>
@@ -636,7 +630,7 @@ class Rsvp extends Component {
                       onChange={this.handleChangeAttending}
                       value={false}
                       name="attending"
-                      aria-label="false"
+                      aria-label="'false'"
                       className="inline-block"
                     />
                     <FormLabel className="inline-block">no</FormLabel>
@@ -769,12 +763,10 @@ class Rsvp extends Component {
 Rsvp.propTypes = {
   rsvpOpen: PropTypes.bool,
   scrolledToTop: PropTypes.bool,
-  screenSize: PropTypes.string,
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
   thanksOpen: PropTypes.bool,
-
   submit: PropTypes.func,
   closeThanks: PropTypes.func,
-
   user: PropTypes.object,
   firstName: PropTypes.string,
   lastName: PropTypes.string,

@@ -138,15 +138,7 @@
 	background-color: gray !important;
 }
 
-ul.MuiList-root-63 {
-	margin-block-start: 4em !important;
-}
 
-
-.listItemText {
-	font-size: 1.5rem !important;
-	font-family: "Roboto" !important;
-}
 
 /*============================
 ======= MAIN ================
@@ -269,7 +261,7 @@ ul.MuiList-root-63 {
 /* 	color: rgba(158, 0, 92, 1); */
 	color: rgba(128, 0, 108, 1);
 	font-family: 'Montez', sans-serif;
-	margin: 120px auto 48px auto;
+	margin: 210px auto 48px auto;
 	text-align: center;
 	padding: 12px 0;
 }
@@ -336,6 +328,9 @@ ul.MuiList-root-63 {
 }
 .smallMarginRight {
 	margin-right: 12px;
+}
+.mediumMarginLeft {
+	margin-left: 100px;
 }
 .fatHorizSpacer {
 	width:  100%;
@@ -452,19 +447,18 @@ ul.MuiList-root-63 {
 	color: rgba(84, 84, 84, 1);
 }
 .loginButton {
-	font-weight: 700;
 	box-shadow: 4px 6px 20px 0px darkgray;
 	transition: .125s;
 }
 .loginButton:hover {
 	cursor: pointer;
 	box-shadow: 5px 7px 20px -6px;
-	background: #438481 !important;
+	background: #437284 !important;
 }
 .loginButton:active {
 	cursor: pointer;
 	box-shadow: 0px 0px 4px -4px;
-	background: #437284 !important;
+	background: #26404b !important;
 }
 .footer {
 	margin: 0px auto;
