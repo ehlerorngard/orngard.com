@@ -387,6 +387,10 @@ class Rsvp extends Component {
       ? { visibility: "visible", margin: 0, padding: 0 }
       : { display: "none", margin: 0, padding: 0 };
 
+    const hideIfNotLoggedIn = (this.props.loggedIn === true || this.props.sandboxMode === true)
+      ? { visibility: "visible" }
+      : { display: "none" };
+
     const leftMarginNotMobile = (this.props.screenSize === "mobile")
       ? {marginLeft: "-2px"}
       : {marginLeft: "8px"};
@@ -467,6 +471,7 @@ class Rsvp extends Component {
         onClick={this.closeRsvp}
       >cancel</Button>,
       <Button
+        style={hideIfNotLoggedIn}
         variant="contained" 
         color="secondary" 
         label="submit"
@@ -757,21 +762,7 @@ class Rsvp extends Component {
             </DialogContent>)
           : (<DialogContent key="content2">
               <Typography variant='h5' className='smallText skinnyMarginBottom inline'>
-                You're not logged in; try out a sample RSVP in sandbox mode:
-              </Typography>
-              <Button 
-                variant="contained" 
-                color="primary" 
-                label="submit"
-                key={true}
-                onClick={this.loadSample}
-              >
-                try sample RSVP
-              </Button>
-
-              <div className='thinHorizSpacer'/>
-              <Typography variant='h5' className='smallText skinnyMarginBottom inline'>
-                OR
+                You're not logged in...
               </Typography>
               <Button 
                 variant="contained" 
@@ -782,6 +773,20 @@ class Rsvp extends Component {
                 onClick={this.goToLogin}
               >
                 log in
+              </Button>
+
+              <div className='thinHorizSpacer'/>
+              <Typography variant='h5' className='smallText skinnyMarginBottom inline'>
+                OR try out a sample RSVP in sandbox mode:
+              </Typography>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                label="submit"
+                key={true}
+                onClick={this.loadSample}
+              >
+                try sample RSVP
               </Button>
             </DialogContent>);
 

@@ -145,15 +145,16 @@ export class Main extends Component {
   	const px56 = { fontSize: "56px" };
     const px48 = { fontSize: "48px" };
   	const px32 = { fontSize: "32px" }; 
-  	const px26 = { fontSize: "28px" }; 
+  	const px28 = { fontSize: "28px" }; 
     const px24 = { fontSize: "24px" }; 
+    const px22 = { fontSize: "22px" }; 
     const px16 = { fontSize: "16px" }; 
 
 
   	const adventureText = () => {
   		if (this.props.scrolledToTop) {
   			if (this.props.screenSize === "mobile") return { opacity: 1, fontSize: "56px", paddingLeft: "100px" }
-				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "84px", paddingLeft: "140px" }
+				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "84px", paddingLeft: "140px", display: "none" }
 				else return { opacity: 1, fontSize: "96px",paddingLeft: "200px" }
   		}
   		else if (this.props.screenSize === "mobile") return { opacity: 0, fontSize: "56px" }
@@ -173,8 +174,8 @@ export class Main extends Component {
 
   	const header = () => {
   		if (this.props.screenSize === "mobile") return px48
-  		else if (this.props.screenSize === "mobile") return px72
-  		else return px84;
+  		else if (this.props.screenSize === "mobile") return px64
+  		else return px72;
   	}
 
   	const bajoHeader = () => {
@@ -191,7 +192,10 @@ export class Main extends Component {
 
   	const smallText = (this.props.screenSize === "mobile") 
       ? px16
-  		: px26;
+  		: px22;
+    const introText = (this.props.screenSize === "mobile") 
+      ? px16
+      : px28;
     const gettingMarried = (this.props.screenSize === "mobile")
       ? { fontSize: "64px", }
       : (this.props.screenSize === "tablet")
@@ -381,13 +385,13 @@ export class Main extends Component {
         			<div className='gettingMarriedText' style={gettingMarried} ref={this.whereAndWhenRef}>
                 We're Getting Married!
               </div>
-        			<div className='smallText1' style={smallText}>
+        			<div className='smallText1' style={introText}>
                 <div className="alignTextCenter fatMarginBottom joinUs alignCenter">
           				We sincerely hope you can join us for a weekend of 
                   love, food, dancing, and merrymaking. 
                 </div>
         			</div>
-              <div className='smallText1' style={smallText}>
+              <div className='smallText1' style={introText}>
                 <div className="alignTextCenter fatMarginBottom">Friday, 
                   <span className="sacramento" style={september}>September</span> 
                   <span className="roboto" style={dayOfTheWeek}>20</span> - Sunday, 
@@ -395,7 +399,7 @@ export class Main extends Component {
                   <span className="roboto" style={dayOfTheWeek}>22</span>
                 </div>
               </div>
-              <div className='smallText1' style={smallText}>
+              <div className='smallText1' style={introText}>
                 <div className="alignTextCenter">
                   the <span style={orngard}>Orngard</span> farm
                 </div>
@@ -681,8 +685,7 @@ export class Main extends Component {
           				It's the Midwest, so the weather could do anything...
           				The daily high could be 90º, it could be 50º;  
           				overnight low could be 75º, it could be 40º.
-          				It could, of course, rain (last September was unseasonably rainy;  
-          				the farmer's almanac projects this coming September to be drier than average... here's hoping!)
+          				It could, of course, rain (the whole past year has been unusually rainy, including last September...)
                   So be just ready for heat, cold, rain, sun, and bugs and you'll be sure to be fine.
           				Also: just go ahead and bring good weather when you come ;)
                 </div>
