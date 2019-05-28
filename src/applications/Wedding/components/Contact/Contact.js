@@ -103,19 +103,7 @@ class Contact extends Component {
     const headerStyle = (this.props.screenSize === "mobile")
       ? { fontSize: "20px", fontWeight: "700", fontFamily: "Montserrat", margin: "24px", color: '#37474f' }
       : { fontSize: "48px", fontWeight: "700", fontFamily: "Montserrat", margin: "24px", color: '#37474f' };
-    const iconStyle = { width: '48px'};
 
-    const bajoHeader = { fontStyle: 'italic', fontSize: "24px", padding: "12px" }
-    const questionStyle = 
-      (this.props.screenSize === "mobile")
-      ? { display: "block", height: "100%", margin: "30px 24px 0 0", verticalAlign: "bottom" }
-      : { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" };
-    const questionRow = (this.props.screenSize === "mobile")
-      ? { padding: "6px" }
-      : { padding: "6px", display: "inline-flex", };
-    const radioButton = {
-      marginBottom: 16,
-    }
     const textFieldsStyle = (this.props.screenSize === "mobile")
       ? { display: "block", marginRight: "12px" }
       : { display: "inline-block", marginRight: "12px" };
@@ -128,12 +116,6 @@ class Contact extends Component {
         <div> 
           <div>send us a message!</div>
         </div> );
-
-    const contactErrorText = 
-      // otherwise send us a quick note about it via the CONTACT US button below and we'll fix it and get back to you!
-      (<div style={fader}>
-        <div>{this.props.contactErrorText}</div>
-      </div>) 
 
     const actions = 
       (<DialogActions >
@@ -149,7 +131,6 @@ class Contact extends Component {
             color="primary"
             size='large'
             variant='contained'
-            keyboardFocused={true}
             autoFocus
             onClick={this.sendMessage}
           >send</Button>
@@ -162,8 +143,6 @@ class Contact extends Component {
           fullWidth={true}
           maxWidth='md'
           open={this.props.contactOpen}
-          onRequestClose={this.closeContact}
-          autoScrollBodyContent={true}
         >
           <div style={headerStyle}>{renderMessage}</div>
             <DialogContent >
@@ -229,12 +208,19 @@ class Contact extends Component {
 Contact.propTypes = {
   conatactOpen: PropTypes.bool,
   scrolledToTop: PropTypes.bool,
-  screenSize: PropTypes.string,
-
-  loginErrorText: PropTypes.string,
-  match: PropTypes.func,
-
-  allInvitees: PropTypes.array,
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
+  user: PropTypes.object,
+  rsvp: PropTypes.object,
+  message: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  encounteredContactError: PropTypes.bool,
+  successText: PropTypes.string,
+  contactErrorText: PropTypes.string,
+  contactSuccessSnackbarOpen: PropTypes.bool,
+  contactErrorSnackbarOpen: PropTypes.bool,
+  loggedIn: PropTypes.bool,
+  email: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {

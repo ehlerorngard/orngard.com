@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Provider } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { lightGreen, amber, cyan, indigo, purple, blueGrey } from '@material-ui/core/colors';
-// import { BrowserRouter, Route, Switch } from "react-router-dom";
 import configureStore from "./configureStore.js";
 import history from "./utils/history.js";
 import "./Wedding.css";
@@ -13,17 +12,19 @@ class Wedding extends Component {
   render() {
     const state = {};
 
+    // Customize theme to pervade all (and specified 
+    // individual) Material-UI components:
     const theme = createMuiTheme({
       palette: {
         primary: {
-          light: lightGreen[400],
-          main: lightGreen[500],
-          dark: lightGreen[700],
+          light: blueGrey[300],
+          main: blueGrey[500],
+          dark: blueGrey[800],
           contrastText: cyan['A100'],
         },
         secondary: {
-          light: purple[700],
-          main: purple[800],
+          light: purple[500],
+          main: purple[700],
           dark: purple[900],
           contrastText: indigo['100'], 
         },

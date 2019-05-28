@@ -1,43 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { withStyles } from '@material-ui/core/styles';
-import { OutlinedInput, InputLabel } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { OutlinedInput, TextField } from '@material-ui/core';
 
-
-// The `withStyles()` higher-order component is injecting a `classes` property
-
-import cx from 'classnames';
-
-
+// The `withStyles()` higher-order component is injecting a `classes` property,
+// which includes the styles delineated below, used to override defaults.
 const styles = theme => ({
-
-  textInput: {
+  multiline: {
     margin: theme.spacing.unit,
-    minWidth: 288,
-    // borderRadius: 4,
-    // border: '1px solid gray',
-    // padding: '10px 26px 10px 12px',
-    // transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // '&:focus': {
-    //   borderRadius: 4,
-    //   borderColor: '#80bdff',
-    //   boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    // },
+    minWidth: 310,
   },
-
+  wide: {
+    margin: theme.spacing.unit,
+    minWidth: 310,
+  },
 });
+
 
 class TextInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.props.notes || '',
+      value: this.props.value || '',
     };
-  }
-
-  componentDidMount() {
-    this.setState({ value: this.props.value });
   }
 
   handleChange = (event) => {
@@ -48,15 +33,30 @@ class TextInput extends Component {
   render() {
     const { classes } = this.props;
     
-    return (
-      <OutlinedInput 
-        multiline={true} 
-        name="additionalNotes"
-        value={this.state.value} 
-        onChange={this.handleChange} 
-        rows={4}
-        classes={{ input: classes.textInput }} />
-    );
+    return (this.props.version === "multiline")
+      ? (<TextField
+          multiline={true}
+          rows={4}
+          label="additional notes or comments"
+          className='loginTextFields'
+          value={this.state.value}
+          name="additionalNotes"
+          onChange={this.handleChange}
+          margin="normal"
+          variant="outlined"
+          classes={{ root: classes.multiline }}
+        />)
+      : (<TextField
+          inputProps={classes.wide}
+          label="email address"
+          className='loginTextFields'
+          value={this.state.value}
+          name="email"
+          onChange={this.handleChange}
+          margin="normal"
+          variant="outlined"
+          classes={{ root: classes.wide }}
+        />);
   }
 }
 

@@ -1,23 +1,29 @@
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
-let token = '';
 
-let tokenFailed = false;
+// Customize the base for all calls to the Python/Django API:
+let pyxios = axios.create({
+  baseURL: (process.env.NODE_ENV === "development") 
+      ? 'https://orngard.herokuapp.com' 
+      : 'http://localhost:8000',
+  timeout: 11000,
+});
 
-// to use this custom base, replace all the axios.whatever calls
-// with pyxios.whatever below;  adjust to remove "/api"(?)
-const pyxios = axios.create({
-  // baseURL: 'https://whateveritscalleddd.herokuapp.com',
-  baseURL: 'http://localhost:8000',
-  timeout: 1500,
-  headers: {'X-CSRFToken': token}
-})
-
+// Once we have a csrf token, call this to create a new axios instance:
+const resetAxiosBase = csrfToken => {
+  pyxios = axios.create({
+    baseURL: (process.env.NODE_ENV === "development") 
+        ? 'https://orngard.herokuapp.com/' 
+        : 'http://localhost:8000',
+    timeout: 6000,
+    headers: {'X-CSRFToken': csrfToken}
+  });
+}
 
 // Handle response errors:
 function checkStatus(response) {
-  console.log("checkStatus REZ: ", response);
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -31,25 +37,33 @@ function checkStatus(response) {
 export default {
   // In order for the Python/Django API to accept requests from a remote location,
   // we must fetch a CSRF token to use in our request headers that it will only 
-  // issue to an authorized domain (this is called when React mounts on page load):
+  // issue to an authorized domain. (This is called when React mounts on page load):
   getCsrfToken: () => {
-    console.log('getCsrfToken firing.....');
-    return axios.get("/csrf/")
-      .then(response => {
-        token = response.data.csrfToken;
-      })
-      .then(() => {  
-        // Make sure the API is accepting requests with the new CSRF token:
-        pyxios.get("/ping/").then(res => {
-          if (res.data.result === "OK") return true;
-          // If not, try acquiring a new token:
-          else axios.get("/csrf/").then(rez => {
-            if (rez.data.csrfToken) token = rez.data.csrfToken;
-            else return false;
-          });
+    return pyxios.get("/csrf/").then(response => {
+      let token = response.data.csrftoken;
+
+      // Redefine 'pyxios' variable (a custom axios instance), 
+      // now that we have a CSRF token:
+      resetAxiosBase(token);
+
+      // Make sure the API is accepting requests with the new CSRF token:
+      return pyxios.get("/ping/").then(res => {
+        if (res.data.result === "OK") {
+          return true;
+        }
+        // If not, try acquiring a new token:
+        else pyxios.get("/csrf/").then(rez => {
+          if (rez.data.csrftoken) {
+            token = rez.data.csrftoken;
+            resetAxiosBase(token);
+            return true;
+          }
+          else return false;
         });
       });
+    });
   },
+
 
   //=================|
   //===== RSVPs =====|
@@ -76,18 +90,18 @@ export default {
   },
 
   //=================|
-  //=== INVITEES ====|
+  //=== Invitees ====|
   //=================|
   getInvitee: (id) => {
     return pyxios.get(`/api/invitees/${id}/`)
       .then(checkStatus);
   },
   getInvitees: () => {
-    return axios.get("/api/invitees/")
+    return pyxios.get("/api/invitees/")
       .then(checkStatus);
   },
   getInviteesOnRsvp: (id) => {
-    return axios.get(`/api/invitees/?rsvp=${id}`) // ###########
+    return pyxios.get(`/api/invitees/?rsvp=${id}`)
       .then(checkStatus);
   },
   createInvitee: (data) => {
@@ -95,7 +109,7 @@ export default {
       .then(checkStatus)  
   },
   updateInvitee: (id, data) => {
-    return axios.put(`/api/invitees/${id}/`, data)
+    return pyxios.put(`/api/invitees/${id}/`, data)
       .then(checkStatus);
   },
   deleteInvitee: (id) => {
@@ -118,5 +132,4 @@ export default {
     return pyxios.post("/api/messages/", data)
       .then(checkStatus); 
   },
-
 }

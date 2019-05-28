@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dialog, DialogContent, DialogActions, Button } from "@material-ui/core";
-// import { AppBar, IconButton, SelectField, MenuItem, RadioButton, RadioButtonGroup, Divider } from "material-ui";
 import { updateStore } from "../../utils/action.js";
 import "../../Wedding.css";
 
@@ -16,19 +15,6 @@ class Thanks extends Component {
 
   render() {
     const headerStyle = { fontSize: "24px" };
-    const iconStyle = { width: '48px'};
-
-    const bajoHeader = { fontStyle: 'italic', fontSize: "24px", padding: "12px" }
-    const questionStyle = 
-      (this.props.screenSize === "mobile")
-      ? { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" }
-      : { display: "block", height: "100%", margin: "40px 24px 0 0", verticalAlign: "bottom" };
-    const questionRow = (this.props.screenSize === "mobile")
-      ? { padding: "6px" }
-      : { padding: "6px", display: "inline-flex", };
-    const radioButton = {
-      marginBottom: 16,
-    }
 
     const renderMessage = () => {
       const style = { 
@@ -91,16 +77,13 @@ class Thanks extends Component {
 Thanks.propTypes = {
   thanksOpen: PropTypes.bool,
   scrolledToTop: PropTypes.bool,
-  screenSize: PropTypes.string,
-
+  screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   attending: PropTypes.bool,
   numAdults: PropTypes.number,
   camping: PropTypes.bool,
   arrivalDay: PropTypes.string,
-
-
 }
 
 const mapStateToProps = (state) => {
@@ -108,7 +91,6 @@ const mapStateToProps = (state) => {
     thanksOpen: state.thanksOpen,
     scrolledToTop: state.scrolledToTop,
     screenSize: state.screenSize,
-
     firstName: state.firstName,
     lastName: state.lastName,
     attending: state.attending,

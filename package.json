@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": "http://orngard.herokuapp.com",
   "homepage": ".",
   "sideEffects": false,
   "dependencies": {
@@ -10,11 +10,8 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "compression": "^1.7.4",
-    "connected-react-router": "^6.2.2",
     "express": "^4.16.4",
     "history": "^4.7.2",
-    "if-env": "^1.0.4",
-    "material-ui": "^0.20.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
@@ -23,8 +20,7 @@
     "react-scripts": "^2.1.8",
     "redux": "^4.0.1",
     "redux-immutable": "^4.0.0",
-    "redux-thunk": "^2.3.0",
-    "semantic-ui-react": "^0.84.0"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "concurrently \"nodemon server.js\" \"react-scripts start\"",

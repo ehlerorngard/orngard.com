@@ -1,29 +1,12 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { withStyles } from '@material-ui/core/styles';
 import { List, ListItemText, ListItem, ListItemIcon, IconButton, AppBar, SwipeableDrawer } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
 
-// The `withStyles()` higher-order component is injecting a `classes`
-// property that is used by the `ListItem` component.
-
-
-import cx from 'classnames';
-
-
-// const theme = createMuiTheme({
-//   ...
-//   overrides: {
-//     MuiDrawer: {
-//       paper: {
-//         background: '#18202c',
-//         // this is where magic happens
-//         '& *': { color: 'rgba(255, 255, 255, 0.7)' },
-//       },
-//     },
-//   },
-// });
-
+// The `withStyles()` higher-order component is injecting a `classes` property,
+// which includes the styles delineated below, used to override defaults.
 const styles = (theme) => ({
   drawer: {
     opacity: 0.8,
@@ -55,10 +38,13 @@ const styles = (theme) => ({
   },
 });
 
+
 const Navigator = (props) => {
   const { classes, icons, texts, actions } = props;
   const { sidebarVisible, hideSidebar } = props;
+
   const headerWrapperStyle = { display: "block", minHeight: "80px !important" };
+
   const headerStyle = {
     display: 'inline-table',
     marginBottom: "6px",
@@ -66,30 +52,25 @@ const Navigator = (props) => {
   const closeButtonWrapperStyle = (props.screenSize === 'mobile') 
     ? { display: "inline-flex", padding: '10px 10px 12px 10px', }
     : { display: "inline-flex", padding: '10px 10px 12px 10px', };
+
   const closeButtonStyle = (props.screenSize === 'mobile') 
     ? { verticalAlign: "middle", }
     : { verticalAlign: "middle", };
+
   const headerTextStyle = { 
     cursor: 'pointer', 
     display: 'inline-flex', 
     fontSize: '48px', 
     fontFamily: 'Oswald' };
+
   const listStyle = {
     width: '300',
     display: "block",
     marginTop: "48px !important",
   }
+
   const iconStyle = { width: '48px'};
 
-  const ListItemTextStyle = {
-
-  }
-  const listWrapperStyle = {
-
-  }
-  const menubarStyle = { 
-
-  }
 
   return (
     <SwipeableDrawer anchor="right" open={sidebarVisible} classes={{paper: classes.drawer}}>
@@ -109,7 +90,7 @@ const Navigator = (props) => {
         {texts.map((text, i) => (
           <React.Fragment key={i}>
             <ListItem button onClick={actions[i]}>
-              <ListItemIcon><img src={icons[i]} /></ListItemIcon>
+              <ListItemIcon><img alt='' src={icons[i]} /></ListItemIcon>
               <ListItemText
                 classes={{
                   primary: classes.menuItemText,
@@ -124,4 +105,9 @@ const Navigator = (props) => {
     </SwipeableDrawer>
   );
 }
+
+Navigator.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
 export default withStyles(styles)(Navigator)
