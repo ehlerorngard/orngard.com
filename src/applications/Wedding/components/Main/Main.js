@@ -33,6 +33,7 @@ export class Main extends Component {
     // a backup in case more certainly accurate values for 
     // element locations are not set / not set in time 
     // when the drawer is opened as indicated below.
+    this.updateDivTops();
     setTimeout(() => this.updateDivTops(), 3000);
 
     // Pass the updateDivTops function to the store so it 
@@ -83,6 +84,12 @@ export class Main extends Component {
     }, function() {
       console.log('The following was NOT copied:', text);
     });
+  }
+
+  ifScrolledPast = (div, z) => {
+    if (!this.props.divTops) return z;
+    else if (this.props.scrollTop < this.props.divTops[div]) return z;
+    return "-11";
   }
 
   render() {
@@ -279,7 +286,8 @@ export class Main extends Component {
 
   	const imageBox = () => {
   		if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image1lite})`,
+        // backgroundImage: `url(${Image1lite})`,
+        backgroundColor: "rgba(255, 255, 255, 0)",
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "54% 44%",
@@ -295,78 +303,192 @@ export class Main extends Component {
   	}
   	const imageBox2 = () => {
   		if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image2lite})`,
+        // backgroundImage: `url(${Image2lite})`,
+        backgroundColor: "rgba(255, 255, 255, 0)",
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "32%",
-        backgroundSize: "auto 100vh"
+        backgroundSize: "auto 100vh",
       }
       else return { 
+        content: "",
         backgroundImage: `url(${Image2})`,
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "30%",
-        backgroundSize: "cover"
+        backgroundSize: "cover",
+        webkitBackgroundSize: "cover",
+        mozBackgroundSize: "cover",
+        OBackgroundSize: "cover",
+        backgroundSize: "cover",
       }
   	}
   	const imageBox3 = () => {
   		if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image3})`,
-        backgroundAttachment: "fixed",
-        backgroundPosition: "90%",
-        backgroundSize: "auto 100vh" 
+        backgroundColor: "rgba(255, 255, 255, 0)",
       }
       else return { 
         backgroundImage: `url(${Image3})`,
         backgroundAttachment: "fixed",
         backgroundPosition: "50%",
-        backgroundSize: "contain" 
+        backgroundSize: "contain", 
       }
   	}
   	const imageBox4 = () => {
   		if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image4})`,
-        backgroundAttachment: "fixed",
-        backgroundPosition: "97%",
-        backgroundSize: "auto 100vh" 
+        backgroundColor: "rgba(255, 255, 255, 0)",
       }
       else return { 
         backgroundImage: `url(${Image4})`,
         backgroundAttachment: "fixed",
         backgroundPosition: "50%",
-        backgroundSize: "contain" 
+        backgroundSize: "contain", 
       }
   	}
     const imageBox5 = () => {
       if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image5})`,
-        backgroundAttachment: "fixed",
-        backgroundPosition: "86%",
-        backgroundSize: "auto 100vh" 
+        backgroundColor: "rgba(255, 255, 255, 0)",
       }
       else return { 
         backgroundImage: `url(${Image5})`,
         backgroundAttachment: "fixed",
-        backgroundSize: "cover" 
+        backgroundSize: "cover", 
       }
     }
     const imageBox6 = () => {
       if (this.props.screenSize !== "computer") return { 
-        backgroundImage: `url(${Image6})`,
-        backgroundAttachment: "fixed",
-        backgroundPosition: "50%",
-        backgroundSize: "auto 100vh" 
+        backgroundColor: "rgba(255, 255, 255, 0)",
       }
       else return { 
         backgroundImage: `url(${Image6})`,
         backgroundAttachment: "fixed",
         backgroundPosition: "50%",
-        backgroundSize: "contain" 
+        backgroundSize: "contain" ,
       }
     }
 
+
+    const mobileBackgroundImage1 = () => {
+      if (this.props.screenSize === "computer") return { visibility: "none", position: "fixed", zIndex: "-10" }
+      else if (this.props.screenSize === "tablet") return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
+          overflow: "hidden",
+          maxWidth: "430vw", 
+          maxHeight: "320vh",
+          minWidth: "115vw",
+          minHeight: "115vh",
+          position: "fixed", 
+          left: "-90vw",
+          top: "-15vh", };
+      else return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
+          overflow: "hidden",
+          maxWidth: "430vw", 
+          maxHeight: "320vh",
+          minWidth: "115vw",
+          minHeight: "115vh",
+          position: "fixed", 
+          left: "-174vw",
+          top: "-15vh", };
+    }
+
+    const mobileBackgroundImage2 = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : (this.props.screenSize === "tablet")
+        ? { zIndex: this.ifScrolledPast("schedule", "-2"),
+          overflow: "hidden",
+          // zIndex: "-2",
+          maxWidth: "300vw", 
+          maxHeight: "300vh",
+          minWidth: "110vw",
+          minHeight: "110vh",
+          position: "fixed", 
+          left: "-25vw", 
+          top: "-10vh", }
+        : { zIndex: this.ifScrolledPast("schedule", "-2"),
+          overflow: "hidden",
+          // zIndex: "-2",
+          maxWidth: "330vw", 
+          maxHeight: "330vh",
+          minWidth: "105vw",
+          minHeight: "105vh",
+          position: "fixed", 
+          left: "-84vw", 
+          top: "-10vh", };
+
+    const mobileBackgroundImage3 = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : { zIndex: this.ifScrolledPast("whereToStay", "-3"),
+          overflow: "hidden",
+          // zIndex: "-3",
+          maxWidth: "340vw", 
+          maxHeight: "340vh",
+          minWidth: "100vw",
+          minHeight: "100vh",
+          position: "fixed", 
+          right: "-30vw", 
+          bottom: "-10vh", };
+
+    const mobileBackgroundImage4 = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : { zIndex: this.ifScrolledPast("whatToBring", "-4"),
+          overflow: "hidden",
+          // zIndex: "-4",
+          maxWidth: "360vw",
+          maxHeight: "360vh",
+          minWidth: "105vw",
+          minHeight: "105vh",
+          position: "fixed",
+          right: "-21vw",
+          bottom: "-5vh", };
+
+    const mobileBackgroundImage5 = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : { zIndex: this.ifScrolledPast("howToGetThere", "-5"),
+          overflow: "hidden",
+          // zIndex: "-5",
+          maxWidth: "330vw",
+          maxHeight: "320vh", 
+          minWidth: "105vw",
+          minHeight: "105vh",
+          position: "fixed", 
+          right: "-36vw", 
+          bottom: "-5vh", };
+
+    const mobileBackgroundImage6 = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : (this.props.screenSize === "tablet")
+        ? { visibility: "visible",
+          overflow: "hidden",
+          zIndex: "-6",
+          maxWidth: "280vw",
+          maxHeight: "280vh",
+          minWidth: "115vw",
+          minHeight: "115vh",
+          position: "fixed", 
+          left: "-74vw", 
+          top: "-15vh", }
+        : { visibility: "visible",
+          overflow: "hidden",
+          zIndex: "-6",
+          maxWidth: "360vw",
+          maxHeight: "320vh",
+          minWidth: "115vw",
+          minHeight: "115vh",
+          position: "fixed", 
+          left: "-124vw", 
+          top: "-15vh", };
+
     return (
         <div className="main">
+          <div style={{ width: "100%", height: "120px", marginTop: "-120px", backgroundColor: "gray", zIndex: "3",}}/>
+
+          <img alt='' src={Image1lite} style={mobileBackgroundImage1()}/>
+          <img alt='' src={Image2lite} style={mobileBackgroundImage2}/>
+          <img alt='' src={Image3} style={mobileBackgroundImage3}/>
+          <img alt='' src={Image4} style={mobileBackgroundImage4}/>
+          <img alt='' src={Image5} style={mobileBackgroundImage5}/>
+          <img alt='' src={Image6} style={mobileBackgroundImage6}/>
+          <div style={{ backgroundColor: "#1f1f1f", zIndex: "-8", position: "fixed", top: "-50vh", left: "-50vw", width: "200vw", height: "200vh" }} />
+          <div style={{ backgroundColor: "white", zIndex: "-7", position: "fixed", top: "0", left: "50", width: "100vw", height: "100vh" }} />
 
         	<div className="imageBox" style={imageBox()}>
         		<div className="spacerBox" />
@@ -412,7 +534,7 @@ export class Main extends Component {
 						<div style={three16}/>
         	</div>
 
-        	<div className="imageBox2" style={imageBox2()}>
+        	<div className="imageBox" style={imageBox2()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
@@ -477,12 +599,12 @@ export class Main extends Component {
 						<div style={categoryHeader()}/>
         	</div>
 
-        	<div className="imageBox3" style={imageBox3()}>
+        	<div className="imageBox" style={imageBox3()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
 
-        	<div className="bigRow3" ref={this.whereToStayRef}>
+        	<div className="bigRow2" ref={this.whereToStayRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
         			<div className='header' 
@@ -606,12 +728,12 @@ export class Main extends Component {
 						<div style={categoryHeader()}/>
         	</div>
 
-        	<div className="imageBox4" style={imageBox4()}>
+        	<div className="imageBox" style={imageBox4()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
 
-        	<div className="bigRow4" ref={this.whatToBringRef}>
+        	<div className="bigRow2" ref={this.whatToBringRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
         			<div className='header' style={header()}>what to bring<img alt='' className="material-icons mIcons" src={suitcase} style={iconStyle}/></div>
@@ -832,12 +954,12 @@ export class Main extends Component {
 						<div style={categoryHeader()}/>
         	</div>
 
-        	<div className="imageBox5" style={imageBox5()}>
+        	<div className="imageBox" style={imageBox5()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
 
-        	<div className="bigRow5" ref={this.howToGetThereRef}>
+        	<div className="bigRow2" ref={this.howToGetThereRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
         			<div className='header' style={header()}>address & how to get there</div>
@@ -962,20 +1084,20 @@ export class Main extends Component {
                           </div>
                         </div>
                       </div>
+                      <div className='fatHorizSpacer'/>
                     </div>
                     )
                 }
         			</div>
         		</div>	
-            <div className='fatHorizSpacer'/>
         	</div>
 
-        	<div className="imageBox6" style={imageBox6()}>
+        	<div className="imageBox" style={imageBox6()}>
         		<div className="spacerBox" />
 	        	<div className="mainTextLarge"/>
         	</div>
 
-        	<div className="bigRow6" ref={this.contactUsRef}>
+        	<div className="bigRow3" ref={this.contactUsRef}>
         		<div style={gutter()} />
         		<div style={mainBody()}>
         			<div className='header' style={header()}>
@@ -1062,8 +1184,9 @@ const mapStateToProps = (state) => {
     divTops: state.divTops,
     contactSuccessSnackbarOpen: state.contactSuccessSnackbarOpen,
     loginSuccessSnackbarOpen: state.loginSuccessSnackbarOpen,
-    contactOpen: true,
+    contactOpen: state.contactOpen,
     successText: state.successText,
+    scrollTop: state.scrollTop,
 	}
 }
 

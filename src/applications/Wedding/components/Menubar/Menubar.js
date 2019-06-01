@@ -32,19 +32,19 @@ class Menubar extends Component {
   }
   goToSchedule = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.schedule - 7);
+    window.scroll(0, this.props.divTops.schedule);
   }
   goToLodging = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.whereToStay - 7);  // 41.5% of bottom
+    window.scroll(0, this.props.divTops.whereToStay);  // 41.5% of bottom
   }
   goToWhatToBring = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.whatToBring - 10); // 61% of bottom
+    window.scroll(0, this.props.divTops.whatToBring - 4); // 61% of bottom
   }
   goToQuestions = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.faqs - 32);
+    window.scroll(0, this.props.divTops.faqs - 30);
   }
   goToArriving = () => {
     this.hideSidebar();

@@ -40,15 +40,29 @@ class Cartographer extends Component {
       allInvitees: [],
       attendeesPossible: [],
       attendeesConfirmed: [],
+      divTops: {
+        whereAndWhen: 100,
+        schedule: 100,
+        whereToStay: 100,
+        whatToBring: 100,
+        faqs: 100,
+        howToGetThere: 100,
+        conactUs: 100,
+      }
     })(this.props.dispatch);
 
     window.addEventListener("resize", this.getScreenSize, true);
     window.addEventListener("scroll", this.handleScroll, true);
+
+    if (this.props.screenSize !== "computer") {
+      window.addEventListener("deviceorientation", this.props.getDivTops, true);
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.getScreenSize, true);
     window.removeEventListener("scroll", this.handleScroll, true);
+    window.removeEventListener("deviceorientation", this.props.getDivTops, true);
   }
 
   establishConnection = () => {
@@ -70,7 +84,7 @@ class Cartographer extends Component {
   getScreenSize = () => {
     let screenSize = "";
     if (window.innerWidth < 700) screenSize = "mobile";
-    else if (window.innerWidth <= 1000) screenSize = "tablet";
+    else if (window.innerWidth <= 1025) screenSize = "tablet";
     else screenSize = "computer";
 
     updateStore({ screenSize: screenSize })(this.props.dispatch);
@@ -83,6 +97,8 @@ class Cartographer extends Component {
       : { scrolledToTop: false }
 
     updateStore(scrolllocation)(this.props.dispatch);
+
+    updateStore({ scrollTop: window.pageYOffset })(this.props.dispatch);
   }
 
 
@@ -116,6 +132,7 @@ const mapStateToProps = (state) => {
     screenSize: state.screenSize,
     connection: state.connection,
     allInvitees: state.allInvitees,
+    divTops: state.divTops,
   }
 }
 

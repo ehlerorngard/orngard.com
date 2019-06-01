@@ -75,9 +75,9 @@ class Login extends Component {
     const { firstName, lastName, zipCode } = this.props;
     let theMatch = false;
     this.props.allInvitees.forEach(inv => {
-      if (firstName.trim().toLowerCase() === inv.firstName.toLowerCase() && 
-          lastName.trim().toLowerCase() === inv.lastName.toLowerCase() && 
-          zipCode.trim() === inv.zipCode) {
+      if (firstName.trim().toLowerCase() === inv.firstName.trim().toLowerCase() && 
+          lastName.trim().toLowerCase() === inv.lastName.trim().toLowerCase() && 
+          zipCode.trim() === inv.zipCode.trim()) {
         theMatch = inv;
       }
     });
@@ -115,7 +115,7 @@ class Login extends Component {
         loggedIn: true,
         loginErrorSnackbarOpen: false,
         loginSuccessSnackbarOpen: true,
-        successText: `Hello ${matchFound.firstName} ${matchFound.lastName}!`
+        successText: `Hello ${matchFound.firstName.trim()} ${matchFound.lastName.trim()}!`
       })(this.props.dispatch);
 
       getRsvp(matchFound.rsvp)(this.props.dispatch);
