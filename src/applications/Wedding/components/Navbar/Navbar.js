@@ -87,7 +87,7 @@ export class Navbar extends Component {
 	  	if (this.props.scrolledToTop) {
 	  		if (this.props.screenSize === "mobile") {
 	  			return { 
-	  				fontSize: "70px", 
+	  				fontSize: "60px", 
 	  				margin: "8px 8px 0 8px", 
 	  				padding: "0px 20px",
 	  				backgroundColor: "rgba(184, 184, 184, 0.7)",

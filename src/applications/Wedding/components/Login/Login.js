@@ -115,7 +115,7 @@ class Login extends Component {
         loggedIn: true,
         loginErrorSnackbarOpen: false,
         loginSuccessSnackbarOpen: true,
-        successText: `Hello ${matchFound.firstName} ${matchFound.lastName}!`
+        successText: `Hello ${matchFound.firstName.trim()} ${matchFound.lastName.trim()}!`
       })(this.props.dispatch);
 
       getRsvp(matchFound.rsvp)(this.props.dispatch);
