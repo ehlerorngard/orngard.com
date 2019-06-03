@@ -123,6 +123,7 @@ Cartographer.propTypes = {
   screenSize: PropTypes.oneOf(["mobile", "tablet", "computer"]),
   connection: PropTypes.bool,
   allInvitees: PropTypes.array,
+  divTops: PropTypes.object,
 }
 
 const mapStateToProps = (state) => {

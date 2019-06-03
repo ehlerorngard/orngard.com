@@ -42,8 +42,8 @@ export default {
     return pyxios.get("/csrf/").then(response => {
       let token = response.data.csrftoken;
 
-      // Redefine 'pyxios' variable (a custom axios instance), 
-      // now that we have a CSRF token:
+      // Redefine 'pyxios' variable (a custom axios instance) 
+      // to include a CSRF token now that we have it:
       resetAxiosBase(token);
 
       // Make sure the API is accepting requests with the new CSRF token:
@@ -105,7 +105,7 @@ export default {
       .then(checkStatus);
   },
   createInvitee: (data) => {
-    return pyxios.put("/api/invitees/", data)
+    return pyxios.post("/api/invitees/", data)
       .then(checkStatus)  
   },
   updateInvitee: (id, data) => {

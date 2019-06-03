@@ -58,18 +58,22 @@ export class Main extends Component {
     }
     return refs;
   }
+  
   closeSuccessSnackbar = () => {
     updateStore({ 
       loginSuccessSnackbarOpen: false,
       contactSuccessSnackbarOpen: false,
     })(this.props.dispatch);   
   }
+
   closeSuccessSnackbarInAFew = () => {
     setTimeout(this.closeSuccessSnackbar, 5000);
   }
+
   goToLogin = () => {
     updateStore({ dropOpen: false, loginOpen: true })(this.props.dispatch);
   }
+
   goToContact = () => {
     updateStore({ 
       contactOpen: true,
@@ -303,7 +307,6 @@ export class Main extends Component {
   	}
   	const imageBox2 = () => {
   		if (this.props.screenSize !== "computer") return { 
-        // backgroundImage: `url(${Image2lite})`,
         backgroundColor: "rgba(255, 255, 255, 0)",
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
@@ -312,14 +315,14 @@ export class Main extends Component {
       }
       else return { 
         content: "",
-        backgroundImage: `url(${Image2})`,
+        backgroundImage: `url(${Image2lite})`,
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "30%",
         backgroundSize: "cover",
         webkitBackgroundSize: "cover",
         mozBackgroundSize: "cover",
-        OBackgroundSize: "cover",
+        OBackgroundSize: "cover", 
         backgroundSize: "cover",
       }
   	}
@@ -395,7 +398,6 @@ export class Main extends Component {
       : (this.props.screenSize === "tablet")
         ? { zIndex: this.ifScrolledPast("schedule", "-2"),
           overflow: "hidden",
-          // zIndex: "-2",
           maxWidth: "300vw", 
           maxHeight: "300vh",
           minWidth: "110vw",
@@ -405,7 +407,6 @@ export class Main extends Component {
           top: "-10vh", }
         : { zIndex: this.ifScrolledPast("schedule", "-2"),
           overflow: "hidden",
-          // zIndex: "-2",
           maxWidth: "330vw", 
           maxHeight: "330vh",
           minWidth: "105vw",
@@ -418,7 +419,6 @@ export class Main extends Component {
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
       : { zIndex: this.ifScrolledPast("whereToStay", "-3"),
           overflow: "hidden",
-          // zIndex: "-3",
           maxWidth: "340vw", 
           maxHeight: "340vh",
           minWidth: "100vw",
@@ -431,7 +431,6 @@ export class Main extends Component {
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
       : { zIndex: this.ifScrolledPast("whatToBring", "-4"),
           overflow: "hidden",
-          // zIndex: "-4",
           maxWidth: "360vw",
           maxHeight: "360vh",
           minWidth: "105vw",
@@ -444,7 +443,6 @@ export class Main extends Component {
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
       : { zIndex: this.ifScrolledPast("howToGetThere", "-5"),
           overflow: "hidden",
-          // zIndex: "-5",
           maxWidth: "330vw",
           maxHeight: "320vh", 
           minWidth: "105vw",

@@ -78,6 +78,7 @@ class Rsvp extends Component {
     })(this.props.dispatch);
   }
 
+  // For changing a first or last name to an editable input field:
   selectFirstName = (id) => {
     updateStore({ firstNameSelected: id })(this.props.dispatch);
   }
@@ -87,6 +88,9 @@ class Rsvp extends Component {
   }
 
   toggleCheckbox = (guest) => {
+    // The list of guests with a foreign key of the current RSVP
+    // is "attendeesPossible";  update the guests' info in the store 
+    // upon alteration of their "attending" status: 
     const index = this.props.attendeesPossible.indexOf(guest);
     let guestArray = [...this.props.attendeesPossible];
     guestArray[index].attending = !guestArray[index].attending;
@@ -495,7 +499,8 @@ class Rsvp extends Component {
                       <Checkbox 
                         name='attendeesConfirmed'
                         checked={attendee.attending === true}
-                        onChange={() => this.toggleCheckbox(attendee)} />
+                        onChange={() => this.toggleCheckbox(attendee)} 
+                      />
                       {(this.props.firstNameSelected === attendee.id) 
                         ? 
                           <ClickAwayListener onClickAway={this.textify}>

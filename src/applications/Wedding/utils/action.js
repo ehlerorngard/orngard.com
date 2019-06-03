@@ -18,39 +18,30 @@ export const updateStore = (chicken) => (dispatch) => {
 export const getRsvp = (id) => (dispatch) => {
 	requester.getRsvp(id)
 	.then(response => {
-		if (response.status >= 200 && response.status < 300) {
-			dispatch({
-				type: "UPDATE_STORE",
-				payload: Object.assign({}, { 
-					rsvp: response.data,
-					attending: response.data.attending,
-					numChildren: response.data.numChildren,
-					numAdults: response.data.numAdults,
-					numVeg: response.data.numVeg,
-					numInviteesAlotted: response.data.numInviteesAlotted,
-					numNoGluten: response.data.numNoGluten,
-					numNoDairy: response.data.numNoDairy,
-					lodging: response.data.lodging,
-					arrivalDay: response.data.arrivalDay,
-					departureDay: response.data.departureDay,
-					FridayDinner: response.data.FridayDinner, 
-				    SaturdayBreakfast: response.data.SaturdayBreakfast, 
-				    SaturdayLunch: response.data.SaturdayLunch, 
-				    SaturdayDinner: response.data.SaturdayDinner, 
-				    SundayBrunch: response.data.SundayBrunch,
-					additionalNotes: response.data.additionalNotes,
-				}),
-			});
+		dispatch({
+			type: "UPDATE_STORE",
+			payload: Object.assign({}, { 
+				rsvp: response.data,
+				attending: response.data.attending,
+				numChildren: response.data.numChildren,
+				numAdults: response.data.numAdults,
+				numVeg: response.data.numVeg,
+				numInviteesAlotted: response.data.numInviteesAlotted,
+				numNoGluten: response.data.numNoGluten,
+				numNoDairy: response.data.numNoDairy,
+				lodging: response.data.lodging,
+				arrivalDay: response.data.arrivalDay,
+				departureDay: response.data.departureDay,
+				FridayDinner: response.data.FridayDinner, 
+		    SaturdayBreakfast: response.data.SaturdayBreakfast, 
+		    SaturdayLunch: response.data.SaturdayLunch, 
+		    SaturdayDinner: response.data.SaturdayDinner, 
+		    SundayBrunch: response.data.SundayBrunch,
+				additionalNotes: response.data.additionalNotes,
+			}),
+		});
 
-			requester.getInviteesOnRsvp(id).then(res => {
-				if (res.status >= 200 && res.status < 300) {
-					dispatch({
-						type: "UPDATE_STORE",
-						payload: Object.assign({}, { attendeesPossible: res.data }),
-					});
-				}
-			});
-		}
+		requester.getInviteesOnRsvp(id);
 	});
 }
 
