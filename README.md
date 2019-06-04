@@ -52,18 +52,15 @@ Navigate to the desired content / section using refs' offsetTop property from Ma
 ![goToSchedule](https://user-images.githubusercontent.com/34467850/58843921-98644500-8629-11e9-92ec-91b2d88f1fcb.gif)
 
 
-### Main.js
-List the people invited for a given RSVP:
-<img width="876" alt="list attendees possible" src="https://user-images.githubusercontent.com/34467850/58841063-1cfc9680-861d-11e9-8b25-aa47fd2cc665.png">
+### Rsvp.js
+List the people invited for a given RSVP (such that guest names can be converted to editable inputs on click):
+<img width="884" alt="list of invitees" src="https://user-images.githubusercontent.com/34467850/58845698-f8121e80-8630-11e9-86b1-8d36edf8d4cf.png">
 
 
 ### Cartographer.js
 Data type validation via PropTypes, mapping the redux store to component props, & connecting to the redux store:<br />
 <img width="647" alt="proptypes + redux mapping" src="https://user-images.githubusercontent.com/34467850/58841069-1d952d00-861d-11e9-91cf-94bfd214b454.png">
 
-### Login.js
-Some conditional display of content:              <br />
-<img width="613" alt="conditional display of content" src="https://user-images.githubusercontent.com/34467850/58841056-1bcb6980-861d-11e9-9361-18df2a507c33.png">
 
 ### Main.js
 Some responsive styling: <br />
