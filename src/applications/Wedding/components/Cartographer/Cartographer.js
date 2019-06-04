@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { updateStore, getInvitees } from "../../utils/action.js";
+import { updateStore, getInvitees } from "../../utils/actions.js";
 import requester from "../../utils/requester.js";
 import "../../Wedding.css";
 
@@ -40,7 +40,8 @@ class Cartographer extends Component {
       allInvitees: [],
       attendeesPossible: [],
       attendeesConfirmed: [],
-      divTops: {
+      divTops: { 
+        // these will be overwritten as soon as Main.js loads
         whereAndWhen: 100,
         schedule: 100,
         whereToStay: 100,
@@ -66,6 +67,8 @@ class Cartographer extends Component {
   }
 
   establishConnection = () => {
+    // Fetch a CSRF token in order to be able to make 
+    // cross-origin post, put, & delete requests:
     requester.getCsrfToken().then(result => {
       // If a database connection was established and verified...
       if (result === true) {
@@ -87,7 +90,11 @@ class Cartographer extends Component {
     else if (window.innerWidth <= 1025) screenSize = "tablet";
     else screenSize = "computer";
 
-    updateStore({ screenSize: screenSize })(this.props.dispatch);
+    updateStore({ 
+      screenSize: screenSize, 
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    })(this.props.dispatch);
   }
 
   handleScroll = () => {

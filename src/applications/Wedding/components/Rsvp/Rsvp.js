@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Input, Button, TextField, AppBar, Select, MenuItem, Radio, RadioGroup, Divider, FormLabel, FormControl, FormControlLabel, InputLabel, Checkbox, ListItemText, ListItemIcon, Paper, MenuList, Snackbar, IconButton, GridList, GridListTile, ClickAwayListener, Typography } from "@material-ui/core";
 import { Send, Close } from '@material-ui/icons';
-import { updateStore, updateRsvp, getRsvp, getInvitee, getInvitees, updateInvitee } from "../../utils/action.js";
+import { updateStore, updateRsvp, getRsvp, getInvitee, getInvitees, updateInvitee } from "../../utils/actions.js";
 import "../../Wedding.css";
 
 import DropSelect from './DropSelect.js';
@@ -502,8 +502,7 @@ class Rsvp extends Component {
                         onChange={() => this.toggleCheckbox(attendee)} 
                       />
                       {(this.props.firstNameSelected === attendee.id) 
-                        ? 
-                          <ClickAwayListener onClickAway={this.textify}>
+                        ? <ClickAwayListener onClickAway={this.textify}>
                             <TextField
                               id="outlined-name"
                               label="first name"

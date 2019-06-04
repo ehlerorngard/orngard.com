@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { fromJS } from 'immutable';
+// import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import thunkMiddleware from "redux-thunk";
 import reducer from "./utils/reducer.js";
@@ -16,7 +16,7 @@ export default function configureStore(initialState = {}, history) {
     applyMiddleware(...middlewares),
   ];
 
-  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
+  // If Redux DevTools Extension is installed, use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers =
     process.env.NODE_ENV !== 'production' &&
@@ -30,7 +30,7 @@ export default function configureStore(initialState = {}, history) {
 
   const store = createStore(
     reducer,
-    fromJS({...initialState}),
+    {...initialState},  // fromJS({...initialState}),
     composeEnhancers(...enhancers)
   );
 

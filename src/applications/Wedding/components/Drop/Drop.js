@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Drawer, IconButton, Popover, Menu, MenuItem, Divider } from "@material-ui/core";
-import { updateStore } from "../../utils/action.js";
+import { updateStore } from "../../utils/actions.js";
 import "../../Wedding.css";
 
 class Drop extends Component {

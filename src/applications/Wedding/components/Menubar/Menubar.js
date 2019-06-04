@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { updateStore } from "../../utils/action.js";
+import { updateStore } from "../../utils/actions.js";
 import Navigator from './Navigator.js';
 
 import "../../Wedding.css";
