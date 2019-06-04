@@ -109,7 +109,6 @@ class Login extends Component {
     if (matchFound) {
       updateStore({ 
         user: matchFound,
-        rsvpId: matchFound.rsvp,
         email: matchFound.email,
         loginOpen: false, 
         loggedIn: true,
@@ -126,8 +125,8 @@ class Login extends Component {
         loginErrorSnackbarOpen: true,
       })(this.props.dispatch);
     }
-
   }
+
 
   render() {
     const headerStyle = (this.props.screenSize === "mobile")
