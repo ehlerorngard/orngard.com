@@ -15,6 +15,15 @@ export const updateStore = (chicken) => (dispatch) => {
 // ========================================
 // ACTIONS making a request to the database:
 // ========================================
+export const getInviteesOnRsvp = (id) => (dispatch) => {
+	requester.getInviteesOnRsvp(id).then(res => {
+		dispatch({
+			type: "UPDATE_STORE",
+			payload: Object.assign({}, { attendeesPossible: res.data }),
+		});
+	});
+}
+
 export const getRsvp = (id) => (dispatch) => {
 	requester.getRsvp(id)
 	.then(response => {
@@ -41,7 +50,7 @@ export const getRsvp = (id) => (dispatch) => {
 			}),
 		});
 
-		requester.getInviteesOnRsvp(id);
+		getInviteesOnRsvp(id)(dispatch);
 	});
 }
 
@@ -72,15 +81,6 @@ export const getInvitees = () => (dispatch) => {
 		dispatch({
 			type: "UPDATE_STORE",
 			payload: Object.assign({}, { allInvitees: res.data }),
-		});
-	});
-}
-
-export const getInviteesOnRsvp = (id) => (dispatch) => {
-	requester.getInviteesOnRsvp(id).then(res => {
-		dispatch({
-			type: "UPDATE_STORE",
-			payload: Object.assign({}, { attendeesPossible: res.data }),
 		});
 	});
 }

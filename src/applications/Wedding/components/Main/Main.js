@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "../../Wedding.css";
-import { updateStore } from "../../utils/action.js";
+import { updateStore } from "../../utils/actions.js";
 import SuccessSnackbar from '../Snackbar/SuccessSnackbar.js';
 
 import Image1 from '../../assets/adventure.jpg';
@@ -58,7 +58,7 @@ export class Main extends Component {
     }
     return refs;
   }
-  
+
   closeSuccessSnackbar = () => {
     updateStore({ 
       loginSuccessSnackbarOpen: false,
@@ -370,6 +370,7 @@ export class Main extends Component {
       }
     }
 
+    
 
     const mobileBackgroundImage1 = () => {
       if (this.props.screenSize === "computer") return { visibility: "none", position: "fixed", zIndex: "-10" }

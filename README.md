@@ -27,7 +27,7 @@ In order to make cross-origin post, put, and delete requests to the Python API w
 
 ### actions.js
 Upon successful login, get the RSVP from the database: <br />
-<img width="624" alt="getRsvp" src="https://user-images.githubusercontent.com/34467850/58841062-1cfc9680-861d-11e9-817c-c941b1ad08b5.png">
+<img width="626" alt="getRsvp" src="https://user-images.githubusercontent.com/34467850/58903161-90ec7c80-86b9-11e9-8cfc-6c05314114af.png">
 
 ...and get all invitees where foreign key rsvp_id is that of the RSVP:<br />
 <img width="796" alt="getInvOnRsvp" src="https://user-images.githubusercontent.com/34467850/58841060-1cfc9680-861d-11e9-9589-920bbb14864f.png">

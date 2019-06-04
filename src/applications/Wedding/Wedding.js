@@ -95,9 +95,6 @@ class Wedding extends Component {
             minWidth: "90px",
             maxWidth: "156px",
           },
-          // multiline: {
-          //   width: "288px",
-          // },
         },
         MuiDialogActions: {
           root: {
@@ -110,8 +107,7 @@ class Wedding extends Component {
         useNextVariants: true,
         headline: {
           fontWeight: 700,
-        }
-
+        },
       },
       classes: {
         modalPaper: {

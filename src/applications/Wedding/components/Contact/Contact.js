@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from "@material-ui/core";
-import { updateStore, createMessage } from "../../utils/action.js";
+import { updateStore, createMessage } from "../../utils/actions.js";
 import "../../Wedding.css";
 
 import ErrorSnackbar from '../Snackbar/ErrorSnackbar.js';

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Popper, Paper, Grow, ClickAwayListener, MenuList, MenuItem } from "@material-ui/core";
 import "../../Wedding.css";
-import { updateStore } from "../../utils/action.js";
+import { updateStore } from "../../utils/actions.js";
 
 export class Navbar extends Component {
 	constructor(props) {
