@@ -14,7 +14,7 @@ Feel free to try a sample RSVP (select from the menu drawer).
 
 <br /><br />
 ## code excerpts
-<br /><br />
+<br />
 ### requester.js
 In order to make cross-origin post, put, and delete requests to the Python API we must acquire a Cross Site Request Forgery (CSRF) token, which will only be issued to whitelisted domains: <br />
 <img width="858" alt="getCsrfToken" src="https://user-images.githubusercontent.com/34467850/58841035-06eed600-861d-11e9-9265-d274d3fcefa5.png">
