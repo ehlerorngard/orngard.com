@@ -1,13 +1,13 @@
-# orngard.com  <img width="64" alt="" src="https://user-images.githubusercontent.com/34467850/58840135-60550600-8619-11e9-8705-ae0f03a27aad.png">
+# <img width="48" alt="" src="https://user-images.githubusercontent.com/34467850/58840135-60550600-8619-11e9-8705-ae0f03a27aad.png">    orngard.com  
 Client interface in React + Redux for orngard.com and Wedding Website
 
 
 # Wedding Website 
 
-This directory of orngard.com is a wedding website that displays static information about my upcoming wedding in autumn of 2019 and also takes and stores guests' RSVPs and data by connecting to a backend API I built in Python/Django + Postgres (check it out: [backend](https://github.com/ehlerorngard/WeddingWebsite_backend)).
+This directory of orngard.com is a live wedding website that is displaying information about my upcoming wedding in autumn of 2019 and is – as you read this – taking and storing guests' RSVPs and data via connection to a backend API I built in Python/Django + Postgres (*check it out:* **[backend](https://github.com/ehlerorngard/WeddingWebsite_backend)**).
 
 ## the site in action
-![wedding website](https://user-images.githubusercontent.com/34467850/56338322-72a8dc80-615e-11e9-958b-1818c70136d3.gif)
+![wedding website](https://user-images.githubusercontent.com/34467850/58844807-a0be7f00-862d-11e9-8f47-b31e30c61105.gif)
 
 ### [test it out for yourself here!](https://www.orngard.com/ehlerandemily)
 Feel free to try a sample RSVP (select from the menu drawer).
@@ -38,6 +38,8 @@ Upon successful login, get the RSVP from the database:
 ### Rsvp.js
 Update the "attending" status of guests on the RSVP:
 <img width="726" alt="toggleCheckbox" src="https://user-images.githubusercontent.com/34467850/58841071-1e2dc380-861d-11e9-92e9-b8fd97f7492d.png">
+...which to the user looks like...
+![toggleAttending](https://user-images.githubusercontent.com/34467850/58844308-7a97df80-862b-11e9-8418-04e46fdeae3c.gif)
 
 
 ### Main.js
@@ -47,6 +49,8 @@ Get refs' positions to be used in navigation links:
 ### Navbar.js
 Navigate to the desired content / section using refs' offsetTop property from Main.js:
 <img width="591" alt="navigation" src="https://user-images.githubusercontent.com/34467850/58841066-1d952d00-861d-11e9-8f40-81153bc59e6b.png">
+
+![goToSchedule](https://user-images.githubusercontent.com/34467850/58843921-98644500-8629-11e9-92ec-91b2d88f1fcb.gif)
 
 
 ### Main.js
@@ -59,7 +63,8 @@ Data type validation via PropTypes, mapping the redux store to component props, 
 <img width="647" alt="proptypes + redux mapping" src="https://user-images.githubusercontent.com/34467850/58841069-1d952d00-861d-11e9-91cf-94bfd214b454.png">
 
 ### Login.js
-Some conditional display of content:
+Some conditional display of content:                  
+
 <img width="613" alt="conditional display of content" src="https://user-images.githubusercontent.com/34467850/58841056-1bcb6980-861d-11e9-9361-18df2a507c33.png">
 
 ### Main.js
