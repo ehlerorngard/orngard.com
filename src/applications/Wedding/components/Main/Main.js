@@ -370,19 +370,30 @@ export class Main extends Component {
       }
     }
 
-    
+    const getPositioning = (imageWidth, imageHeight, leftRatio, topRatio) => {
+
+      const location = {
+        left: (this.props.innerWidth >= imageWidth) 
+          ? 0 
+          : `-${Math.floor(leftRatio * (imageWidth - this.props.innerWidth))}px`,
+        top: (this.props.innerHeight >= imageHeight) 
+          ? 0 
+          : `-${Math.floor(topRatio * (imageHeight - this.props.innerHeight))}px`,
+      }
+      console.log("location:", location);
+      console.log("screenSize", this.props.screenSize);
+      return location;
+    }
 
     const mobileBackgroundImage1 = () => {
       if (this.props.screenSize === "computer") return { visibility: "none", position: "fixed", zIndex: "-10" }
       else if (this.props.screenSize === "tablet") return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
           overflow: "hidden",
-          maxWidth: "430vw", 
-          maxHeight: "320vh",
-          minWidth: "115vw",
-          minHeight: "115vh",
+          minWidth: "100vw",
+          minHeight: "100vh",
           position: "fixed", 
-          left: "-90vw",
-          top: "-15vh", };
+          left: getPositioning(1600, 900, .89, .53).left,
+          top: getPositioning(1600, 900, .5, .53).top, };
       else return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
           overflow: "hidden",
           maxWidth: "430vw", 
@@ -390,8 +401,8 @@ export class Main extends Component {
           minWidth: "115vw",
           minHeight: "115vh",
           position: "fixed", 
-          left: "-174vw",
-          top: "-15vh", };
+          left: getPositioning(1600, 900, .55, .53).left,
+          top: getPositioning(1600, 900, .5, .36).top, };
     }
 
     const mobileBackgroundImage2 = (this.props.screenSize === "computer") 
@@ -404,33 +415,42 @@ export class Main extends Component {
           minWidth: "110vw",
           minHeight: "110vh",
           position: "fixed", 
-          left: "-25vw", 
-          top: "-10vh", }
+          left: getPositioning(1200, 900, .6, .4).left, 
+          top: getPositioning(1200, 900, .55, .45).top, }
         : { zIndex: this.ifScrolledPast("schedule", "-2"),
           overflow: "hidden",
-          maxWidth: "330vw", 
+          maxWidth: "320vw", 
           maxHeight: "330vh",
           minWidth: "105vw",
           minHeight: "105vh",
           position: "fixed", 
-          left: "-84vw", 
-          top: "-10vh", };
+          left: getPositioning(1200, 900, .35, .4).left, 
+          top: getPositioning(1200, 900, .5, .35).top, };
 
     const mobileBackgroundImage3 = (this.props.screenSize === "computer") 
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
       : { zIndex: this.ifScrolledPast("whereToStay", "-3"),
           overflow: "hidden",
           maxWidth: "340vw", 
-          maxHeight: "340vh",
+          maxHeight: "105vh",
           minWidth: "100vw",
-          minHeight: "100vh",
+          minHeight: "102vh",
           position: "fixed", 
-          right: "-30vw", 
-          bottom: "-10vh", };
+          right: "-16px", 
+          bottom: "-14px", };
 
     const mobileBackgroundImage4 = (this.props.screenSize === "computer") 
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
-      : { zIndex: this.ifScrolledPast("whatToBring", "-4"),
+      : (this.props.screenSize === "tablet") 
+        ? { zIndex: this.ifScrolledPast("whatToBring", "-4"),
+          overflow: "hidden",
+          minHeight: "100vh", 
+          maxHeight: "140vh",
+          minWidth: "105vw",
+          position: "fixed", 
+          right: "-12px", 
+          bottom: "-12px", }
+        : { zIndex: this.ifScrolledPast("whatToBring", "-4"),
           overflow: "hidden",
           maxWidth: "360vw",
           maxHeight: "360vh",
@@ -445,12 +465,12 @@ export class Main extends Component {
       : { zIndex: this.ifScrolledPast("howToGetThere", "-5"),
           overflow: "hidden",
           maxWidth: "330vw",
-          maxHeight: "320vh", 
+          maxHeight: "130vh", 
           minWidth: "105vw",
           minHeight: "105vh",
           position: "fixed", 
-          right: "-36vw", 
-          bottom: "-5vh", };
+          right: "-20px", 
+          bottom: "-12px", };
 
     const mobileBackgroundImage6 = (this.props.screenSize === "computer") 
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
@@ -1173,6 +1193,9 @@ Main.propTypes = {
   contactSuccessSnackbarOpen: PropTypes.bool,
   loginSuccessSnackbarOpen: PropTypes.bool,
   contactOpen: PropTypes.bool,
+  scrollTop: PropTypes.number,
+  innerWidth: PropTypes.number,
+  innerHeight: PropTypes.number,
 }
 
 const mapStateToProps = (state) => {
@@ -1186,6 +1209,8 @@ const mapStateToProps = (state) => {
     contactOpen: state.contactOpen,
     successText: state.successText,
     scrollTop: state.scrollTop,
+    innerWidth: state.innerWidth,
+    innerHeight: state.innerHeight,
 	}
 }
 
