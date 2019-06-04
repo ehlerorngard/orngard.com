@@ -1,7 +1,7 @@
 # <img width="48" alt="" src="https://user-images.githubusercontent.com/34467850/58840135-60550600-8619-11e9-8705-ae0f03a27aad.png">    orngard.com  
-Client interface in React + Redux for orngard.com and Wedding Website
+Client interface in React + Redux for orngard.com and Wedding Website <br /><br />
 
-<br />
+
 # Wedding Website 
 
 This directory of orngard.com is a live wedding website that is displaying information about my upcoming wedding in autumn of 2019 and is – as you read this – taking and storing guests' RSVPs and data via connection to a backend API I built in Python/Django + Postgres. (*check it out:* **[backend](https://github.com/ehlerorngard/WeddingWebsite_backend)**).
@@ -14,7 +14,7 @@ Feel free to try a sample RSVP (select from the menu drawer).
 
 <br /><br />
 ## code excerpts
-
+<br /><br />
 ### requester.js
 In order to make cross-origin post, put, and delete requests to the Python API we must acquire a Cross Site Request Forgery (CSRF) token, which will only be issued to whitelisted domains: <br />
 <img width="858" alt="getCsrfToken" src="https://user-images.githubusercontent.com/34467850/58841035-06eed600-861d-11e9-9265-d274d3fcefa5.png">
