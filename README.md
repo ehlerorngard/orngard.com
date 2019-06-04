@@ -10,7 +10,7 @@ This directory of orngard.com is a live wedding website that is displaying infor
 ![wedding website](https://user-images.githubusercontent.com/34467850/58844807-a0be7f00-862d-11e9-8f47-b31e30c61105.gif)
 
 ### [test it out for yourself here!](https://www.orngard.com/ehlerandemily)
-Feel free to try a sample RSVP (select from the menu drawer).
+_Feel free to try a sample RSVP (select from the menu drawer)._
 
 <br /><br />
 ## code excerpts 
