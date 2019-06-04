@@ -13,7 +13,7 @@ This directory of orngard.com is a live wedding website that is displaying infor
 Feel free to try a sample RSVP (select from the menu drawer).
 
 <br /><br />
-## code excerpts <br />
+## code excerpts 
 
 ### requester.js
 In order to make cross-origin post, put, and delete requests to the Python API we must acquire a Cross Site Request Forgery (CSRF) token, which will only be issued to whitelisted domains: <br />
