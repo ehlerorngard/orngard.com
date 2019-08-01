@@ -36,12 +36,10 @@
 }
 .leftTextBox {
 	font-family: 'Dorsa', sans-serif;
-	font-family: 'Dawning of a New Day', cursive;
-	font-family: 'Meddon', cursive;
-	font-family: 'Oleo Script Swash Caps', cursive;
-	font-family: 'Miss Fajardose', cursive;
 	font-family: 'Sacramento', cursive;
-	color: white;
+	font-family: 'Dawning of a New Day', cursive;
+/* 	font-family: 'Montez';
+ */	color: white;
 	transition: .5s;
 	display: inline-flex;
 	float: left;
@@ -147,11 +145,12 @@
 .main {
 	width: 100%;
 	margin: 0;
-
+	position: relative;
 }
 .mainTextLarge {
 	font-family: 'Miss Fajardose', cursive;
 	font-family: 'Sacramento', Georgia;
+	font-family: 'Dawning of a New Day', Georgia;
 	color: white;
 	margin: 0;
 	padding-top: 240px;
@@ -426,16 +425,24 @@
 	background: #26404b !important;
 }
 .footer {
+	margin: 0px;
+	max-height: 88px;
+	padding: 0;
+	width: 100vw;
+	overflow: hidden;
+}
+.footerInner {
 	margin: 0px auto;
+	max-height: 88px;
 	padding: 32px 0;
 	width: 100vw;
+	overflow: hidden;
 	text-align: center;
 	color: white;
 	font-family: "Montserrat", sans;
 	background: rgba(54, 54, 54, 1);
 	box-shadow: 0 0px 16px 3px gray;
 }
-
 
 /*============================
 ==== RSVP ================

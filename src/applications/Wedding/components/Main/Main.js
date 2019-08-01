@@ -5,11 +5,14 @@ import { connect } from "react-redux";
 import "../../Wedding.css";
 import { updateStore } from "../../utils/actions.js";
 import SuccessSnackbar from '../Snackbar/SuccessSnackbar.js';
+import { Tooltip } from "@material-ui/core";
 
 import Image1 from '../../assets/adventure.jpg';
 import Image1lite from '../../assets/adventureLite.jpg';
+import Image1Superlite from '../../assets/adventureSuperLite.jpg';
 import Image2 from '../../assets/theMoment.jpg';
 import Image2lite from '../../assets/theMomentLite.jpg';
+import Image2Superlite from '../../assets/theMomentSuperLite.jpg';
 import Image3 from '../../assets/background4.jpg';
 import Image4 from '../../assets/background3.jpg';
 import Image5 from '../../assets/background5.jpg';
@@ -27,7 +30,7 @@ export class Main extends Component {
     this.contactUsRef = React.createRef();
   }
 
-	componentDidMount() {
+  componentDidMount() {
     // DOM elements must be fully loaded for refs to have 
     // accurate "offsetTop" properties; the hereupon is essentially 
     // a backup in case more certainly accurate values for 
@@ -40,10 +43,15 @@ export class Main extends Component {
     // can be called when the navigation drawer is open, 
     // ensuring that the links navigate to the correct scroll locations:
     updateStore({ updateDivTops: this.updateDivTops })(this.props.dispatch);
+
+    setTimeout(() => window.scroll(0, 0), 1300);
   }
 
   updateDivTops = () => {
-    updateStore({ divTops: this.getDivTops() })(this.props.dispatch);
+    updateStore({ 
+      divTops: this.getDivTops(), 
+      divBottoms: this.getDivBottoms 
+    })(this.props.dispatch);
   }
 
   getDivTops = () => {
@@ -55,6 +63,19 @@ export class Main extends Component {
       faqs: this.faqsRef.current.offsetTop,
       howToGetThere: this.howToGetThereRef.current.offsetTop,
       conactUs: this.contactUsRef.current.offsetTop,
+    }
+    return refs;
+  }
+
+  getDivBottoms = () => {
+    let refs = {
+      whereAndWhen: this.whereAndWhenRef.current.offsetBottom,  
+      schedule: this.scheduleRef.current.offsetBottom,
+      whereToStay: this.whereToStayRef.current.offsetBottom,
+      whatToBring: this.whatToBringRef.current.offsetBottom,
+      faqs: this.faqsRef.current.offsetBottom,
+      howToGetThere: this.howToGetThereRef.current.offsetBottom,
+      conactUs: this.contactUsRef.current.offsetBottom,
     }
     return refs;
   }
@@ -94,6 +115,19 @@ export class Main extends Component {
     if (!this.props.divTops) return z;
     else if (this.props.scrollTop < this.props.divTops[div]) return z;
     return "-11";
+  }
+
+  moveBackground = (div) => {
+    if (!this.props.divBottoms) return `translateY(0px)`;
+    if (this.props.scrollTop > (this.props.divBottoms[div] - this.props.innerHeight)) {
+      console.log("scrollTop passed the mark");
+      let scrollAmount = this.props.scrollTop - this.props.oldScrollTop;
+
+      console.log("should be moving px ", scrollAmount*.5);
+
+      return `translateY(${scrollAmount * 0.5}px)`
+    }
+    else return `translateY(0px)`;
   }
 
   render() {
@@ -164,11 +198,11 @@ export class Main extends Component {
 
   	const adventureText = () => {
   		if (this.props.scrolledToTop) {
-  			if (this.props.screenSize === "mobile") return { opacity: 1, fontSize: "56px", paddingLeft: "100px" }
-				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "84px", paddingLeft: "140px", display: "none" }
-				else return { opacity: 1, fontSize: "96px",paddingLeft: "200px" }
+  			if (this.props.screenSize === "mobile") return { opacity: 1, fontSize: "56px", paddingLeft: "100px", display: "none" }
+				if (this.props.screenSize === "tablet") return { opacity: 1, fontSize: "64px", paddingLeft: "140px", display: "none" }
+				else return { opacity: 1, fontSize: "76px",paddingLeft: "200px" }
   		}
-  		else if (this.props.screenSize === "mobile") return { opacity: 0, fontSize: "56px" }
+  		else if (this.props.screenSize === "mobile") return { opacity: 0, fontSize: "56px", display: "none" }
   		else return { opacity: 0, fontSize: "96px" }
 		}
 
@@ -371,15 +405,20 @@ export class Main extends Component {
     }
 
     const getPositioning = (imageWidth, imageHeight, leftRatio, topRatio) => {
+      const x = (this.props.innerWidth >= imageWidth) 
+          ? 0 
+          : leftRatio * (imageWidth - this.props.innerWidth)
 
-      const location = {
-        left: (this.props.innerWidth >= imageWidth) 
+      const y = (this.props.outerHeight >= imageHeight) 
           ? 0 
-          : `-${Math.floor(leftRatio * (imageWidth - this.props.innerWidth))}px`,
-        top: (this.props.innerHeight >= imageHeight) 
-          ? 0 
-          : `-${Math.floor(topRatio * (imageHeight - this.props.innerHeight))}px`,
+          : topRatio * (imageHeight - this.props.outerHeight)
+
+      let location = {
+        left: `-${(x / this.props.innerWidth) * 100}vw`,
+        top: `-${(y / this.props.innerHeight) * 100}vh`,
       }
+
+      console.log("x, y = ", x, y);
       console.log("location:", location);
       console.log("screenSize", this.props.screenSize);
       return location;
@@ -389,20 +428,28 @@ export class Main extends Component {
       if (this.props.screenSize === "computer") return { visibility: "none", position: "fixed", zIndex: "-10" }
       else if (this.props.screenSize === "tablet") return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
           overflow: "hidden",
-          minWidth: "100vw",
-          minHeight: "100vh",
-          position: "fixed", 
-          left: getPositioning(1600, 900, .89, .53).left,
-          top: getPositioning(1600, 900, .5, .53).top, };
+          width: "200vw",
+          height: "200vh",
+          bottom: "-50vh",
+          right: "-50vw",
+          position: "fixed",
+          backgroundColor: "gray",
+          backgroundImage: `url(${Image1lite})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "50% 50%",
+          backgroundSize: "auto 1366px", };
       else return { zIndex: this.ifScrolledPast("whereAndWhen", "-1"),
           overflow: "hidden",
-          maxWidth: "430vw", 
-          maxHeight: "320vh",
-          minWidth: "115vw",
-          minHeight: "115vh",
-          position: "fixed", 
-          left: getPositioning(1600, 900, .55, .53).left,
-          top: getPositioning(1600, 900, .5, .36).top, };
+          width: "200vw",
+          height: "200vh",
+          bottom: "-50vh",
+          right: "-50vw",
+          position: "fixed",
+          backgroundColor: "gray",
+          backgroundImage: `url(${Image1Superlite})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "820px 832px", };
     }
 
     const mobileBackgroundImage2 = (this.props.screenSize === "computer") 
@@ -410,22 +457,28 @@ export class Main extends Component {
       : (this.props.screenSize === "tablet")
         ? { zIndex: this.ifScrolledPast("schedule", "-2"),
           overflow: "hidden",
-          maxWidth: "300vw", 
-          maxHeight: "300vh",
-          minWidth: "110vw",
-          minHeight: "110vh",
-          position: "fixed", 
-          left: getPositioning(1200, 900, .6, .4).left, 
-          top: getPositioning(1200, 900, .55, .45).top, }
+          width: "200vw",
+          height: "200vh",
+          bottom: "-50vh",
+          right: "-50vw",
+          position: "fixed",
+          backgroundColor: "gray",
+          backgroundImage: `url(${Image2lite})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "80% 50%",
+          backgroundSize: "auto 1366px", }
         : { zIndex: this.ifScrolledPast("schedule", "-2"),
           overflow: "hidden",
-          maxWidth: "320vw", 
-          maxHeight: "330vh",
-          minWidth: "105vw",
-          minHeight: "105vh",
-          position: "fixed", 
-          left: getPositioning(1200, 900, .35, .4).left, 
-          top: getPositioning(1200, 900, .5, .35).top, };
+          width: "200vw",
+          height: "200vh",
+          bottom: "-50vh",
+          right: "-50vw",
+          position: "fixed",
+          backgroundColor: "gray",
+          backgroundImage: `url(${Image2Superlite})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "50% 50%",
+          backgroundSize: "828px 820px", };
 
     const mobileBackgroundImage3 = (this.props.screenSize === "computer") 
       ? { visibility: "none", position: "fixed", zIndex: "-10" }
@@ -477,7 +530,7 @@ export class Main extends Component {
       : (this.props.screenSize === "tablet")
         ? { visibility: "visible",
           overflow: "hidden",
-          zIndex: "-6",
+          zIndex: "-7",
           maxWidth: "280vw",
           maxHeight: "280vh",
           minWidth: "115vw",
@@ -487,7 +540,7 @@ export class Main extends Component {
           top: "-15vh", }
         : { visibility: "visible",
           overflow: "hidden",
-          zIndex: "-6",
+          zIndex: "-7",
           maxWidth: "360vw",
           maxHeight: "320vh",
           minWidth: "115vw",
@@ -496,18 +549,31 @@ export class Main extends Component {
           left: "-124vw", 
           top: "-15vh", };
 
+    const dummyBackground = (this.props.screenSize === "computer") 
+      ? { visibility: "none", position: "fixed", zIndex: "-10" }
+      : { visibility: "visible",
+          overflow: "hidden",
+          zIndex: "-7",
+          width: "200vw",
+          height: "200vh",
+          position: "fixed",
+          background: "gray", 
+          left: "-50vw", 
+          top: "-50vh", };
+
     return (
         <div className="main">
           <div style={{ width: "100%", height: "120px", marginTop: "-120px", backgroundColor: "gray", zIndex: "3",}}/>
 
-          <img alt='' src={Image1lite} style={mobileBackgroundImage1()}/>
-          <img alt='' src={Image2lite} style={mobileBackgroundImage2}/>
+          <div style={mobileBackgroundImage1()}/>
+          <div style={mobileBackgroundImage2}/>
           <img alt='' src={Image3} style={mobileBackgroundImage3}/>
           <img alt='' src={Image4} style={mobileBackgroundImage4}/>
           <img alt='' src={Image5} style={mobileBackgroundImage5}/>
+          <div style={dummyBackground}/>
           <img alt='' src={Image6} style={mobileBackgroundImage6}/>
-          <div style={{ backgroundColor: "#1f1f1f", zIndex: "-8", position: "fixed", top: "-50vh", left: "-50vw", width: "200vw", height: "200vh" }} />
-          <div style={{ backgroundColor: "white", zIndex: "-7", position: "fixed", top: "0", left: "50", width: "100vw", height: "100vh" }} />
+          <div style={{ backgroundColor: "#1f1f1f", zIndex: "-9", position: "fixed", top: "-50vh", left: "-50vw", width: "200vw", height: "200vh" }} />
+          <div style={{ backgroundColor: "white", zIndex: "-8", position: "fixed", top: "0", left: "50", width: "100vw", height: "100vh" }} />
 
         	<div className="imageBox" style={imageBox()}>
         		<div className="spacerBox" />
@@ -565,12 +631,12 @@ export class Main extends Component {
         			<div className='bajoHeader'>
         				<div className='bajoHeaderFont' style={categoryHeader()}>Friday:</div>
         				<div className='smallText2' style={smallText}>
-                  <div style={timeBox}><div>5:30pm</div></div>
+                  <div style={timeBox}><div>5:00pm</div></div>
                   <div style={eventBox}>Welcome Potluck Dinner - All are invited to attend</div>
                 </div>
                 <div className='smallText2' style={smallText}>
-                  <div style={timeBox}><div>7:00pm</div></div>
-                  <div style={eventBox}>Contradancing, bonfires</div>
+                  <div style={timeBox}><div>6:30pm</div></div>
+                  <div style={eventBox}>Contradance, bonfires</div>
                 </div>
                 <div className='thinMarginBottom' />
         			</div>
@@ -607,7 +673,7 @@ export class Main extends Component {
         			<div className='bajoHeader'>
         				<div className='bajoHeaderFont' style={categoryHeader()}>Sunday:</div>
                 <div className='smallText2' style={smallText}>
-                  <div style={timeBox}>10:30am</div>
+                  <div style={timeBox}>10:00am</div>
                   <div style={eventBox}>Brunch</div>
                 </div>
                 <div className='fatMarginBottom' />
@@ -659,15 +725,15 @@ export class Main extends Component {
                 September 19</span> OR <span className='bold'>Friday, September 20</span> and the following shipping address: <span className='block thinMarginBottom'/> 
                 <div style={paddingLeftWrapper}>
                   {(this.props.loggedIn === true) 
-                    ? (<div><div className='block'>924 118th Street</div> 
-                       <div className='block' >Pilot Mound, IA 50223</div></div>)
+                    ? (<Tooltip title='click to copy'><div onClick={this.copyToClipboard('924 118th St Pilot Mound, IA 50223')}><div className='block'>924 118th Street</div> 
+                       <div className='block' >Pilot Mound, IA 50223</div></div></Tooltip>)
                     : (<div className='loginButton bold' style={loginButtonStyle} onClick={this.goToLogin}>log in to see address</div>)}
                 </div>
               </div>
               <div className='smallText thinMarginBottom' style={smallText}>
                 If you have questions please contact the store owner Dallas at 
-                <div className='bold emailAddress' onClick={() => this.copyToClipboard('dallas@lowergearrentals.com')}>
-                dallas@lowergearrentals.com</div>
+                <Tooltip title='click to copy'><div className='bold emailAddress' onClick={() => this.copyToClipboard('dallas@lowergearrentals.com')}>
+                dallas@lowergearrentals.com</div></Tooltip>
                 Be sure to book <span className='bold'>by September 1, 2019</span>.  Note: You can reserve your 
                 package anytime with zero cancellation fee - your card will not be 
                 charged until shipping occurs. 
@@ -678,32 +744,13 @@ export class Main extends Component {
               <div className='bajoHeader'>
         				<div className='bajoHeaderFont' style={categoryHeader()}>hotels:</div>
                 <div className='smallText thinMarginBottom' style={smallText}>
-                  If camping isn’t your style, no worries!  We’ve booked two blocks of hotel rooms: 
-                </div>
-
-                <div className='smallText block skinnyMarginBottom' style={smallCategoryHeader}>
-                  <a className='bold linkAwayHeader noDec' target='_blank' rel="noopener noreferrer" href='https://www.wyndhamhotels.com/baymont/boone-iowa/baymont-inn-suites-boone/overview?CID=LC:BU::GGL:RIO:National:70199&iata=00065402'>
-                  Baymont Inn </a><span className='normalWeight'>
-                  <span style={hideOnMobile}>located in </span>Boone <span className='block'/>
-                  <span className='mediumGray' style={mediumSmallText}>
-                  <img alt='' className="material-icons mIcons smallMarginRight" src={car} style={smallIconStyle}/>
-                  23 minutes <span style={hideOnMobile}>away </span>from the farm</span></span>
-                </div>
-                <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <div className='bold linkAwayHeader' onClick={() => this.copyToClipboard('1745 SE Marshall St, Boone, IA')}>
-                    1745 SE Marshall St, Boone, IA
-                  </div>
-                </div>
-                <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  Book before: July 20, 2019
-                </div>
-                <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  Room rate: <span style={breakOnMobile}/>2 double beds: 
-                  $121, <span style={breakOnMobile}/>King Bed: 
-                  $126, <span style={breakOnMobile}/>Suite: $149
-                </div>
-                <div className='smallText block fatMarginBottom' style={smallText}>
-                  Call <span style={mediumSmallText}>(515)432-8168</span>
+                  If camping isn’t your style, no worries!  One good option is Airbnb, if you have an account.  
+                  You can of course book a hotel on your own;  there are plenty of reasonably priced options 
+                  in nearby towns (Boone, Ames, Fort Dodge, Jefferson, Des Moines) that you can book through 
+                  any booking site (e.g., <a className='bold linkAwayHeader noDec' target='_blank' rel="noopener noreferrer" href='https://www.hotels.com/'>hotels.com </a>
+                   et al.).  Since all the action centers on the farm, 
+                  there's no strong reasoning to be at any one particular hotel or another.
+                  That said, in case it's any help, we have a block of hotel rooms in Ames: 
                 </div>
 
                 <div className='smallText block bold skinnyMarginBottom' style={smallCategoryHeader}>
@@ -715,9 +762,11 @@ export class Main extends Component {
                   35 minutes <span style={hideOnMobile}>away </span>from the farm</span></span>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  <div className='bold linkAwayHeader' onClick={() => this.copyToClipboard('2609 University Blvd, Ames, IA')}>
-                    2609 University Blvd, Ames, IA
-                  </div>
+                  <Tooltip title='click to copy'>
+                    <div className='bold linkAwayHeader' onClick={() => this.copyToClipboard('2609 University Blvd, Ames, IA')}>
+                      2609 University Blvd, Ames, IA
+                    </div>
+                  </Tooltip>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
                   Book before: August 29, 2019
@@ -778,6 +827,9 @@ export class Main extends Component {
                 <div className='smallText block skinnyMarginBottom' style={smallText}> 
                   • face wipes 
                 </div>
+                <div className='smallText block skinnyMarginBottom' style={smallText}> 
+                  • towel, washcloth, mini clothesline 
+                </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
                   • layers and changes of clothes for the weekend. Check the weather the week before! 
                 </div>
@@ -791,13 +843,13 @@ export class Main extends Component {
                   • Layers - you never know what the weather in the Midwest will do!
                 </div> 
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  • Eucalyptus oil for natural, DEET-free <a className='linkAway' target='_blank' rel="noopener noreferrer" href='https://www.amazon.com/dp/B01INIXAHA/ref=psdc_3737951_t3_B004N59OFU'>bug repellent</a>
+                  • Eucalyptus oil for natural, DEET-free <a className='linkAway' target='_blank' rel="noopener noreferrer" href='https://www.amazon.com/Plant-Based-Eucalyptus-Insect-Repellent-4-Ounce/dp/B004N59OFU/'>bug repellent</a>
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  • Sunscreen/Sunglasses/Hat
+                  • Sunglasses/hat/sunscreen
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>
-                  • Comfortable shoes - Heels will most likely sink you into the grass, be aware of your shoe choices! You’ll be walking on gravel, grass and there’s potential for hikes throughout the farm. 
+                  • Comfortable shoes - Heels will most likely sink you into the grass, be aware of your shoe choices! You’ll be walking on gravel, grass, some slightly uneven ground, and there’s potential for hikes throughout the farm and the woods. 
                 </div>
                 <div className='smallText block skinnyMarginBottom' style={smallText}>                  
                   • Lawn chairs (if you'll be more comfortable in those than in folding chairs), blankets for laying out, hammocks for hanging out and relaxing in the afternoon
@@ -824,8 +876,8 @@ export class Main extends Component {
                 <div className='smallText block fatMarginBottom' style={smallText}>
                   The festivities will be primarily outdoors, barring heavier precipitation.
           				It's the Midwest, so the weather could do anything...
-          				The daily high could be 90º, it could be 50º;  
-          				overnight low could be 75º, it could be 40º.
+          				The daily high could be 85º, it could be 55º <span style={{fontStyle: 'italic'}}>(average high: 71º)</span>;  
+          				overnight low could be 65º, it could be 40º <span style={{fontStyle: 'italic'}}>(average low: 50ºF)</span>.
           				It could, of course, rain (the whole past year has been unusually rainy, including last September...)
                   So be just ready for heat, cold, rain, sun, and bugs and you'll be sure to be fine.
           				Also: just go ahead and bring good weather when you come ;)
@@ -839,10 +891,22 @@ export class Main extends Component {
                   all of you! That being said, please do what is best for you in the 
                   afternoon.  There will be plenty of activities, games, music, and 
                   options for walks or hikes on the farm during that time.  Don’t feel 
-                  like you need to catch all of it;  feel free to rest, take naps, relax, 
-                  spread out, or if you want to escape, go for a drive along the Des Moines 
-                  River, explore small town Iowa, etc.  We want you to have fun of course, but 
-                  also want you to take care of yourself and do what is best for you! 
+                  like you need to catch every activity;  feel free to rest, take naps, relax, 
+                  spread out, listen to music, or if you need to escape for a bit, go for a 
+                  drive along the Des Moines River, explore small town Iowa, 
+                  etc.  We want you to have fun and hang out with us of course, but 
+                  we also want you to take care of yourself and do what is best for you! 
+                </div>
+                <div className='smallText bold' style={smallCategoryHeader}>
+                  Are you registered anywhere?
+                </div>
+                <div className='smallText block fatMarginBottom' style={smallText}>
+                  We sincerely do not expect gifts.  The greatest gift you could give us is your presence
+                  on the weekend of our celebration (if, of course, you are conveniently able).  If, however,
+                  you are extremely keen to give us something and are completely undissuaded by the preceding 
+                  sentences, we have compiled some 
+                  ideas <a className='bold linkAway noDec' target='_blank' rel="noopener noreferrer" href='http://www.zola.com/registry/ehlerandemily'>
+                    here</a>.  (But again, please feel zero obligation!)
                 </div>
 
                 <div className='smallText bold skinnyMarginBottom' style={smallCategoryHeader}>
@@ -935,19 +999,22 @@ export class Main extends Component {
                   If you want to pick up snacks/food to bring out to the farm:
                 </div>
                 <div className='smallText block' style={smallText}>
-                  • Wheatsfield Co-op
+                  • Wheatsfield Co-op <span style={{fontStyle: 'italic'}}>(Ames)</span>
                 </div>
                 <div className='smallText block' style={smallText}>
-                  • Aldi
+                  • Aldi <span style={{fontStyle: 'italic'}}>(Ames)</span>
                 </div>
                 <div className='smallText block' style={smallText}>
-                  • Hy-Vee
+                  • Hy-Vee <span style={{fontStyle: 'italic'}}>(Ames & Boone)</span>
                 </div>
                 <div className='smallText block' style={smallText}>
-                  • Fresh Thyme Market
+                  • Fresh Thyme Market <span style={{fontStyle: 'italic'}}>(Ames)</span>
                 </div>
                 <div className='smallText block' style={smallText}>                  
-                  • Fareway
+                  • Fareway <span style={{fontStyle: 'italic'}}>(Ames & Boone)</span>
+                </div>
+                <div className='smallText block' style={smallText}>                  
+                  • ...and conveniently right on the way from the Des Moines airport: Trader Joe's <span style={{fontStyle: 'italic'}}>(West Des Moines)</span>
                 </div>
 
         			</div>
@@ -961,7 +1028,7 @@ export class Main extends Component {
                   We hope that many of you will be able to come Friday evening!
                   And if you do, and are conveniently able to, you're welcome to bring 
                   something for the potluck that evening. 
-        					(But no worries if you're not able to.)
+        					(But no worries if you're not able to.) <div className="block skinnyMarginBottom"/>
                   <span className='block'/>Stay tuned for more information!
         				</div>
 
@@ -988,10 +1055,12 @@ export class Main extends Component {
                   ? (<div>
                       <div className='bajoHeaderFont' style={categoryHeader()}>address</div>
                       <div style={paddingLeftWrapper}>
-                        <div className='linkAwayHeader bold noDec' onClick={() => this.copyToClipboard('924 118th St, Pilot Mound, IA 50223')}>
-                          <div className='block'>924 118th Street</div> 
-                          <div className='block'>Pilot Mound, IA 50223</div>
-                        </div>
+                        <Tooltip title="click to copy">
+                          <div className='linkAwayHeader bold noDec' onClick={() => this.copyToClipboard('924 118th St, Pilot Mound, IA 50223')}>
+                            <div className='block'>924 118th Street</div> 
+                            <div className='block'>Pilot Mound, IA 50223</div>
+                          </div>
+                        </Tooltip>
                       </div>
 
                       <div className='fatHorizSpacer'/>
@@ -1130,17 +1199,21 @@ export class Main extends Component {
                   ? (<div style={inlineTable}>
                         <div style={gridBoxLeft}><span className='bajoHeaderFont' style={categoryHeader()}>emily</span></div>
                         <div style={gridBoxRight}>
-                          <div className='linkAwayHeader bold' style={xMargin} onClick={() => this.copyToClipboard('wittig.emily@gmail.com')}>
-                            wittig.emily@gmail.com
-                          </div>
+                          <Tooltip title="copy to clipboard">
+                            <div className='linkAwayHeader bold' style={xMargin} onClick={() => this.copyToClipboard('wittig.emily@gmail.com')}>
+                              wittig.emily@gmail.com
+                            </div>
+                          </Tooltip>
                           <span style={breakOnMobile}/>(319)331-5348
                         </div>
                         <div className='fatHorizSpacer' style={onlyOnMobile}/>
                         <div style={gridBoxLeft}><span className='bajoHeaderFont' style={categoryHeader()}>ehler</span></div>
                         <div style={gridBoxRight}>
-                          <div className='linkAwayHeader bold' style={xMargin} onClick={() => this.copyToClipboard('ehlerorngard@gmail.com')}>
-                            ehlerorngard@gmail.com
-                          </div>
+                          <Tooltip title="copy to clipboard">
+                            <div className='linkAwayHeader bold' style={xMargin} onClick={() => this.copyToClipboard('ehlerorngard@gmail.com')}>
+                              ehlerorngard@gmail.com
+                            </div>
+                          </Tooltip>
                           <span style={breakOnMobile}>(515)290-5972</span>
                         </div>
                     </div>)
@@ -1160,7 +1233,11 @@ export class Main extends Component {
         		</div>	
             <div className='fatHorizSpacer'/>
             <div className='footer' style={footer}>
-              © 2019 ehler orngard
+              <div className='footerInner' style={footer}>
+                © 2019 ehler orngard
+              </div>
+              <div className='' style={{width: "200vw", height: "140px", marginBottom: "-140px", background: "rgba(54, 54, 54, 1)",}}
+              />
             </div>
         	</div>
 
@@ -1204,13 +1281,16 @@ const mapStateToProps = (state) => {
 		screenSize: state.screenSize,
     loggedIn: state.loggedIn,
     divTops: state.divTops,
+    divBottoms: state.divBottoms,
     contactSuccessSnackbarOpen: state.contactSuccessSnackbarOpen,
     loginSuccessSnackbarOpen: state.loginSuccessSnackbarOpen,
     contactOpen: state.contactOpen,
     successText: state.successText,
     scrollTop: state.scrollTop,
+    oldScrollTop: state.oldScrollTop,
     innerWidth: state.innerWidth,
     innerHeight: state.innerHeight,
+    outerHeight: state.outerHeight,
 	}
 }
 

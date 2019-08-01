@@ -44,11 +44,11 @@ class Menubar extends Component {
   }
   goToQuestions = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.faqs - 30);
+    window.scroll(0, this.props.divTops.faqs - 27);
   }
   goToArriving = () => {
     this.hideSidebar();
-    window.scroll(0, this.props.divTops.howToGetThere - 10);  //8640, 82.2% of bottom
+    window.scroll(0, this.props.divTops.howToGetThere);  //8640, 82.2% of bottom
   }
   goToContactUs = () => {
     this.hideSidebar();
