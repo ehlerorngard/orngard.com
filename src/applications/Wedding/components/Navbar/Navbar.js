@@ -37,7 +37,12 @@ export class Navbar extends Component {
 
   showDrop = (event) => {
   	this.setState({ anchorEl: event.currentTarget });
-    updateStore({ dropOpen: true })(this.props.dispatch);
+    if (this.props.user && this.props.user.firstName !== null) {
+      updateStore({ dropOpen: true })(this.props.dispatch);
+    }
+    else {
+      this.goToLogin();
+    }
   }
 
   hideDrop = () => {
@@ -87,11 +92,12 @@ export class Navbar extends Component {
 	  	if (this.props.scrolledToTop) {
 	  		if (this.props.screenSize === "mobile") {
 	  			return { 
-	  				fontSize: "60px", 
-	  				margin: "8px 8px 0 8px", 
-	  				padding: "0px 20px",
+	  				fontSize: "52px", 
+	  				margin: "0px", 
+	  				padding: "0px 20px 8px 20px",
 	  				backgroundColor: "rgba(184, 184, 184, 0.7)",
 	  				borderRadius: "40px",
+            boxShadow: "0 0 20px 20px rgba(184, 184, 184, 0.7)",
             float: "left",
 	  			}
 	  		}
@@ -150,7 +156,7 @@ export class Navbar extends Component {
           		{(this.props.screenSize !== "mobile") 
                 ? (<div>
                     <div className="navButtonText">
-                			{(this.props.user && this.props.user.firstName !== null) ? this.props.user.firstName : `stranger`}
+                			{(this.props.user && this.props.user.firstName !== null) ? this.props.user.firstName : 'log in'}
                 		</div>
                 		<img className="material-icons mIcons navIconMarginBottom" alt='' src={avatar} style={iconStyle}/>
                   </div>)

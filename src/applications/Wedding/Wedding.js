@@ -79,6 +79,11 @@ class Wedding extends Component {
             maxWidth: 104,
           }
         },
+        MuiTooltip: {
+          tooltip: {
+            fontSize: "1.2rem",
+          }
+        },
         MuiMenuItem: {
           root: {
             fontSize: "22px",

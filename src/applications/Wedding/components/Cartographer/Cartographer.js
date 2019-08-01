@@ -49,7 +49,7 @@ class Cartographer extends Component {
         faqs: 100,
         howToGetThere: 100,
         conactUs: 100,
-      }
+      },
     })(this.props.dispatch);
 
     window.addEventListener("resize", this.getScreenSize, true);
@@ -94,6 +94,7 @@ class Cartographer extends Component {
       screenSize: screenSize, 
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
+      outerHeight: window.outerHeight,
     })(this.props.dispatch);
   }
 
@@ -105,7 +106,7 @@ class Cartographer extends Component {
 
     updateStore(scrolllocation)(this.props.dispatch);
 
-    updateStore({ scrollTop: window.pageYOffset })(this.props.dispatch);
+    updateStore({ oldScrollTop: this.props.scrollTop, scrollTop: window.pageYOffset })(this.props.dispatch);
   }
 
 
